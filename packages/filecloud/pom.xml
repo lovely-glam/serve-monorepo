@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.lovelyglam</groupId>
+	    <artifactId>packages</artifactId>
+	    <version>0.0.0</version>
+        <relativePath/>
+	</parent>
+
+    <artifactId>filecloud</artifactId>
+	<name>filecloud</name>
+	<description>Backend filecloud storage for lovelyglam</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.770</version>
+        </dependency>
+    </dependencies>
+
+</project>
