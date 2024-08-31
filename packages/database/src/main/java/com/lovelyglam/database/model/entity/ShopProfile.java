@@ -10,5 +10,8 @@ import lombok.Setter;
 @Builder
 @Entity(name = "shop_profiles")
 public class ShopProfile extends BaseEntity {
-    
+    private String name;
+    private String avatarUrl;
+    private String address;
+    private String description;
 }
