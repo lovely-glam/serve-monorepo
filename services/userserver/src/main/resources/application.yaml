@@ -1,6 +1,6 @@
 spring:
     application:
-      name: Lovely Glam Authentication Service
+      name: glam user server
     datasource:
         url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5432}/${DB_NAME}
         username: ${DB_USERNAME}
@@ -12,7 +12,7 @@ spring:
         show-sql: true
         naming:
             physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-            implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+            implicit-strategy: org.hibernate.boot.model.import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;naming.ImplicitNamingStrategyJpaCompliantImpl
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -21,33 +21,18 @@ spring:
             mode: always
             
     servlet:
-        multipart:
+        multipart: 
             max-file-size: 10MB
             max-request-size: 10MB
+
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: http://${AUTH_HOST}:${AUTH_PORT}
+
 
 server:
     servlet:
         context-path: /api/v1
     port: ${PORT}
-
-springdoc:
-    api-docs:
-        enabled: true
-    swagger-ui:
-        enabled: true
-        try-it-out-enabled: true
-        operations-sorter: method
-        tags-sorter: alpha
-        filter: true
-        path: /swagger-ui
-
-base-urls:
-    api: ${BASE_URL_API:null}
-    front-end: ${ORIGIN_ALLOWED:null}
-access-token:
-    max-age: ${ACCESS_TOKEN_EXT:86400000}
-    secret-key: ${ACCESS_TOKEN_KEY} 
-
-refresh-token:
-    max-age: ${REFRESH_TOKEN_EXT:315360000}
-    secret-key: ${REFRESH_TOKEN_KEY}

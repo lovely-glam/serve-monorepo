@@ -39,7 +39,7 @@ public class LoginMethod extends BaseEntity {
     @Column(name = "external_id", nullable = true)
     private String externalId;
 
-    @Column(name = "external_id", nullable = true)
+    @Column(name = "external_email", nullable = true)
     private String externalEmail;
 
     @Column(name = "is_enabled")

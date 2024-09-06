@@ -9,8 +9,8 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class ResponseObject<T> {
-    private T content;
+public class ResponseObject {
+    private Object content;
     private String code;
     private String message;
     private boolean isSuccess;
