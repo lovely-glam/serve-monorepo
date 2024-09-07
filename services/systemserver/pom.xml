@@ -10,15 +10,11 @@
         <relativePath />
     </parent>
 
-    <artifactId>userserver</artifactId>
-    <name>User Server</name>
-    <description>Backend User Server for lovelyglam</description>
+    <artifactId>systemserver</artifactId>
+    <name>Admin System Api Server</name>
+    <description>Admin system api server for lovelyglam</description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>      
+    <dependencies>      
         <dependency>
             <groupId>com.lovelyglam</groupId>
             <artifactId>database</artifactId>

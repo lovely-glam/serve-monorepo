@@ -20,6 +20,11 @@
 
     <modules>
         <module>oauthserver</module>
+        <module>userserver</module>
+        <module>authserver</module>
+        <module>systemserver</module>
+        <module>workerservice</module>
+        <module>chatsocketserver</module>
     </modules>
 
     <dependencies>

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Builder
 @Entity(name = "login_methods")
 public class LoginMethod extends BaseEntity {
-    @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
