@@ -6,11 +6,12 @@
 		<groupId>com.lovelyglam</groupId>
 	    <artifactId>packages</artifactId>
 	    <version>0.0.0</version>
-        <relativePath/>
+        <relativePath>../pom.xml</relativePath>
 	</parent>
 
     <artifactId>database</artifactId>
 	<name>database</name>
+    <version>0.0.0</version>
 	<description>Backend database for lovelyglam</description>
 
     <dependencies>

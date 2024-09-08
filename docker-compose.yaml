@@ -1,0 +1,6 @@
+services:
+  authserver:
+    image: authserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/authserver/Dockerfile

@@ -7,13 +7,13 @@
         <groupId>com.lovelyglam</groupId>
         <artifactId>services</artifactId>
         <version>0.0.0</version>
-        <relativePath />
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>oauthserver</artifactId>
     <name>OAuth2 Server</name>
     <description>Backend OAuth2 Server for lovelyglam</description>
-
+    <version>0.0.0</version>
     <dependencies>
 
         <dependency>

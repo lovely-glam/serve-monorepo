@@ -7,9 +7,8 @@
         <groupId>com.lovelyglam</groupId>
         <artifactId>serve-monorepo</artifactId>
         <version>0.0.0</version>
-        <relativePath />
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
     <groupId>com.lovelyglam</groupId>
     <artifactId>services</artifactId>
     <version>0.0.0</version>

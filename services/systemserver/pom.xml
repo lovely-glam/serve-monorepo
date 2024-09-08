@@ -7,13 +7,13 @@
         <groupId>com.lovelyglam</groupId>
         <artifactId>services</artifactId>
         <version>0.0.0</version>
-        <relativePath />
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>systemserver</artifactId>
     <name>Admin System Api Server</name>
     <description>Admin system api server for lovelyglam</description>
-
+    <version>0.0.0</version>
     <dependencies>      
         <dependency>
             <groupId>com.lovelyglam</groupId>
