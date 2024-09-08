@@ -1,4 +1,4 @@
-package com.lovelyglam.oauthserver.service.impl;
+package com.lovelyglam.authserver.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,18 +18,13 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerUserDetailService implements UserDetailsService {
+public class LocalUserDetailService implements UserDetailsService {
     private final UserAccountRepository userAccountRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userAccountRepository.findUserAccountByUsername(username).orElseThrow();
-        return convertUserToUserDetailed(user); 
+        UserAccount userAccount = userAccountRepository.findUserAccountByUsername(username).orElseThrow();
+        return new User(userAccount.getUsername(),userAccount.getHashPassword(),rolesToAuthority(userAccount));
     }
-
-    private User convertUserToUserDetailed(UserAccount userAccount){
-        return new User(userAccount.getUsername(), userAccount.getHashPassword(), rolesToAuthority(userAccount) );
-    }
-
     private Collection<GrantedAuthority> rolesToAuthority(UserAccount user) {
         var roleList = new ArrayList<GrantedAuthority>();
         roleList.add(new SimpleGrantedAuthority("ROLE_USER"));
