@@ -20,12 +20,18 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "user_accounts")
+@Entity(name = "users")
 public class UserAccount extends BaseEntity{
-    @Column(name = "avatar_url", nullable = true)
+    @Column(name = "avatar_url", nullable = true, columnDefinition = "VARCHAR(128)")
     private String avatarUrl;
     @Column(name = "fullname", nullable = true, columnDefinition = "VARCHAR(64)")
     private String fullname;
+    @Column(name = "email", nullable = true, columnDefinition = "VARCHAR(128)")
+    private String email;
+    @Column(name = "username", nullable = true, columnDefinition = "VARCHAR(128)")
+    private String username;
+    @Column(name = "hash_password", nullable = true, columnDefinition = "VARCHAR(128)")
+    private String hashPassword;
     @OneToOne(targetEntity = ShopProfile.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "shop_profile_id", nullable = true)
     private ShopProfile shopProfile;

@@ -6,6 +6,7 @@
 		<groupId>com.lovelyglam</groupId>
         <artifactId>serve-monorepo</artifactId>
         <version>0.0.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>packages</artifactId>

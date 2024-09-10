@@ -20,7 +20,7 @@ import lombok.Setter;
 @MappedSuperclass
 public class BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private BigDecimal id;
     @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate;

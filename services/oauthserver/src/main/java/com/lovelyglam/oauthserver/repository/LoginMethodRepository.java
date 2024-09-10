@@ -12,6 +12,6 @@ import com.lovelyglam.database.repository.BaseRepository;
 
 @Repository
 public interface LoginMethodRepository extends BaseRepository<LoginMethod, BigDecimal> {
-    @Query(value = "SELECT lm FROM login_methods lm WHERE lm.externalId = :externalId")
+    @Query(value = "SELECT lm FROM login_methods lm WHERE lm.username = :externalId")
     Optional<LoginMethod> findLoginMethodByExternalId(@Param(value = "externalId") String externalId);
 }

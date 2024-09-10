@@ -6,13 +6,13 @@
 		<groupId>com.lovelyglam</groupId>
 	    <artifactId>packages</artifactId>
 	    <version>0.0.0</version>
-        <relativePath/>
+        <relativePath>../pom.xml</relativePath>
 	</parent>
 
     <artifactId>filecloud</artifactId>
 	<name>filecloud</name>
 	<description>Backend filecloud storage for lovelyglam</description>
-
+    <version>0.0.0</version>
     <dependencies>
         <dependency>
             <groupId>com.amazonaws</groupId>

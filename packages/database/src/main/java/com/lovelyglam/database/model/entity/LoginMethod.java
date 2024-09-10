@@ -22,7 +22,7 @@ import lombok.Setter;
 @Builder
 @Entity(name = "login_methods")
 public class LoginMethod extends BaseEntity {
-    @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
@@ -30,13 +30,7 @@ public class LoginMethod extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private LoginMethodType loginType;
 
-    @Column(name = "username", nullable = true)
-    private String username;
-
-    @Column(name = "hash_password", nullable = true)
-    private String hashPassword;
-
-    @Column(name = "external_id", nullable = true)
+    @Column(name = "external_id", nullable = false)
     private String externalId;
 
     @Column(name = "external_email", nullable = true)

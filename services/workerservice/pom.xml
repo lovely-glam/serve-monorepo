@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lovelyglam</groupId>
+        <artifactId>services</artifactId>
+        <version>0.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>workerservice</artifactId>
+    <name>Worker service</name>
+    <description>Worker service for lovelyglam</description>
+    <version>0.0.0</version>
+    <dependencies>      
+        <dependency>
+            <groupId>com.lovelyglam</groupId>
+            <artifactId>database</artifactId>
+            <version>0.0.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

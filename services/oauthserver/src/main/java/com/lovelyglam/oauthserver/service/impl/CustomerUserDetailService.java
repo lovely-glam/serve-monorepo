@@ -2,7 +2,6 @@ package com.lovelyglam.oauthserver.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,29 +11,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.lovelyglam.database.model.entity.LoginMethod;
-import com.lovelyglam.oauthserver.repository.LoginMethodRepository;
+import com.lovelyglam.database.model.entity.UserAccount;
+import com.lovelyglam.database.repository.UserAccountRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerUserDetailService implements UserDetailsService {
-    private final LoginMethodRepository loginMethodRepository;
+    private final UserAccountRepository userAccountRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = loginMethodRepository.findLoginMethodByExternalId(username).orElseThrow();
-        return convertUserToUserDetailed(user);
+        var user = userAccountRepository.findUserAccountByUsername(username).orElseThrow();
+        return convertUserToUserDetailed(user); 
     }
 
-    private User convertUserToUserDetailed(LoginMethod loginMethod){
-        return new User(loginMethod.getUsername(), loginMethod.getHashPassword(), rolesToAuthority(loginMethod) );
+    private User convertUserToUserDetailed(UserAccount userAccount){
+        return new User(userAccount.getUsername(), userAccount.getHashPassword(), rolesToAuthority(userAccount) );
     }
 
-    private Collection<GrantedAuthority> rolesToAuthority(LoginMethod user) {
+    private Collection<GrantedAuthority> rolesToAuthority(UserAccount user) {
         var roleList = new ArrayList<GrantedAuthority>();
         roleList.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if (user.getUser().getShopProfile() != null) {
+        if (user.getShopProfile() != null) {
             roleList.add(new SimpleGrantedAuthority("ROLE_SHOP"));
         }
         return roleList;

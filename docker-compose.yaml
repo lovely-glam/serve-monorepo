@@ -1,0 +1,36 @@
+services:
+  authserver:
+    image: authserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/authserver/Dockerfile
+  
+  systemserver:
+    image: systemserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/systemserver/Dockerfile
+
+  chatsocketserver:
+    image: chatsocketserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/chatsocketserver/Dockerfile
+  
+  oauthserver:
+    image: oauthserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/oauthserver/Dockerfile
+  
+  userserver:
+    image: userserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/userserver/Dockerfile
+  
+  workerservice:
+    image: workerservice:latest
+    build: 
+      context: .
+      dockerfile: ./services/workerservice/Dockerfile
