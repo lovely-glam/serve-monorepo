@@ -1,5 +1,7 @@
 package com.lovelyglam.authserver.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +21,13 @@ public class AuthenticationController {
     private final AuthService authService;
     @PostMapping("local")
     public ResponseEntity<ResponseObject> localAuthentication(@RequestBody LocalAuthenticationRequest localAuthenticationRequest) {
+        var result = authService.localAuthentication(localAuthenticationRequest);
         return ResponseEntity.ok(ResponseObject.builder()
+        .code("AUTH_SUCCESS")
+        .content(result)
+        .message("Login Success")
+        .isSuccess(true)
+        .requestTime(LocalDateTime.now())
         .build());
     }
 }

@@ -16,5 +16,4 @@ import lombok.Setter;
 public class AuthenticationResponse {
     private String accessToken;
     private String refreshToken;
-    private LocalDateTime expireTime;
 }
