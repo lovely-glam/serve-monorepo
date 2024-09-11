@@ -26,6 +26,11 @@ spring:
             max-request-size: 10MB
 
 
+server:
+    servlet:
+        context-path: /api/v1
+    port: ${PORT}
+
 springdoc:
     api-docs:
         enabled: true
