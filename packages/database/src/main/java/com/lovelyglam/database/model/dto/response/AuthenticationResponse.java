@@ -1,6 +1,5 @@
 package com.lovelyglam.database.model.dto.response;
 
-import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
