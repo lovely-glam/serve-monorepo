@@ -20,7 +20,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
+@Entity(name = "user_accounts")
 public class UserAccount extends BaseEntity{
     @Column(name = "avatar_url", nullable = true, columnDefinition = "VARCHAR(128)")
     private String avatarUrl;
