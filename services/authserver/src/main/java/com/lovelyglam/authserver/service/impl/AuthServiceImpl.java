@@ -6,7 +6,6 @@ import com.lovelyglam.authserver.service.AuthService;
 import com.lovelyglam.authserver.service.JwtService;
 import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.AuthenticationResponse;
-import com.lovelyglam.database.repository.UserAccountRepository;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
