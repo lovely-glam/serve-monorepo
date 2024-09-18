@@ -42,9 +42,6 @@ public class OAuthUserDetailService implements OAuth2UserService<OAuth2UserReque
     private Collection<GrantedAuthority> rolesToAuthority(LoginMethod user) {
         var roleList = new ArrayList<GrantedAuthority>();
         roleList.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if (user.getUser().getShopProfile() != null) {
-            roleList.add(new SimpleGrantedAuthority("ROLE_SHOP"));
-        }
         return roleList;
     }
     

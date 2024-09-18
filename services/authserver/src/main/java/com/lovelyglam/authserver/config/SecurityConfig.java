@@ -31,6 +31,9 @@ public class SecurityConfig {
                 auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
+        http.oauth2Login((oauth2) -> {
+            oauth2.defaultSuccessUrl("/auth/oauth2", false);
+        });
         http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> {
             logout.logoutUrl("/auth/logout");
