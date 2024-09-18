@@ -6,9 +6,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,9 +30,6 @@ public class UserAccount extends BaseEntity{
     private String username;
     @Column(name = "hash_password", nullable = true, columnDefinition = "VARCHAR(128)")
     private String hashPassword;
-    @OneToOne(targetEntity = ShopProfile.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "shop_profile_id", nullable = true)
-    private ShopProfile shopProfile;
     @OneToMany(targetEntity = LoginMethod.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private List<LoginMethod> loginMethod;
 }
