@@ -1,6 +1,8 @@
 services:
   authserver:
+    container_name: glam_auth_server
     image: ${DOCKER_USER}/authserver:latest
+    restart: always
     environment:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
@@ -14,11 +16,15 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
     networks:
       - glam-networks
       
   systemserver:
+    container_name: glam_system_server
     image: ${DOCKER_USER}/systemserver:latest
+    restart: always
     environment:
       environment:
       DB_URL: ${DB_URL}
@@ -37,6 +43,8 @@ services:
       - glam-networks
 
   chatsocketserver:
+    container_name: glam_chatsocket_server 
+    restart: always
     image: ${DOCKER_USER}/chatsocketserver:latest
     environment:
       environment:
@@ -56,6 +64,8 @@ services:
       - glam-networks
   
   oauthserver:
+    container_name: glam_oauth_server
+    restart: always
     image: ${DOCKER_USER}/oauthserver:latest
     environment:
       environment:
@@ -75,6 +85,8 @@ services:
       - glam-networks
   
   userserver:
+    container_name: glam_user_server
+    restart: always
     image: ${DOCKER_USER}/userserver:latest
     environment:
       environment:
@@ -94,7 +106,9 @@ services:
       - glam-networks
   
   workerservice:
+    container_name: glam_worker_service
     image: ${DOCKER_USER}/workerservice:latest
+    restart: always
     environment:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
