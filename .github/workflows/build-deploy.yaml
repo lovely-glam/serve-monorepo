@@ -10,9 +10,9 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
           matrix:
-            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice' ]
+            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'oauthserver' ]
         env: 
-            DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+            DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
         steps:
             - name: Checkout Develop
               uses: actions/checkout@v3
