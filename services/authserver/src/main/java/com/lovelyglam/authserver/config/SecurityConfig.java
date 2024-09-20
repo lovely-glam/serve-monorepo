@@ -9,10 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.lovelyglam.authserver.security.JwtAuthenticationFilter;
+import com.lovelyglam.authserver.service.impl.OAuthUserDetailService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuthUserDetailService oAuthUserDetailService;
     @Bean
     @Order(1)
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
@@ -32,7 +37,11 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
         http.oauth2Login((oauth2) -> {
-            oauth2.defaultSuccessUrl("/auth/oauth2", false);
+            oauth2.defaultSuccessUrl("/auth/oauth2", true);
+            oauth2.failureUrl("/auth/oauth2/failed");
+            oauth2.userInfoEndpoint((oauth2Info) -> {
+                oauth2Info.userService(oAuthUserDetailService);
+            });
         });
         http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> {
