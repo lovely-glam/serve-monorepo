@@ -1,12 +1,11 @@
 package com.lovelyglam.database.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.Builder;
@@ -21,8 +20,7 @@ import lombok.Setter;
 public class ShopServiceFeedback {
     @EmbeddedId
     private ShopServiceFeedbackId id;
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, unique = true)
     private String subId;
     private int vote;
     private String comment;
@@ -35,6 +33,7 @@ public class ShopServiceFeedback {
     protected void onCreate() {
         createdDate = LocalDateTime.now();
         updatedDate = LocalDateTime.now();
+        subId = UUID.randomUUID().toString();
     }
     
     @PreUpdate
