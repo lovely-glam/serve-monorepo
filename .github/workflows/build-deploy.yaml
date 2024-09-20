@@ -4,6 +4,8 @@ on:
       - main
     paths: 
       - 'services/**'
+  workflow_dispatch: 
+    
 jobs:
     build-image:
         name: API Image Build
