@@ -1,0 +1,111 @@
+services:
+  authserver:
+    image: ${DOCKER_USER}/authserver:latest
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PENV: ${PENV}
+      PORT: ${PORT}
+      BASE_URL_API: ${BASE_URL_API}
+      ORIGIN_ALLOWED: ${ORIGIN_ALLOWED}
+      ACCESS_TOKEN_EXT: ${ACCESS_TOKEN_EXT}
+      ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
+      REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
+      REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+    networks:
+      - glam-networks
+      
+  systemserver:
+    image: ${DOCKER_USER}/systemserver:latest
+    environment:
+      environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PENV: ${PENV}
+      PORT: ${PORT}
+      BASE_URL_API: ${BASE_URL_API}
+      ORIGIN_ALLOWED: ${ORIGIN_ALLOWED}
+      ACCESS_TOKEN_EXT: ${ACCESS_TOKEN_EXT}
+      ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
+      REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
+      REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+    networks:
+      - glam-networks
+
+  chatsocketserver:
+    image: ${DOCKER_USER}/chatsocketserver:latest
+    environment:
+      environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PENV: ${PENV}
+      PORT: ${PORT}
+      BASE_URL_API: ${BASE_URL_API}
+      ORIGIN_ALLOWED: ${ORIGIN_ALLOWED}
+      ACCESS_TOKEN_EXT: ${ACCESS_TOKEN_EXT}
+      ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
+      REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
+      REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+    networks:
+      - glam-networks
+  
+  oauthserver:
+    image: ${DOCKER_USER}/oauthserver:latest
+    environment:
+      environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PENV: ${PENV}
+      PORT: ${PORT}
+      BASE_URL_API: ${BASE_URL_API}
+      ORIGIN_ALLOWED: ${ORIGIN_ALLOWED}
+      ACCESS_TOKEN_EXT: ${ACCESS_TOKEN_EXT}
+      ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
+      REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
+      REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+    networks:
+      - glam-networks
+  
+  userserver:
+    image: ${DOCKER_USER}/userserver:latest
+    environment:
+      environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PENV: ${PENV}
+      PORT: ${PORT}
+      BASE_URL_API: ${BASE_URL_API}
+      ORIGIN_ALLOWED: ${ORIGIN_ALLOWED}
+      ACCESS_TOKEN_EXT: ${ACCESS_TOKEN_EXT}
+      ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
+      REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
+      REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+    networks:
+      - glam-networks
+  
+  workerservice:
+    image: ${DOCKER_USER}/workerservice:latest
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PENV: ${PENV}
+      PORT: ${PORT}
+      BASE_URL_API: ${BASE_URL_API}
+      ORIGIN_ALLOWED: ${ORIGIN_ALLOWED}
+      ACCESS_TOKEN_EXT: ${ACCESS_TOKEN_EXT}
+      ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
+      REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
+      REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+    networks:
+      - glam-networks
+
+networks:
+  glam-networks:
+    name: glam_networks
+    external: true

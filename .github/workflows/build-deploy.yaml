@@ -30,13 +30,15 @@ jobs:
         strategy:
           matrix:
             service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice' ]
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
         steps:
           - name: Checkout Code
             uses: actions/checkout@v3
           - name: DockerHub Login
             uses: docker/login-action@v3
           - name: Clean Container, Image And Prepare For Deploy
-            run: docker compose -f docker-compose.prod.yaml -p ${{matrix.service}} down --rmi all -v
+            run: docker compose -f docker-compose.prod.yaml -p glam-serve-service down ${{matrix.service}} --rmi all -v
           - name: Docker Pull Image For Deploy
             run: docker compose -f docker-compose.prod.yaml pull ${{matrix.service}}
           - name: Infisical Login && Deploy Api
