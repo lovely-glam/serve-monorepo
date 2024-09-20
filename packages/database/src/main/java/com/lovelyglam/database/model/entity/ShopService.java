@@ -1,6 +1,7 @@
 package com.lovelyglam.database.model.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,4 +21,8 @@ public class ShopService extends BaseEntity{
     private String description;
     @Column(name = "base_price")    
     private BigDecimal basePrice;
+    @Column(name = "duration")
+    private Timestamp duration;
+    @Column(name = "max_slot")
+    private int maxSlot;
 }

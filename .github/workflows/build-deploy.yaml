@@ -1,0 +1,46 @@
+on: 
+  push:   
+    branches: 
+      - main
+    paths: 
+      - 'services/**'
+jobs:
+    build-image:
+        name: API Image Build
+        runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice' ]
+        env: 
+            DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        steps:
+            - name: Checkout Develop
+              uses: actions/checkout@v3
+
+            - name: DockerHub Login
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_PASSWORD }}
+            - name: Build Image And Push
+              run: docker compose build ${{matrix.service}} && docker compose push ${{matrix.service}}
+    
+    deploy-api:
+        runs-on: arisa-server
+        strategy:
+          matrix:
+            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice' ]
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        steps:
+          - name: Checkout Code
+            uses: actions/checkout@v3
+          - name: DockerHub Login
+            uses: docker/login-action@v3
+          - name: Clean Container, Image And Prepare For Deploy
+            run: docker compose -f docker-compose.prod.yaml -p glam-serve-service down ${{matrix.service}} --rmi all -v
+          - name: Docker Pull Image For Deploy
+            run: docker compose -f docker-compose.prod.yaml pull ${{matrix.service}}
+          - name: Infisical Login && Deploy Api
+            run: export INFISICAL_TOKEN=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain) && infisical run --env=prod --token=${INFISICAL_TOKEN} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{matrix.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service up ${{matrix.service}} -d
+
