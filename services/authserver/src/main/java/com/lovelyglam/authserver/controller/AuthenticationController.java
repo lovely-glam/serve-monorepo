@@ -13,6 +13,9 @@ import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 
 @RestController
 @RequestMapping(value = "auth")
@@ -30,4 +33,32 @@ public class AuthenticationController {
         .requestTime(LocalDateTime.now())
         .build());
     }
+
+    @GetMapping("oauth2")
+    public ResponseEntity<ResponseObject> oauth2CallBack() {
+        return ResponseEntity.ok(
+            ResponseObject.builder()
+            .code("OAUTH2_SUCCESS")
+            .content(null)
+            .message("OAuth2 Login Success")
+            .isSuccess(true)
+            .requestTime(LocalDateTime.now())
+            .build()
+        );
+    }
+
+    @GetMapping("oauth2/failed")
+    public ResponseEntity<ResponseObject> oauth2CallbackFailedHandler() {
+        return ResponseEntity.ok(
+            ResponseObject.builder()
+            .code("OAUTH2_FAILED")
+            .content(null)
+            .message("OAuth2 Login Failed")
+            .isSuccess(false)
+            .requestTime(LocalDateTime.now())
+            .build()
+        );
+    }
+    
+    
 }
