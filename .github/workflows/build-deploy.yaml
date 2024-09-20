@@ -2,6 +2,7 @@ on:
   push:   
     branches: 
       - main
+      - feature/base_services
     paths: 
       - 'services/**'
   workflow_dispatch: 
@@ -19,12 +20,20 @@ jobs:
             - name: Checkout Develop
               uses: actions/checkout@v3
 
+            - name: Check Commit Change
+              id: commit-change
+              run: |
+                git fetch origin main
+                CHANGED_SERVICES=$(git diff --name-only origin/main | grep '^services/' | sed 's|services/\(.*\)/.*|\1|' | sort -u)
+                echo "changed_services=${CHANGED_SERVICES}" >> $GITHUB_ENV
+
             - name: DockerHub Login
               uses: docker/login-action@v3
               with:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_PASSWORD }}
             - name: Build Image And Push
+              if: contains(env.changed_services, matrix.service)
               run: docker compose build ${{matrix.service}} && docker compose push ${{matrix.service}}
     
     deploy-api:
