@@ -27,6 +27,7 @@ jobs:
     
     deploy-api:
         runs-on: arisa-server
+        needs: build-image
         strategy:
           matrix:
             service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice' ]
