@@ -5,6 +5,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       PENV: ${PENV}
       PORT: ${PORT}
       BASE_URL_API: ${BASE_URL_API}
@@ -23,6 +24,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       PENV: ${PENV}
       PORT: ${PORT}
       BASE_URL_API: ${BASE_URL_API}
@@ -41,6 +43,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       PENV: ${PENV}
       PORT: ${PORT}
       BASE_URL_API: ${BASE_URL_API}
@@ -59,6 +62,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       PENV: ${PENV}
       PORT: ${PORT}
       BASE_URL_API: ${BASE_URL_API}
@@ -77,6 +81,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       PENV: ${PENV}
       PORT: ${PORT}
       BASE_URL_API: ${BASE_URL_API}
@@ -94,6 +99,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       PENV: ${PENV}
       PORT: ${PORT}
       BASE_URL_API: ${BASE_URL_API}
