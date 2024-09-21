@@ -36,10 +36,11 @@ public class AuthenticationController {
 
     @GetMapping("oauth2")
     public ResponseEntity<ResponseObject> oauth2CallBack() {
+        var result = authService.oauthAuthentication();
         return ResponseEntity.ok(
             ResponseObject.builder()
             .code("OAUTH2_SUCCESS")
-            .content(null)
+            .content(result)
             .message("OAuth2 Login Success")
             .isSuccess(true)
             .requestTime(LocalDateTime.now())
