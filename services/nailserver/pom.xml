@@ -10,38 +10,20 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>userserver</artifactId>
-    <name>User Server</name>
-    <description>Backend User Server for lovelyglam</description>
+    <artifactId>nailserver</artifactId>
+    <name>Nail Server</name>
+    <description>Backend Nail Server for lovelyglam</description>
     <version>0.0.0</version>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>      
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.lovelyglam</groupId>
             <artifactId>database</artifactId>
             <version>0.0.0</version>
         </dependency>
-
-        <dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
     </dependencies>
 
 </project>

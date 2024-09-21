@@ -1,4 +1,4 @@
-package com.lovelyglam.authserver.config;
+package com.lovelyglam.userserver.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +48,10 @@ public class SwaggerConfig {
         License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
 
         Info info = new Info()
-            .title("LOVELY GLAM API ENDPOINT")
+            .title("LOVELYGLAM API ENDPOINT")
             .version("1.0")
             .contact(contact)
-            .description("REST API ENDPOINT USING SPRING BOOT FOR LOVELY GLAM").termsOfService("https://github.com")
+            .description("REST API ENDPOINT USING SPRING BOOT FOR LOVELYGLAM").termsOfService("https://github.com")
             .license(mitLicense);
 
         return new OpenAPI()
