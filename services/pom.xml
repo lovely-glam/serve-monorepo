@@ -24,6 +24,7 @@
         <module>systemserver</module>
         <module>workerservice</module>
         <module>chatsocketserver</module>
+        <module>nailserver</module>
     </modules>
 
     <dependencies>
