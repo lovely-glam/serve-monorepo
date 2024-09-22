@@ -2,16 +2,15 @@ package com.lovelyglam.database.model.exception;
 
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
-public class ValidationFailedException extends BaseException {
+public class AuthFailedException extends BaseException{
 
-    public ValidationFailedException(String message) {
+    public AuthFailedException(String message) {
         super(message);
         this.errorResponse = ResponseObject.builder()
-        .code("VALIDATION_FAILED")
-        .message(message)
+        .code("AUTH-FAILED")
         .content(null)
+        .message(message)
         .isSuccess(false)
         .build();
     }
-    
 }
