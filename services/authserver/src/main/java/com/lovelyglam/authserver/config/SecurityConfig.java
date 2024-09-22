@@ -30,7 +30,7 @@ public class SecurityConfig {
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((auth) -> 
-                auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated()
+                auth.requestMatchers("/auth/**", "/api-docs/**", "/swagger-ui/**").permitAll().anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
