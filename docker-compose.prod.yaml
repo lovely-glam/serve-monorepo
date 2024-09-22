@@ -18,6 +18,7 @@ services:
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
     networks:
       - glam-networks
       

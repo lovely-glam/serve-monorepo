@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 import io.socket.engineio.server.EngineIoServer;
 import io.socket.engineio.server.EngineIoServerOptions;
-import io.socket.engineio.server.utils.JsonUtils;
 import io.socket.socketio.server.SocketIoServer;
 import io.socket.socketio.server.SocketIoSocket;
 

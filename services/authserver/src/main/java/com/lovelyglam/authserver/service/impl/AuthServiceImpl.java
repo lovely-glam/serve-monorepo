@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 
 import com.lovelyglam.authserver.service.AuthService;
 import com.lovelyglam.authserver.service.JwtService;
+import com.lovelyglam.database.model.constant.TokenType;
 import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.AuthenticationResponse;
+import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.AuthenticationErrorException;
 import com.lovelyglam.database.repository.UserAccountRepository;
 
@@ -27,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final UserAccountRepository userAccountRepository;
     
+    @Override
     public AuthenticationResponse localAuthentication (LocalAuthenticationRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -37,11 +40,20 @@ public class AuthServiceImpl implements AuthService {
             .refreshToken(refreshToken).build();
     }
 
+    @Override
     public AuthenticationResponse oauthAuthentication () {
-        OAuth2User user = (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        BigDecimal userID = (BigDecimal) user.getAttribute("userId");
-        if (userID == null) throw new AuthenticationErrorException();
-        userAccountRepository.findById(userID).orElseThrow(() ->  new AuthenticationErrorException());
-        return null;
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User user = (OAuth2User) authentication.getPrincipal();
+            BigDecimal userID = (BigDecimal) user.getAttribute("userId");
+            if (userID == null) throw new AuthenticationErrorException();
+            UserAccount userAccount = userAccountRepository.findById(userID).orElseThrow(() ->  new AuthenticationErrorException());
+            String accessToken = jwtService.generateToken(userAccount.getUsername(), TokenType.ACCESS_TOKEN);
+            String refreshToken = jwtService.generateToken(userAccount.getUsername(), TokenType.REFRESH_TOKEN);
+            return AuthenticationResponse.builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshToken).build();
+        }
+        throw new AuthenticationErrorException();
     }
 }

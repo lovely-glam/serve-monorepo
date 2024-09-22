@@ -13,7 +13,7 @@ jobs:
         strategy:
           matrix:
             service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'oauthserver' ]
-        env: 
+        env:
             DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
         steps:
             - name: Checkout Develop
