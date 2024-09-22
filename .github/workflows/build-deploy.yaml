@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
           matrix:
-            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'oauthserver' ]
+            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'oauthserver', 'nailserver' ]
         env:
             DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
         steps:
@@ -40,7 +40,7 @@ jobs:
         needs: build-image
         strategy:
           matrix:
-            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice' ]
+            service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'nailserver' ]
         env:
           DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
         
