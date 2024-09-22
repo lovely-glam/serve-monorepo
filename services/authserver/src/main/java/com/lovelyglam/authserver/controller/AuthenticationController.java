@@ -3,6 +3,8 @@ package com.lovelyglam.authserver.controller;
 import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +37,12 @@ public class AuthenticationController {
     }
 
     @GetMapping("oauth2")
-    public ResponseEntity<ResponseObject> oauth2CallBack() {
+    public ResponseEntity<ResponseObject> oauth2CallBack(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        var result = authService.oauthAuthentication();
         return ResponseEntity.ok(
             ResponseObject.builder()
             .code("OAUTH2_SUCCESS")
-            .content(null)
+            .content(result)
             .message("OAuth2 Login Success")
             .isSuccess(true)
             .requestTime(LocalDateTime.now())

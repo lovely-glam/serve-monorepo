@@ -34,3 +34,9 @@ services:
     build: 
       context: .
       dockerfile: ./services/workerservice/Dockerfile
+  
+  nailserver:
+    image: ${DOCKER_USER}/nailserver:latest
+    build: 
+      context: .
+      dockerfile: ./services/nailserver/Dockerfile
