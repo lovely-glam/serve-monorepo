@@ -49,9 +49,10 @@ jobs:
 
                 - name: Clean Container, Image And Prepare For Deploy
                   run: infisical run --env=prod --token=${{env.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{matrix.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service down ${{matrix.service}} --rmi all -v
-
+                  continue-on-error: true
+                  
                 - name: Docker Pull Image For Deploy
-                  run: docker compose -f docker-compose.prod.yaml pull ${{matrix.service}}
+                  run: infisical run --env=prod --token=${{env.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{matrix.service}} --watch -- docker compose -f docker-compose.prod.yaml pull ${{matrix.service}}
 
                 - name: Infisical Login && Deploy Api
                   run: infisical run --env=prod --token=${{env.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{matrix.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service up ${{matrix.service}} -d
