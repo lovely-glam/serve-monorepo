@@ -8,7 +8,7 @@ import com.lovelyglam.database.model.constant.TokenType;
 import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.AuthenticationResponse;
 import com.lovelyglam.database.model.entity.UserAccount;
-import com.lovelyglam.database.model.exception.AuthenticationErrorException;
+import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.repository.UserAccountRepository;
 
 import java.math.BigDecimal;
@@ -46,14 +46,14 @@ public class AuthServiceImpl implements AuthService {
         if (authentication != null && authentication.getPrincipal() instanceof OAuth2User) {
             OAuth2User user = (OAuth2User) authentication.getPrincipal();
             BigDecimal userID = (BigDecimal) user.getAttribute("userId");
-            if (userID == null) throw new AuthenticationErrorException();
-            UserAccount userAccount = userAccountRepository.findById(userID).orElseThrow(() ->  new AuthenticationErrorException());
+            if (userID == null) throw new AuthFailedException("Not found this user");
+            UserAccount userAccount = userAccountRepository.findById(userID).orElseThrow(() ->  new AuthFailedException(""));
             String accessToken = jwtService.generateToken(userAccount.getUsername(), TokenType.ACCESS_TOKEN);
             String refreshToken = jwtService.generateToken(userAccount.getUsername(), TokenType.REFRESH_TOKEN);
             return AuthenticationResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken).build();
         }
-        throw new AuthenticationErrorException();
+        throw new AuthFailedException("");
     }
 }

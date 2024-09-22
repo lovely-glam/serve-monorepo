@@ -60,7 +60,7 @@ public class SearchRequestParamsDto {
                     }
                     this.search = TextUtils.convertKeysToCamel(queryParams);
                 } catch (Exception e) {
-                    throw new ValidationFailedException();
+                    throw new ValidationFailedException("The query is not valid");
                 }
             }
             return this;

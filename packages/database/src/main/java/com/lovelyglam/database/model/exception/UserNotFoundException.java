@@ -2,16 +2,15 @@ package com.lovelyglam.database.model.exception;
 
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
-public class ValidationFailedException extends BaseException {
+public class UserNotFoundException extends BaseException {
 
-    public ValidationFailedException(String message) {
+    protected UserNotFoundException(String message) {
         super(message);
         this.errorResponse = ResponseObject.builder()
-        .code("VALIDATION_FAILED")
-        .message(message)
+        .code("USER-NOT-FOUND")
         .content(null)
+        .message(message)
         .isSuccess(false)
         .build();
     }
-    
 }
