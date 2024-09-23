@@ -1,7 +1,5 @@
 package com.lovelyglam.database.model.exception;
 
-import org.springframework.http.HttpStatus;
-
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
 public class ActionFailedException extends BaseException {
