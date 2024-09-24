@@ -1,4 +1,4 @@
-package com.lovelyglam.authserver.security;
+package com.lovelyglam.systemserver.security;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.lovelyglam.authserver.service.JwtService;
+import com.lovelyglam.systemserver.service.JwtService;
 import com.lovelyglam.database.model.constant.TokenType;
 
 import jakarta.servlet.FilterChain;
