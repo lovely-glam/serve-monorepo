@@ -1,8 +1,8 @@
 on: 
     workflow_dispatch:
-    workflow_run: 
-      workflows: ['lovely-glam-serve-cd']
-      types: ['completed']
+    # workflow_run: 
+    #   workflows: ['lovely-glam-serve-cd']
+    #   types: ['completed']
     push:
         branches: ['main']
         paths: 
@@ -11,7 +11,6 @@ jobs:
         build-image:
             name: API Image Build
             runs-on: ubuntu-latest
-            if: ${{github.event.workflow_run.conclusion == 'failure' || github.event.workflow.run.conclusion == 'skipped'}}
             strategy:
                 matrix:
                     service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'oauthserver', 'nailserver' ]
@@ -32,7 +31,6 @@ jobs:
         deploy-api:
             runs-on: arisa-server
             needs: build-image
-            if: ${{github.event.workflow_run.conclusion == 'failure' || github.event.workflow.run.conclusion == 'skipped'}}
             strategy:
                 matrix:
                     service: ['authserver', 'userserver', 'chatsocketserver', 'systemserver', 'workerservice', 'nailserver', 'oauthserver' ]
