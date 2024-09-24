@@ -1,10 +1,12 @@
+name: lovely-glam-serve-cd
+
 on: 
   push:   
     branches: 
       - main
     paths: 
       - 'services/**'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
     build-image:
