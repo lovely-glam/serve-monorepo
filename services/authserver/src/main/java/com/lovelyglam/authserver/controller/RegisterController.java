@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.authserver.service.CustomerAccountService;
+import com.lovelyglam.database.model.dto.request.BusinessRegisterRequest;
 import com.lovelyglam.database.model.dto.request.CustomerRegisterRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class RegisterController {    
     private final CustomerAccountService customerAccountService;
 
-    @PostMapping(value = "customer")
+    @PostMapping(name = "customer")
     public ResponseEntity<ResponseObject> customerRegister(@RequestBody CustomerRegisterRequest request) {
         var result = customerAccountService.registerCustomerAccount(request);
         return ResponseEntity.ok(ResponseObject.builder()
@@ -27,5 +28,10 @@ public class RegisterController {
             .isSuccess(true)
             .message("Customer Register Successfully")
         .build());
+    }
+
+    @PostMapping(name = "business")
+    public ResponseEntity<ResponseObject> businessRegister(@RequestBody BusinessRegisterRequest registerRequest) {
+        return null;
     }
 }

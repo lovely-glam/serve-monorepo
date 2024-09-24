@@ -47,13 +47,13 @@ public class AuthServiceImpl implements AuthService {
             OAuth2User user = (OAuth2User) authentication.getPrincipal();
             BigDecimal userID = (BigDecimal) user.getAttribute("userId");
             if (userID == null) throw new AuthFailedException("Not found this user");
-            UserAccount userAccount = userAccountRepository.findById(userID).orElseThrow(() ->  new AuthFailedException(""));
+            UserAccount userAccount = userAccountRepository.findById(userID).orElseThrow(() ->  new AuthFailedException("Not found this account"));
             String accessToken = jwtService.generateToken(userAccount.getUsername(), TokenType.ACCESS_TOKEN);
             String refreshToken = jwtService.generateToken(userAccount.getUsername(), TokenType.REFRESH_TOKEN);
             return AuthenticationResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken).build();
         }
-        throw new AuthFailedException("");
+        throw new AuthFailedException("Not login with oauth server yet");
     }
 }

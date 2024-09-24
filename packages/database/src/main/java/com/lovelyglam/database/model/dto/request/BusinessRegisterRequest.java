@@ -14,6 +14,8 @@ public class BusinessRegisterRequest {
     private String password;
     @NotBlank(message = "RePassword Must Not Be Empty")
     private String rePassword;
+    @NotBlank(message = "Business Email Must Not Be Empty")
+    private String email;
     @NotBlank(message = "Name Must Not Be Empty")
     private String name;
     @NotBlank(message = "Shop Avatar Must Have")
