@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lovelyglam.authserver.service.BusinessService;
 import com.lovelyglam.authserver.service.CustomerAccountService;
 import com.lovelyglam.database.model.dto.request.BusinessRegisterRequest;
 import com.lovelyglam.database.model.dto.request.CustomerRegisterRequest;
@@ -18,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RegisterController {    
     private final CustomerAccountService customerAccountService;
-
-    @PostMapping(name = "customer")
+    private final BusinessService businessService;
+    @PostMapping(path = "customer")
     public ResponseEntity<ResponseObject> customerRegister(@RequestBody CustomerRegisterRequest request) {
         var result = customerAccountService.registerCustomerAccount(request);
         return ResponseEntity.ok(ResponseObject.builder()
@@ -30,8 +31,16 @@ public class RegisterController {
         .build());
     }
 
-    @PostMapping(name = "business")
+    @PostMapping(path = "business")
     public ResponseEntity<ResponseObject> businessRegister(@RequestBody BusinessRegisterRequest registerRequest) {
-        return null;
+        var result = businessService.registerCustomerAccount(registerRequest);
+        return ResponseEntity.ok(
+            ResponseObject.builder()
+            .code("BUSINESS_REGISTER_SUCCESS")
+            .content(result)
+            .isSuccess(true)
+            .message("Business Register Successfully")
+            .build()
+        );
     }
 }

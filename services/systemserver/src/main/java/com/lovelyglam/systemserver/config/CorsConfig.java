@@ -19,7 +19,8 @@ public class CorsConfig {
     private String allowOrigin;
     @Value("${server.port}")
     private String port;
-
+    @Value("${swagger-url}")
+    private String swaggerUrl;
     @Bean
     public WebMvcConfigurer corsConfigure() {
         return new WebMvcConfigurer() {
@@ -70,6 +71,8 @@ public class CorsConfig {
         corsAllowOrigins.add("http://localhost:3000");
         if (!allowOrigin.equals("null"))
             corsAllowOrigins.add(allowOrigin);
+        if (!swaggerUrl.equals("null")) 
+            corsAllowOrigins.add(swaggerUrl);
         return corsAllowOrigins.toArray(new String[0]);
     }
 }
