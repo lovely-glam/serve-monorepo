@@ -1,5 +1,10 @@
 package com.lovelyglam.database.model.dto.response;
 
-public record CustomerRegisterResponse () {
+import java.time.LocalDateTime;
+
+import lombok.Builder;
+
+@Builder
+public record CustomerRegisterResponse (String username, String email, String fullName, LocalDateTime createdDate) {
     
 }

@@ -1,5 +1,6 @@
 package com.lovelyglam.authserver.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.lovelyglam.authserver.security.GlamAuthenticationEntryPoint;
 import com.lovelyglam.authserver.security.JwtAuthenticationFilter;
 import com.lovelyglam.authserver.service.impl.OAuthUserDetailService;
 
@@ -22,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig {
+    @Qualifier("glamAuthenticationEntryPoint")
+    private final GlamAuthenticationEntryPoint glamAuthenticationEntryPoint;
     private final CorsConfig corsConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuthUserDetailService oAuthUserDetailService;
@@ -32,6 +36,9 @@ public class SecurityConfig {
             .authorizeHttpRequests((auth) -> 
                 auth.requestMatchers("/auth/**", "/api-docs/**", "/swagger-ui/**").permitAll().anyRequest().authenticated()
                 )
+                .exceptionHandling((exceptionHandling) -> {
+                    exceptionHandling.authenticationEntryPoint(glamAuthenticationEntryPoint);
+                })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
         http.oauth2Login((oauth2) -> {

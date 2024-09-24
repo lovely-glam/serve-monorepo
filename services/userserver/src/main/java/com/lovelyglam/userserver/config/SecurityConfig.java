@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.lovelyglam.userserver.security.GlamAuthenticationEntryPoint;
 import com.lovelyglam.userserver.security.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,13 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final GlamAuthenticationEntryPoint glamAuthenticationEntryPoint;
     @Bean
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+            .exceptionHandling((exceptionHandling) -> {
+                exceptionHandling.authenticationEntryPoint(glamAuthenticationEntryPoint);
+            })
             .authorizeHttpRequests((auth) -> 
                 auth.requestMatchers("/auth/**", "/api-docs/**", "/swagger-ui/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
