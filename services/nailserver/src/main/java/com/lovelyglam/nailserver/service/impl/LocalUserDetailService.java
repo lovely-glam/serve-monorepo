@@ -22,7 +22,7 @@ public class LocalUserDetailService implements UserDetailsService {
     private final ShopAccountRepository shopAccountRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ShopAccount userAccount = shopAccountRepository.findShopAccountByUsername(username).orElseThrow();
+        ShopAccount userAccount = shopAccountRepository.findShopAccountByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found username"));
         return new User(userAccount.getUsername(),userAccount.getHashPassword(),rolesToAuthority(userAccount));
     }
     private Collection<GrantedAuthority> rolesToAuthority(ShopAccount user) {
