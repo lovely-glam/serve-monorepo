@@ -1,4 +1,4 @@
-package com.lovelyglam.authserver.controller;
+package com.lovelyglam.userserver.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
