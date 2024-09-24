@@ -1,0 +1,12 @@
+on: 
+    push:   
+      branches: 
+        - main
+      paths: 
+        - 'services/**'
+        - 'packages/**'
+jobs:
+  glam-deploy-cd:
+    name: glam-deploy-cd
+    uses: ./.github/workflows/build-deploy.yaml
+      

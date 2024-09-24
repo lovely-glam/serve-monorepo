@@ -29,3 +29,5 @@ server:
     servlet:
         context-path: /api/v1
     port: ${PORT}
+
+swagger-url: ${SWAGGER_URL:null}

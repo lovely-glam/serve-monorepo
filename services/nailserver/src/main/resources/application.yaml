@@ -57,3 +57,5 @@ access-token:
 refresh-token:
     max-age: ${REFRESH_TOKEN_EXT:315360000}
     secret-key: ${REFRESH_TOKEN_KEY}
+
+swagger-url: ${SWAGGER_URL:null}

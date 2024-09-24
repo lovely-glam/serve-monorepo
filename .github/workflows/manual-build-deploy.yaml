@@ -1,8 +1,5 @@
 on: 
     workflow_dispatch:
-    # workflow_run: 
-    #   workflows: ['lovely-glam-serve-cd']
-    #   types: ['completed']
     push:
         branches: ['main']
         paths: 
