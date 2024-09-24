@@ -19,6 +19,7 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -42,6 +43,7 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -65,6 +67,7 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -88,6 +91,7 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -111,6 +115,7 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -154,6 +159,7 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
