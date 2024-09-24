@@ -11,7 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-@Component("glamAuthenticationEntryPoint")
+
+@Component
 @RequiredArgsConstructor
 public class GlamAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Qualifier("handlerExceptionResolver")
