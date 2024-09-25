@@ -20,12 +20,12 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ShopNailServiceImpl implements ShopNailService {
-    private final NailServiceRepository nailServiceRepository;
+    private final NailServiceRepository nailShopRepository;
 
     @Override
     public PaginationResponse<NailServiceResponse> getShopNailServices(SearchRequestParamsDto request) {
         try {
-            Page<NailServiceResponse> orderPage = nailServiceRepository.searchAnyByParameter(request.search(), request.pagination())
+            Page<NailServiceResponse> orderPage = nailShopRepository.searchAnyByParameter(request.search(), request.pagination())
                     .map(item -> NailServiceResponse.builder()
                             .id(item.getId())
                             .name(item.getName())
@@ -55,10 +55,10 @@ public class ShopNailServiceImpl implements ShopNailService {
 
     @Override
     public NailServiceResponse getShopNailServiceById(BigDecimal id) {
-        ShopService shopService = nailServiceRepository.findById(id)
+        ShopService shopService = nailShopRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Not found category with id: %s", id.toString())));
         try{
-            var item = nailServiceRepository.save(shopService);
+            var item = nailShopRepository.save(shopService);
             return NailServiceResponse.builder()
                     .id(item.getId())
                     .name(item.getName())
@@ -80,7 +80,7 @@ public class ShopNailServiceImpl implements ShopNailService {
             Map<String, String> params = new HashMap<>();
             params.put("shopId", String.valueOf(shopId));
 
-            Page<NailServiceResponse> orderPage = nailServiceRepository.searchAnyByParameter(request.search(), request.pagination())
+            Page<NailServiceResponse> orderPage = nailShopRepository.searchAnyByParameter(request.search(), request.pagination())
                     .map(item -> NailServiceResponse.builder()
                             .id(item.getId())
                             .name(item.getName())
