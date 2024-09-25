@@ -8,13 +8,16 @@ on:
       infisical_token:
         type: string
         required: true
-      
+      change-service:
+        type: string
+        required: true
 jobs:
   build-image:
     name: API Image Build
     runs-on: ubuntu-latest
     env:
       DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+    if: contains(inputs.service, inputs.change-service)
     steps:
       - name: Checkout Develop
         uses: actions/checkout@v3
@@ -29,6 +32,7 @@ jobs:
   
   deploy-service:
     uses: ./.github/workflows/deploy.yaml
+    if: contains(inputs.service, inputs.change-service)
     with:
       server: arisa-server
       infisical-token: ${{inputs.infisical_token}}
