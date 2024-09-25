@@ -53,7 +53,11 @@ jobs:
       - name: Set services output
         id: set-output
         run: |
-          echo "::set-output name=services::$(echo '${{ toJson(steps.filter.outputs) }}' | jq -r 'to_entries | map(select(.value == "true") | .key) | join(",")') )"
+          services=$(echo '${{ toJson(steps.filter.outputs) }}' | jq -r 'to_entries | map(select(.value == "true") | .key) | join(",")')
+          # Convert to JSON array format
+          json_array=$(echo "[$(echo $services | sed 's/,/","/g')]" | sed 's/^/"/;s/$/"/')
+          echo "services=${json_array}" >> $GITHUB_ENV
+          echo "::set-output name=services::${json_array}"
       
 
   glam-deploy-cd:
