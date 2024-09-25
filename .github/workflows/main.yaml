@@ -65,7 +65,7 @@ jobs:
     needs: [glam-infisical-login,glam-check-change]
     strategy:
       matrix:
-        service: ${{needs.glam-check-change.outputs.services}}
+        service: ${{fromJson(needs.glam-check-change.outputs.services)}}
       max-parallel: 5
       fail-fast: false
     
