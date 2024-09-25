@@ -9,7 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.*;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "shop_services")
 public class ShopService extends BaseEntity{
     @ManyToOne(targetEntity = ShopProfile.class, fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
