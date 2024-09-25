@@ -3,15 +3,18 @@ package com.lovelyglam.database.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "system_accounts")
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Entity(name = "system_accounts")
 public class SystemAccount extends BaseEntity {
     @Column(name = "username", unique = true)
     private String username;
