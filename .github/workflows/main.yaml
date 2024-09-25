@@ -24,11 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: glam-infisical-login
     outputs:
-      services: ${{steps.filter.outputs}}
+      services: ${{fromJson(steps.filter.outputs)}}
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - name: check change
         uses: dorny/paths-filter@v3
         id: filter
@@ -69,6 +67,6 @@ jobs:
     with:
       infisical_token: ${{needs.glam-infisical-login.outputs.infisical_token}}
       service: ${{matrix.service}}
-      change-service: ${{fromJson(needs.glam-check-change.outputs.services)}}
+      change-service: ${{needs.glam-check-change.outputs.services}}
     
       
