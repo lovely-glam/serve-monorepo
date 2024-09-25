@@ -11,7 +11,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "appointments")
 public class Appointment extends BaseEntity {
     @ManyToOne(targetEntity = ShopService.class, fetch = FetchType.LAZY)

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 @Builder
 @Getter
@@ -15,4 +16,5 @@ public class ResponseObject {
     private String message;
     private boolean isSuccess;
     private LocalDateTime requestTime;
+    private HttpStatus status;
 }
