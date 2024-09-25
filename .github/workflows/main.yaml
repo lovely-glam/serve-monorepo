@@ -9,7 +9,7 @@ jobs:
   
   glam-infisical-login:
     name: glam-infisical-login
-    runs-on: ubuntu-latest
+    runs-on: arisa-server
     outputs:
       infisical_token: ${{steps.infisical-login.token}}
     steps:
