@@ -60,7 +60,7 @@ jobs:
     name: glam-deploy-cd
     uses: ./.github/workflows/build.yaml
     with:
-      service: ${{matrix.service}}
+      service: ${{fromJson(needs.glam-check-change.outputs.services)}}
       infisical_token: ${{needs.glam-infisical-login.outputs.infisical_token}}
     needs: [glam-infisical-login,glam-check-change]
     strategy:
