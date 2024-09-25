@@ -8,11 +8,13 @@ import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.userserver.service.ShopProfileService;
+import com.lovelyglam.utils.general.TextUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class ShopProfileServiceImpl implements ShopProfileService {
                             .name(item.getName())
                             .phone(item.getPhone())
                             .avatarUrl(item.getAvatarUrl())
-                            .thumbnails(item.getThumbnails())
+                            .thumbnails(TextUtils.extractValidUrls(item.getThumbnails()))
                             .address(item.getAddress())
                             .build());
             return convert(orderPage);
@@ -54,12 +56,14 @@ public class ShopProfileServiceImpl implements ShopProfileService {
                 .orElseThrow(() -> new NotFoundException(String.format("Not found category with id: %s", id.toString())));
         try{
             var item = shopRepository.save(shopProfile);
+            List<String> urls = TextUtils.extractValidUrls(item.getThumbnails());
+            var rs1 = urls.get(1);
             return ShopProfileResponse.builder()
                     .id(item.getId())
                     .name(item.getName())
                     .phone(item.getPhone())
                     .avatarUrl(item.getAvatarUrl())
-                    .thumbnails(item.getThumbnails())
+                    .thumbnails(TextUtils.extractValidUrls(item.getThumbnails()))
                     .address(item.getAddress())
                     .build();
         } catch (Exception  ex) {
