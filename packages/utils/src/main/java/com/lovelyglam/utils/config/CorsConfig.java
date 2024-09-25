@@ -1,4 +1,4 @@
-package com.lovelyglam.authserver.config;
+package com.lovelyglam.utils.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;

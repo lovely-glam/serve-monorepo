@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.lovelyglam.userserver.security.GlamAuthenticationEntryPoint;
 import com.lovelyglam.userserver.security.JwtAuthenticationFilter;
+import com.lovelyglam.utils.config.CorsConfig;
 
 import lombok.RequiredArgsConstructor;
 
