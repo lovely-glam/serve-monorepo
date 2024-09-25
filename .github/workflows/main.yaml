@@ -74,6 +74,8 @@ jobs:
       max-parallel: 5
       fail-fast: false
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
       - name: Build And Deploy Service
         uses: ./.github/workflows/build.yaml
         if: contains(needs.glam-check-change.outputs.services, matrix.service)
