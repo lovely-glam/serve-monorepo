@@ -71,4 +71,13 @@ public class OTPServiceImpl implements OTPService {
         } while (redisTemplate.opsForValue().get(value.get()) != null);  
         return value.get();
     }
+
+    @Override
+    public String verifyOTP(String otp) {
+        var result = (String) redisTemplate.opsForValue().get(otp);
+        if (result == null) {
+            throw new ValidationFailedException("This OTP is not valid or expiration");
+        }
+        return result;
+    }
 }

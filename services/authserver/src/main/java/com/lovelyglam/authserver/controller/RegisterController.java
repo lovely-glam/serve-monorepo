@@ -37,6 +37,7 @@ public class RegisterController {
     @PostMapping(path = "business")
     public ResponseEntity<ResponseObject> businessRegister(@RequestBody BusinessRegisterRequest registerRequest) {
         var result = businessService.registerCustomerAccount(registerRequest);
+        otpService.generateOTPCode(result.email(), result.username());
         return ResponseEntity.ok(
             ResponseObject.builder()
             .code("BUSINESS_REGISTER_SUCCESS")

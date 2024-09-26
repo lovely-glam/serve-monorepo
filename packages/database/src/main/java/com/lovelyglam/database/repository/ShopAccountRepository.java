@@ -13,4 +13,6 @@ import com.lovelyglam.database.model.entity.ShopAccount;
 public interface ShopAccountRepository extends BaseRepository<ShopAccount, BigDecimal> {
     @Query(value = "SELECT sa FROM shop_accounts sa WHERE sa.username = :username")
     Optional<ShopAccount> findShopAccountByUsername(@Param("username") String username);
+    @Query(value = "SELECT sa FROM shop_accounts sa WHERE sa.email = :email")
+    Optional<ShopAccount> findShopAccountByBusinessEmail(@Param("email") String email);
 }
