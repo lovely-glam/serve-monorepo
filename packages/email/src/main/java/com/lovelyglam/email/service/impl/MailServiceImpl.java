@@ -1,13 +1,13 @@
 package com.lovelyglam.email.service.impl;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.lovelyglam.email.model.template.EmailTemplate;
-import com.lovelyglam.email.model.template.OTPTemplate;
 import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.email.utils.MessageCompactUtils;
 
@@ -66,10 +66,18 @@ public class MailServiceImpl implements MailSenderService {
         emailSender.send(message);
     }
 
-    @Override
-    public void sendOTP(OTPTemplate template) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendOTP'");
+    
+    public void sendCustomMessage(Consumer<MimeMessage> callback) {
+        MimeMessage message = emailSender.createMimeMessage();
+        callback.accept(message);
+        try {
+            message.setFrom("noreply@lovelyglam.life");
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            return;
+        }
+        emailSender.send(message);
     }
+    
     
 }

@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.authserver.service.OTPService;
@@ -24,17 +23,6 @@ public class OTPVerifyController {
         return ResponseEntity.ok(ResponseObject.builder()
         .code("VERIFY_SUCCESS")
         .content(request)
-        .message("Verify OTP Success")
-        .isSuccess(true)
-        .build());
-    }
-
-    @PostMapping(path = "generate")
-    public ResponseEntity<ResponseObject> generateOTP (@RequestParam(name = "identity") String identity) {
-        var otp = otpService.generateOTPCode(identity);
-        return ResponseEntity.ok(ResponseObject.builder()
-        .code("VERIFY_SUCCESS")
-        .content(otp)
         .message("Verify OTP Success")
         .isSuccess(true)
         .build());
