@@ -31,7 +31,7 @@ public class OTPServiceImpl implements OTPService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void generateOTPCode(String identity) {
+    public void generateOTPCode(String identity, String username) {
         var value = generateRandomOTP();
         redisTemplate.opsForValue().set(value, identity, 10, TimeUnit.MINUTES);
         mailSenderService.sendCustomMessage((message) -> {
@@ -39,14 +39,15 @@ public class OTPServiceImpl implements OTPService {
                 Context context = new Context();
                 context.setVariable("otp", value);
                 context.setVariable("timeOut", timeOut);
-                context.setVariable("username", "test");
+                context.setVariable("username", username);
                 var content = templateEngine.process("otp-template", context);
                 MimeMessageHelper help = new MimeMessageHelper(message, true);
                 help.setTo(identity);
                 help.setSubject("[OTP - LOVELY GLAM]");
                 help.setText(content, true);
             } catch (Exception ex) {
-                throw new ActionFailedException("Send failed");
+                redisTemplate.opsForValue().getAndExpire(username, (long)0, TimeUnit.MINUTES);
+                throw new ActionFailedException("Send OTP Failed");
             }
         });
     }
