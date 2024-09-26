@@ -22,8 +22,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Entity(name = "appointments")
-public class Appointment extends BaseEntity {
+@Entity(name = "bookings")
+public class Booking extends BaseEntity {
     @ManyToOne(targetEntity = ShopService.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_service_id")
     private ShopService shopService;
@@ -34,8 +34,6 @@ public class Appointment extends BaseEntity {
     private Timestamp makingDay;
     @Column(name = "start_time")
     private Timestamp startTime;
-    @Column(name = "end_time")
-    private Timestamp endTime;
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private AppointmentStatus appointmentStatus;

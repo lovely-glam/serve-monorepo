@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Repository;
 
-import com.lovelyglam.database.model.entity.Appointment;
+import com.lovelyglam.database.model.entity.Booking;
 
 @Repository
-public interface AppointmentRepository extends BaseRepository<Appointment, BigDecimal> {
+public interface BookingRepository extends BaseRepository<Booking, BigDecimal> {
     
 }

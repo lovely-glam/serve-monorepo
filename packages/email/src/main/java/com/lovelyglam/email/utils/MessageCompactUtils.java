@@ -3,7 +3,7 @@ package com.lovelyglam.email.utils;
 import java.util.List;
 import java.util.function.Function;
 
-import com.lovelyglam.email.model.EmailTemplate;
+import com.lovelyglam.email.model.template.EmailTemplate;
 
 import jakarta.mail.internet.MimeMessage;
 

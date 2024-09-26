@@ -28,6 +28,11 @@ spring:
             max-file-size: 10MB
             max-request-size: 10MB
     
+    data:
+        redis:
+            port: ${REDIS_PORT:6379}
+            host: ${REDIS_HOST:localhost}
+    
     security:
         oauth2:
             client:
@@ -37,6 +42,7 @@ spring:
                         client-secret: ${GOOGLE_CLIENT_SECRET}
                         redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:${PORT}/api/v1/login/oauth2/code/google}
                         scope: ['profile','email']
+  
                          
 
 
@@ -69,3 +75,15 @@ refresh-token:
     secret-key: ${REFRESH_TOKEN_KEY}
 
 swagger-url: ${SWAGGER_URL:null}
+
+
+mail:
+    server:
+        host: ${MAIL_HOST}
+        username: ${MAIL_USERNAME}
+        password: ${MAIL_PASSWORD}
+        port: ${MAIL_PORT}
+
+otp:
+    timeout: ${OTP_TIMEOUT:10}
+    max-size: ${OTP_MAXSIZE:99999}

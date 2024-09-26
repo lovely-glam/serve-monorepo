@@ -1,7 +1,13 @@
 package com.lovelyglam.email.service;
 
-import com.lovelyglam.email.model.EmailTemplate;
+import java.util.List;
+
+import com.lovelyglam.email.model.template.EmailTemplate;
+import com.lovelyglam.email.model.template.OTPTemplate;
 
 public interface MailSenderService {
-    public void sendMessage(EmailTemplate EmailTemplate);
+    void sendMessage(EmailTemplate EmailTemplate);
+    void sendMultipleMessage(List<EmailTemplate> mailTemplates);
+    void sendMultiplePerson(List<String> emails, EmailTemplate template);
+    void sendOTP(OTPTemplate template);
 }

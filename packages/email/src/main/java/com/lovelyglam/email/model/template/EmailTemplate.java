@@ -1,4 +1,4 @@
-package com.lovelyglam.email.model;
+package com.lovelyglam.email.model.template;
 
 import lombok.Data;
 

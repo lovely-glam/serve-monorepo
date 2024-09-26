@@ -6,7 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.lovelyglam.email.model.EmailTemplate;
+import com.lovelyglam.email.model.template.EmailTemplate;
+import com.lovelyglam.email.model.template.OTPTemplate;
 import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.email.utils.MessageCompactUtils;
 
@@ -63,6 +64,12 @@ public class MailServiceImpl implements MailSenderService {
         } catch (Exception ex) {
         }
         emailSender.send(message);
+    }
+
+    @Override
+    public void sendOTP(OTPTemplate template) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'sendOTP'");
     }
     
 }
