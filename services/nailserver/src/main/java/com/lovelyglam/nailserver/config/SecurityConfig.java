@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.lovelyglam.nailserver.security.JwtAuthenticationFilter;
+import com.lovelyglam.utils.config.CorsConfig;
 
 import lombok.RequiredArgsConstructor;
 

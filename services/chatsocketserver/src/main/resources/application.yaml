@@ -30,4 +30,16 @@ server:
         context-path: /api/v1
     port: ${PORT}
 
+springdoc:
+    api-docs:
+        enabled: true
+        path: /api-docs
+    swagger-ui:
+        enabled: true
+        try-it-out-enabled: true
+        operations-sorter: method
+        tags-sorter: alpha
+        filter: true
+        path: /swagger-ui
+
 swagger-url: ${SWAGGER_URL:null}

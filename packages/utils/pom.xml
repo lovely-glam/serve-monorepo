@@ -14,4 +14,12 @@
 	<description>Utils for lovelyglam</description>
     <version>0.0.0</version>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+	</dependencies>
+
 </project>

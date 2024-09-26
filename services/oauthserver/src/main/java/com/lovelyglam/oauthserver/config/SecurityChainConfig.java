@@ -47,6 +47,7 @@ public class SecurityChainConfig {
 		http
 		.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests((authorize) -> authorize
+				
 				.anyRequest().authenticated()
 			)
 			// Form login handles the redirect to the login page from the

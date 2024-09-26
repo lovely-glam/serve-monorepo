@@ -32,7 +32,6 @@ public class ShopNailServiceImpl implements ShopNailService {
                             .description(item.getDescription())
                             .basePrice(item.getBasePrice())
                             .duration(item.getDuration())
-                            .maxSlot(item.getMaxSlot())
                             .build());
             return convert(orderPage);
         } catch (Exception  ex) {
@@ -65,7 +64,6 @@ public class ShopNailServiceImpl implements ShopNailService {
                     .description(item.getDescription())
                     .basePrice(item.getBasePrice())
                     .duration(item.getDuration())
-                    .maxSlot(item.getMaxSlot())
                     .build();
         } catch (Exception  ex) {
             throw new ActionFailedException(
@@ -79,7 +77,6 @@ public class ShopNailServiceImpl implements ShopNailService {
 
             Map<String, String> params = new HashMap<>();
             params.put("shopId", String.valueOf(shopId));
-
             Page<NailServiceResponse> orderPage = nailShopRepository.searchAnyByParameter(request.search(), request.pagination())
                     .map(item -> NailServiceResponse.builder()
                             .id(item.getId())
@@ -87,7 +84,6 @@ public class ShopNailServiceImpl implements ShopNailService {
                             .description(item.getDescription())
                             .basePrice(item.getBasePrice())
                             .duration(item.getDuration())
-                            .maxSlot(item.getMaxSlot())
                             .build());
             return convert(orderPage);
 

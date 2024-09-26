@@ -86,7 +86,6 @@ public interface BaseRepository<T,ID extends Serializable> extends
             entityResult.isLast()
         );
     }
-
     default Page<T> searchByParameter(Map<String,String> param, Pageable pageable, Function<Map<String,String>, Specification<T>> query) {
         return findAll(query.apply(param),pageable);
     }
