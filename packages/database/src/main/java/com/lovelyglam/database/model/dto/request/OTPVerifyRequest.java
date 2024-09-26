@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class OTPVerifyRequest {
     private Long otp;
-    private String role;
+    private String identity;
 }
