@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.lovelyglam.authserver.security.GlamAuthenticationEntryPoint;
 import com.lovelyglam.authserver.security.JwtAuthenticationFilter;
 import com.lovelyglam.authserver.service.impl.OAuthUserDetailService;
+import com.lovelyglam.utils.config.CorsConfig;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +35,7 @@ public class SecurityConfig {
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((auth) -> 
-                auth.requestMatchers("/auth/**", "/api-docs/**", "/swagger-ui/**", "/registers/**").permitAll().anyRequest().authenticated()
+                auth.requestMatchers("/auth/**", "/api-docs/**", "/swagger-ui/**", "/registers/**", "/otp/**").permitAll().anyRequest().authenticated()
                 )
                 .exceptionHandling((exceptionHandling) -> {
                     exceptionHandling.authenticationEntryPoint(glamAuthenticationEntryPoint);

@@ -20,6 +20,7 @@
         <module>database</module>
 		<module>filecloud</module>
 		<module>utils</module>
+		<module>email</module>
     </modules>
 
 </project>

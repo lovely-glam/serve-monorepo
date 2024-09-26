@@ -8,14 +8,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "service_booking")
+
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity(name = "service_booking")
 public class ServiceBooking extends BaseEntity {
     @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_account_id", nullable = false)

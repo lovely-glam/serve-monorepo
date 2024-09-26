@@ -29,6 +29,4 @@ public class ShopService extends BaseEntity{
     private BigDecimal basePrice;
     @Column(name = "duration")
     private Timestamp duration;
-    @Column(name = "max_slot")
-    private int maxSlot;
 }

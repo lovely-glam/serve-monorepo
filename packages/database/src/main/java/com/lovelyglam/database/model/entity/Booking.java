@@ -12,12 +12,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "appointments")
-public class Appointment extends BaseEntity {
+@Getter
+@Setter
+@Builder
+@Entity(name = "bookings")
+public class Booking extends BaseEntity {
     @ManyToOne(targetEntity = ShopService.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_service_id")
     private ShopService shopService;
@@ -28,8 +34,6 @@ public class Appointment extends BaseEntity {
     private Timestamp makingDay;
     @Column(name = "start_time")
     private Timestamp startTime;
-    @Column(name = "end_time")
-    private Timestamp endTime;
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private AppointmentStatus appointmentStatus;

@@ -14,5 +14,4 @@ public class NailServiceResponse {
     String description;
     BigDecimal basePrice;
     Timestamp duration;
-    int maxSlot;
 }
