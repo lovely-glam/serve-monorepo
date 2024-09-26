@@ -13,6 +13,12 @@ on:
       infisical-token:
         type: string
         required: true
+    secrets:
+      DOCKER_USERNAME:
+      INFISICAL_URL:
+      INFISICAL_PROJECT_ID:
+      DOCKER_PASSWORD:
+
 jobs:
   deploy-api:
     runs-on: ${{inputs.server}}

@@ -8,6 +8,11 @@ on:
       infisical_token:
         type: string
         required: true
+    secrets:
+      DOCKER_USERNAME:
+      INFISICAL_URL:
+      INFISICAL_PROJECT_ID:
+      DOCKER_PASSWORD:
 jobs:
   build-image:
     name: API Image Build
@@ -33,4 +38,9 @@ jobs:
       server: arisa-server
       infisical-token: ${{inputs.infisical_token}}
       service: ${{inputs.service}}
+    secrets: 
+      DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      INFISICAL_URL: ${{secrets.INFISICAL_URL}}
+      INFISICAL_PROJECT_ID: ${{secrets.INFISICAL_PROJECT_ID}}
+      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     

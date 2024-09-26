@@ -67,5 +67,10 @@ jobs:
     with:
       infisical_token: ${{needs.glam-infisical-login.outputs.infisical_token}}
       service: ${{matrix.service}}
+    secrets: 
+      DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      INFISICAL_URL: ${{secrets.INFISICAL_URL}}
+      INFISICAL_PROJECT_ID: ${{secrets.INFISICAL_PROJECT_ID}}
+      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
       
