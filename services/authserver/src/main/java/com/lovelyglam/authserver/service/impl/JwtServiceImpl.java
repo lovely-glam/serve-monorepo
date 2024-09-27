@@ -1,9 +1,9 @@
 package com.lovelyglam.authserver.service.impl;
 
-import java.security.Key;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.Map;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,9 +35,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     public Claims generateClaims (UserClaims claimInfo) {
-        Map<String, Object> claims = new HashMap<>();
+        Claims claims = Jwts.claims();
         claims.put("user", claimInfo);
-        return (Claims) claims;
+        return claims;
     }
     public String generateToken(String username, String role, TokenType tokenType) {
         Date currentDate = new Date(System.currentTimeMillis());
@@ -71,7 +71,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateRefreshToken(Authentication authentication) {
         return generateToken(authentication, TokenType.REFRESH_TOKEN);
     }
-    private Key getSigningKey(TokenType tokenType) {
+    private SecretKey getSigningKey(TokenType tokenType) {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(tokenType == TokenType.ACCESS_TOKEN ? jwtTokenConfig.getJwtSecret() : jwtTokenConfig.getJwtRefreshSecret()));
     }
     public String getUsernameFromJWT(String token, TokenType tokenType) {
@@ -84,10 +84,13 @@ public class JwtServiceImpl implements JwtService {
     }
 
     public UserClaims getUserClaimsFromJwt(String token, TokenType tokenType) {
-        return (UserClaims) Jwts.parserBuilder()
+        var claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey(tokenType))
                 .build()
-                .parseClaimsJws(token).getBody().get("user");
+                .parseClaimsJws(token).getBody();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> userClaimsMap = (Map<String, Object>) claims.get("user");
+        return convertMapToUserClaims(userClaimsMap);
     }
     public boolean validateToken(String authToken, TokenType tokenType) {
         try {
@@ -106,4 +109,17 @@ public class JwtServiceImpl implements JwtService {
         }
         return null;
     }
+
+    private UserClaims convertMapToUserClaims(Map<String, Object> map) {
+        String username = (String) map.get("username");
+        String role = (String) map.get("role");
+        TokenType tokenType = TokenType.valueOf((String) map.get("tokenType"));
+    
+        return UserClaims.builder()
+                .username(username)
+                .role(role)
+                .tokenType(tokenType)
+                .build();
+    }
+    
 }

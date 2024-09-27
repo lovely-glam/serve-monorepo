@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.lovelyglam.authserver.service.JwtService;
 import com.lovelyglam.authserver.service.impl.BusinessUserDetailService;
 import com.lovelyglam.database.model.constant.TokenType;
+import com.lovelyglam.database.model.other.UserClaims;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,8 +30,8 @@ public class BusinessJwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
                  String jwt = jwtService.getJwtFromRequest(request);
         if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt, TokenType.ACCESS_TOKEN)) {
-            String username = jwtService.getUsernameFromJWT(jwt, TokenType.ACCESS_TOKEN);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserClaims username = jwtService.getUserClaimsFromJwt(jwt, TokenType.ACCESS_TOKEN);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username.getUsername());
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
