@@ -11,11 +11,13 @@ jobs:
   glam-infisical-login:
     name: glam-infisical-login
     runs-on: arisa-server
+    outputs:
+      infisical_token: ${{steps.infisical-login.outputs.infisical_token}}
     steps:
       - name: Infisical Login
         id: infisical-login
         run: |
-          echo infisical_token=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain) >> $GITHUB_OUTPUT
+          echo "infisical_token=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain)" >> "$GITHUB_OUTPUT"
       
 
   glam-deploy-serve-cd:
