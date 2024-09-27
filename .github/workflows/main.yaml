@@ -17,7 +17,14 @@ jobs:
       - name: Infisical Login
         id: infisical-login
         run: |
-          echo "infisical_token=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain)" >> "$GITHUB_OUTPUT"
+          INFISICAL_TOKEN=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain)
+          echo "Token output: $INFISICAL_TOKEN" # Debug output
+          if [ -z "$INFISICAL_TOKEN" ]; then
+            echo "Error: Received empty token." >&2
+            exit 1
+          fi
+          echo "infisical_token=${INFISICAL_TOKEN}" >> "$GITHUB_OUTPUT"
+
       
 
   glam-deploy-serve-cd:
