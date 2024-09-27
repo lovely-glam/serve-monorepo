@@ -7,10 +7,11 @@ on:
         - 'packages/**'
     workflow_dispatch: 
 jobs:
-  
   glam-infisical-login:
     name: glam-infisical-login
     runs-on: arisa-server
+    outputs:
+      infisical_token: ${{steps.infisical-login.outputs.infisical_token}}
     steps:
       - name: Infisical Login
         id: infisical-login
@@ -25,10 +26,6 @@ jobs:
       - name: Debug Output
         run: |
           echo "Infisical Token: ${{ steps.infisical-login.outputs.infisical_token }}"
-        
-
-      
-
   glam-deploy-serve-cd:
     name: glam-deploy-serve-cd
     needs: [glam-infisical-login]
