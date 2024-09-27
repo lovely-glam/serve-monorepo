@@ -27,7 +27,7 @@ public class FileController {
         var result = fileDatabaseService.uploadFile(file);
         return ResponseEntity.ok(ResponseObject.builder()
         .code("UPLOAD SUCCESS")
-        .content(result)
+        .content(result.getUrl())
         .message("UPLOAD SUCCESS")
         .build());
     }

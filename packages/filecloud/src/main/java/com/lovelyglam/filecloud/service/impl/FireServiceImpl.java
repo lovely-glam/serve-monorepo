@@ -32,6 +32,7 @@ public class FireServiceImpl implements FileService {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getFile());
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getFile().length);
+        metadata.setContentType(determineContentType(fileName));
         PutObjectRequest request = new PutObjectRequest(bucket, fileName, inputStream, metadata);
         s3Service.putObject(request);
         var url = s3Service.getUrl(bucket, fileName).toString();
@@ -80,5 +81,19 @@ public class FireServiceImpl implements FileService {
         response.setFileName(file.getFileName());
         response.setFile(file.getFile());
         return response;
+    }
+
+
+    private String determineContentType(String filename) {
+        if (filename.endsWith(".pdf")) {
+            return "application/pdf";
+        } else if (filename.endsWith(".webp")) {
+            return "image/webp";
+        } else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (filename.endsWith(".png")) {
+            return "image/png";
+        } 
+        return "application/octet-stream";
     }
 }
