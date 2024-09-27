@@ -1,10 +1,8 @@
 package com.lovelyglam.userserver.controller;
 
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
-import com.lovelyglam.database.model.dto.response.NailServiceResponse;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 import com.lovelyglam.userserver.service.ShopNailService;
-import com.lovelyglam.userserver.service.ShopProfileService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

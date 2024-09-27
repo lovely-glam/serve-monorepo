@@ -16,11 +16,11 @@ public class AuthUtils {
     public UserAccount getUserAccountFromAuthentication() {
         try {
             var auth = SecurityContextHolder.getContext().getAuthentication();
-            if(auth == null) throw new AuthFailedException("");
+            if(auth == null) throw new AuthFailedException("This user is't authentication, please login again");
             String username = auth.getName();
             return userAccountRepository.findUserAccountByUsername(username).orElseThrow();
         } catch (Exception ex) {
-            throw new AuthFailedException("");
+            throw new AuthFailedException("This user is't authentication, please login again");
         }
     }
 }

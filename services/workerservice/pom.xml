@@ -25,6 +25,11 @@
             <artifactId>filecloud</artifactId>
             <version>0.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.lovelyglam</groupId>
+            <artifactId>utils</artifactId>
+            <version>0.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

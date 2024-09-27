@@ -16,18 +16,19 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.lovelyglam.filecloud.model.FileObject;
 import com.lovelyglam.filecloud.model.FileObjectResponse;
+import com.lovelyglam.filecloud.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class FireServiceImpl {
-    private AmazonS3 s3Service;
+public class FireServiceImpl implements FileService {
+    private final AmazonS3 s3Service;
     @Value("${aws.s3.bucket}")
     private String bucket;
 
     public FileObjectResponse uploadFile(FileObject file) {
-        var fileName = String.format("%s.%s", file.getFileName(), file.getExtension());
+        var fileName = file.getFileName();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getFile());
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getFile().length);
@@ -38,7 +39,7 @@ public class FireServiceImpl {
     }
 
     public FileObjectResponse downloadFile(FileObject file) {
-        var fileName = String.format("%s.%s", file.getFileName(), file.getExtension());
+        var fileName = file.getFileName();
         try {
             S3Object s3Object = s3Service.getObject(bucket, fileName);
             InputStream stream = s3Object.getObjectContent();
@@ -51,7 +52,6 @@ public class FireServiceImpl {
             var response = new FileObjectResponse();
             response.setUrl(s3Service.getUrl(bucket, file.getFileName()).toString());
             response.setFileName(file.getFileName());
-            response.setExtension(file.getExtension());
             response.setFile(outputStream.toByteArray());
             return response;
         } catch (AmazonS3Exception e) {
@@ -78,7 +78,6 @@ public class FireServiceImpl {
         var response = new FileObjectResponse();
         response.setUrl(url);
         response.setFileName(file.getFileName());
-        response.setExtension(file.getExtension());
         response.setFile(file.getFile());
         return response;
     }
