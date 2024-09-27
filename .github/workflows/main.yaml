@@ -11,7 +11,7 @@ jobs:
     name: glam-infisical-login
     runs-on: arisa-server
     outputs:
-      infisical_token: ${{steps.infisical-login.outputs.infisical_token}}
+      infisical_token: ${{steps.infisical-login.outputs.infisical_arisa_token}}
     steps:
       - name: Infisical Login
         id: infisical-login
@@ -22,10 +22,7 @@ jobs:
             echo "Error: Received empty token." >&2
             exit 1
           fi
-          echo "infisical_token=${INFISICAL_TOKEN}" >> "$GITHUB_OUTPUT"
-      - name: Debug Output
-        run: |
-          echo "Infisical Token: ${{ steps.infisical-login.outputs.infisical_token }}"
+          echo "infisical_arisa_token=${INFISICAL_TOKEN}" >> "$GITHUB_OUTPUT"
   glam-deploy-serve-cd:
     name: glam-deploy-serve-cd
     needs: [glam-infisical-login]
