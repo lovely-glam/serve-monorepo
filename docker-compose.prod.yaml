@@ -20,6 +20,16 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
       SWAGGER_URL: ${SWAGGER_URL}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PORT: ${MAIL_PORT}
+      OTP_TIMEOUT: ${OTP_TIMEOUT}
+      OTP_MAXSIZE: ${OTP_MAXSIZE}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+
+
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -44,6 +54,10 @@ services:
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
       SWAGGER_URL: ${SWAGGER_URL}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PORT: ${MAIL_PORT}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -68,6 +82,8 @@ services:
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
       SWAGGER_URL: ${SWAGGER_URL}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -116,6 +132,12 @@ services:
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
       SWAGGER_URL: ${SWAGGER_URL}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PORT: ${MAIL_PORT}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -138,6 +160,12 @@ services:
       ACCESS_TOKEN_KEY: ${ACCESS_TOKEN_KEY}
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PORT: ${MAIL_PORT}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:
@@ -146,6 +174,7 @@ services:
   nailserver:
     container_name: glam_nail_server
     image: ${DOCKER_USER}/nailserver:latest
+    restart: always
     environment:
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
@@ -160,6 +189,14 @@ services:
       REFRESH_TOKEN_EXT: ${REFRESH_TOKEN_EXT}
       REFRESH_TOKEN_KEY: ${REFRESH_TOKEN_KEY}
       SWAGGER_URL: ${SWAGGER_URL}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PORT: ${MAIL_PORT}
+      OTP_TIMEOUT: ${OTP_TIMEOUT}
+      OTP_MAXSIZE: ${OTP_MAXSIZE}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
     ports:
       - ${DEPLOY_PORT}:${PORT}
     networks:

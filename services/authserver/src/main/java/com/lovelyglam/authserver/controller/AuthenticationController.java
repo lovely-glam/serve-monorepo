@@ -22,9 +22,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthService authService;
-    @PostMapping("local")
+    @PostMapping("customer/local")
     public ResponseEntity<ResponseObject> localAuthentication(@RequestBody LocalAuthenticationRequest localAuthenticationRequest) {
         var result = authService.localAuthentication(localAuthenticationRequest);
+        return ResponseEntity.ok(ResponseObject.builder()
+        .code("AUTH_SUCCESS")
+        .content(result)
+        .message("Login Success")
+        .isSuccess(true)
+        .requestTime(LocalDateTime.now())
+        .build());
+    }
+
+    @PostMapping("nailer")
+    public ResponseEntity<ResponseObject> businessAuthentication(@RequestBody LocalAuthenticationRequest localAuthenticationRequest) {
+        var result = authService.businessAuthentication(localAuthenticationRequest);
         return ResponseEntity.ok(ResponseObject.builder()
         .code("AUTH_SUCCESS")
         .content(result)
