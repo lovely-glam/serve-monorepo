@@ -24,6 +24,10 @@ jobs:
             exit 1
           fi
           echo "infisical_token=${INFISICAL_TOKEN}" >> "$GITHUB_OUTPUT"
+      - name: Debug Output
+        run: |
+          echo "Infisical Token: ${{ steps.infisical-login.outputs.infisical_token }}"
+        
 
       
 
