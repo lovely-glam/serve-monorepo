@@ -31,7 +31,18 @@ public class AuthServiceImpl implements AuthService {
     
     @Override
     public AuthenticationResponse localAuthentication (LocalAuthenticationRequest request) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(String.format("customer_%s", request.getUsername()), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = jwtService.generateAccessToken(authentication);
+        String refreshToken = jwtService.generateRefreshToken(authentication);
+        return AuthenticationResponse.builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshToken).build();
+    }
+
+    @Override
+    public AuthenticationResponse businessAuthentication (LocalAuthenticationRequest request) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(String.format("nail_%s", request.getUsername()), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtService.generateAccessToken(authentication);
         String refreshToken = jwtService.generateRefreshToken(authentication);
@@ -48,8 +59,8 @@ public class AuthServiceImpl implements AuthService {
             BigDecimal userID = (BigDecimal) user.getAttribute("userId");
             if (userID == null) throw new AuthFailedException("Not found this user");
             UserAccount userAccount = userAccountRepository.findById(userID).orElseThrow(() ->  new AuthFailedException("Not found this account"));
-            String accessToken = jwtService.generateToken(userAccount.getUsername(), TokenType.ACCESS_TOKEN);
-            String refreshToken = jwtService.generateToken(userAccount.getUsername(), TokenType.REFRESH_TOKEN);
+            String accessToken = jwtService.generateToken(userAccount.getUsername(), "ROLE_USER", TokenType.ACCESS_TOKEN);
+            String refreshToken = jwtService.generateToken(userAccount.getUsername(), "ROLE_USER", TokenType.REFRESH_TOKEN);
             return AuthenticationResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken).build();

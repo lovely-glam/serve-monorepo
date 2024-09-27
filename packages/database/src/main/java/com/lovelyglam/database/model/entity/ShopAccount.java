@@ -24,6 +24,6 @@ public class ShopAccount extends BaseEntity {
     private boolean isActive;
     @Column(name = "is_verified", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isVerified;
-    @OneToOne(targetEntity = ShopProfile.class, fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
+    @OneToOne(targetEntity = ShopProfile.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private ShopProfile shopProfile;
 }

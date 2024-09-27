@@ -13,8 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.lovelyglam.authserver.security.BusinessJwtAuthenticationFilter;
+import com.lovelyglam.authserver.security.CustomerJwtAuthenticationFilter;
 import com.lovelyglam.authserver.security.GlamAuthenticationEntryPoint;
-import com.lovelyglam.authserver.security.JwtAuthenticationFilter;
 import com.lovelyglam.authserver.service.impl.OAuthUserDetailService;
 import com.lovelyglam.utils.config.CorsConfig;
 
@@ -28,7 +29,8 @@ public class SecurityConfig {
     @Qualifier("glamAuthenticationEntryPoint")
     private final GlamAuthenticationEntryPoint glamAuthenticationEntryPoint;
     private final CorsConfig corsConfig;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomerJwtAuthenticationFilter customerJwtAuthenticationFilter;
+    private final BusinessJwtAuthenticationFilter businessJwtAuthenticationFilter;
     private final OAuthUserDetailService oAuthUserDetailService;
     @Bean
     @Order(1)
@@ -49,7 +51,8 @@ public class SecurityConfig {
                 oauth2Info.userService(oAuthUserDetailService);
             });
         });
-        http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> {
             logout.logoutUrl("/auth/logout");
             logout.logoutSuccessHandler((request, response, authorization) -> SecurityContextHolder.clearContext());
