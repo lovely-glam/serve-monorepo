@@ -1,6 +1,6 @@
 spring:
     application:
-      name: glam worker service
+      name: glam user server
     datasource:
         url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5432}/${DB_NAME}
         username: ${DB_USERNAME}
@@ -19,6 +19,9 @@ spring:
     sql:
         init:
             mode: always
+    
+    profiles:
+        active: ${PENV}
             
     servlet:
         multipart: 
@@ -29,3 +32,30 @@ server:
     servlet:
         context-path: /api/v1
     port: ${PORT}
+
+base-urls:
+    api: ${BASE_URL_API:null}
+    front-end: ${ORIGIN_ALLOWED:null}
+
+
+springdoc:
+    api-docs:
+        enabled: true
+        path: /api-docs
+    swagger-ui:
+        enabled: true
+        try-it-out-enabled: true
+        operations-sorter: method
+        tags-sorter: alpha
+        filter: true
+        path: /swagger-ui
+
+swagger-url: ${SWAGGER_URL:null}
+
+aws:
+    s3:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+        region: ${AWS_REGION}
+        endpoint: ${AWS_ENDPOINT}
+        bucket: ${BUCKET}

@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.lovelyglam.database.model.entity")
 @EnableJpaRepositories("com.lovelyglam.database.repository")
 @ComponentScan(basePackages = {
-    "com.lovelyglam.utils.config",
+    "com.lovelyglam.filecloud",
+    "com.lovelyglam.utils.config"
 })
 public class WorkerServiceConfig {
     
