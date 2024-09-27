@@ -26,6 +26,8 @@ spring:
             max-request-size: 10MB
     flyway:
         baselineOnMigrate: true
+    profiles:
+        active: ${PENV}
 
 server:
     servlet:

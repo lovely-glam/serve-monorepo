@@ -33,7 +33,7 @@ jobs:
   
   deploy-service:
     uses: ./.github/workflows/deploy.yaml
-    if: contains(inputs.service, inputs.change-service)
+    needs: ['build-image']
     with:
       server: arisa-server
       infisical-token: ${{inputs.infisical_token}}
