@@ -28,5 +28,5 @@ public class ShopService extends BaseEntity{
     @Column(name = "base_price")    
     private BigDecimal basePrice;
     @Column(name = "duration")
-    private Timestamp duration;
+    private Long duration;
 }
