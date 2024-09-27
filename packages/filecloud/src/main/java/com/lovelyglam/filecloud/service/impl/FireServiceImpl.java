@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FireServiceImpl {
     private AmazonS3 s3Service;
+    @Value("${aws.s3.bucket}")
     private String bucket;
 
     public FileObjectResponse uploadFile(FileObject file) {
