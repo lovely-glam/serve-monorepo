@@ -1,6 +1,8 @@
 package com.lovelyglam.database.model.dto.request;
 
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +11,6 @@ import lombok.Data;
 public class ShopDetailRequest {
     String name;
     String avatarUrl;
-    String thumbnails;
+    List<String> thumbnails;
     String address;
 }
