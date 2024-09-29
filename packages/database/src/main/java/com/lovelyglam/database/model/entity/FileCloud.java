@@ -2,8 +2,12 @@ package com.lovelyglam.database.model.entity;
 
 import java.time.LocalDateTime;
 
+import com.lovelyglam.database.model.constant.FileCloudStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +38,9 @@ public class FileCloud {
     private String fileCloudId;
     @Column(name = "is_removed", nullable = false)
     private boolean isRemoved;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private FileCloudStatus status;
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
     @Column(name = "updated_date", nullable = false)
