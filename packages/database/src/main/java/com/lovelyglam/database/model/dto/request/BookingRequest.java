@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 @Data
 public class BookingRequest {
     BigDecimal nailServiceId;
-    BigDecimal userAccountId;
     Timestamp makingDay;
     Timestamp startTime;
     AppointmentStatus status;

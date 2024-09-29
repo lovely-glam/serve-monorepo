@@ -9,18 +9,22 @@ import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.entity.Booking;
 import com.lovelyglam.database.model.entity.ShopService;
 import com.lovelyglam.database.model.exception.ActionFailedException;
+import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.database.repository.NailServiceRepository;
 import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.userserver.service.BookingService;
+import com.lovelyglam.userserver.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -29,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final NailServiceRepository nailServiceRepository;
     private final UserAccountRepository userAccountRepository;
-
+    private final AuthUtils authUtils;
 
     @Override
     public BookingResponse createBooking(BookingRequest bookingRequest) {
@@ -37,7 +41,7 @@ public class BookingServiceImpl implements BookingService {
                 .shopService(nailServiceRepository.getById(bookingRequest.getNailServiceId()))
                 .startTime(bookingRequest.getStartTime())
                 .appointmentStatus(bookingRequest.getStatus())
-                .userAccount(userAccountRepository.getById(bookingRequest.getUserAccountId()))
+                .userAccount(authUtils.getUserAccountFromAuthentication())
                 .startTime(bookingRequest.getStartTime())
                 .makingDay(bookingRequest.getMakingDay())
                 .appointmentStatus(AppointmentStatus.ACCEPTED)
@@ -148,6 +152,31 @@ public class BookingServiceImpl implements BookingService {
                     .build();
         } catch (Exception ex) {
             throw new ActionFailedException(String.format("Failed update booking with reason: %s", ex.getMessage()));
+        }
+    }
+
+    @Override
+    public PaginationResponse<BookingResponse> getBookingsByUserId(SearchRequestParamsDto request) {
+        var account = authUtils.getUserAccountFromAuthentication();
+        if (account == null) {
+            throw new AuthFailedException("No Account Login");
+        }
+
+        try {
+            Page<BookingResponse> orderPage = bookingRepository.searchByParameterAndUserAccountId(request.search(), request.pagination(),account.getId())
+                    .map(item -> BookingResponse.builder()
+                            .id(item.getId())
+                            .userAccountName(item.getUserAccount().getFullname())
+                            .shopServiceName(item.getShopService().getName())
+                            .startTime(item.getStartTime())
+                            .makingDay(item.getMakingDay())
+                            .status(item.getAppointmentStatus())
+                            .build());
+            return convert(orderPage);
+
+        } catch (Exception ex) {
+            throw new ActionFailedException(
+                    String.format("Get shop services failed with reason: %s", ex.getMessage()));
         }
     }
 }

@@ -42,6 +42,27 @@ public class BookingController {
                         .build()
         );
     }
+    @GetMapping("get-by-user")
+    public ResponseEntity<ResponseObject> getAllBookingsByUser(
+            @Schema
+            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            @RequestParam(name = "q", required = false) String query){
+        var searchQuery = SearchRequestParamsDto.builder()
+                .search(query)
+                .pageable(pageable)
+                .build();
+        var result = bookingService.getBookingsByUserId(searchQuery);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .code("GET_BOOKINGS_SUCCESS")
+                        .content(result)
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .message("Query Success")
+                        .build()
+        );
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getBookingDetail(@PathVariable(value = "id") BigDecimal id){
