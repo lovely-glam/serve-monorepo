@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.authserver.service.AuthService;
 import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
+import com.lovelyglam.database.model.dto.request.OAuth2AuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 
@@ -46,28 +46,15 @@ public class AuthenticationController {
         .build());
     }
 
-    @GetMapping("oauth2")
-    public ResponseEntity<ResponseObject> oauth2CallBack() {
-        var result = authService.oauthAuthentication();
+    @PostMapping("oauth2")
+    public ResponseEntity<ResponseObject> oauth2CallBack(@RequestBody OAuth2AuthenticationRequest request) {
+        var result = authService.oauthAuthentication(request);
         return ResponseEntity.ok(
             ResponseObject.builder()
             .code("OAUTH2_SUCCESS")
             .content(result)
             .message("OAuth2 Login Success")
             .isSuccess(true)
-            .requestTime(LocalDateTime.now())
-            .build()
-        );
-    }
-
-    @GetMapping("oauth2/failed")
-    public ResponseEntity<ResponseObject> oauth2CallbackFailedHandler() {
-        return ResponseEntity.ok(
-            ResponseObject.builder()
-            .code("OAUTH2_FAILED")
-            .content(null)
-            .message("OAuth2 Login Failed")
-            .isSuccess(false)
             .requestTime(LocalDateTime.now())
             .build()
         );
