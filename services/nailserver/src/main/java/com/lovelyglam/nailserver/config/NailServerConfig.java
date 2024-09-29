@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableJpaRepositories("com.lovelyglam.database.repository")
 @ComponentScan(basePackages = {
     "com.lovelyglam.utils.config",
+    "com.lovelyglam.utils.payment"
 })
 public class NailServerConfig {
 

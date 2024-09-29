@@ -1,9 +1,12 @@
 package com.lovelyglam.database.model.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 
@@ -29,4 +32,6 @@ public class ShopProfile extends BaseEntity {
     @OneToOne(targetEntity = ShopAccount.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_account_id")
     private ShopAccount account;
+    @OneToMany(targetEntity = ShopService.class, fetch = FetchType.EAGER, mappedBy = "shopProfile")
+    private List<ShopService> shopServices;
 }
