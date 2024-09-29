@@ -14,7 +14,6 @@ import com.lovelyglam.database.model.dto.request.OAuth2AuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 
@@ -47,7 +46,7 @@ public class AuthenticationController {
         .build());
     }
 
-    @GetMapping("oauth2")
+    @PostMapping("oauth2")
     public ResponseEntity<ResponseObject> oauth2CallBack(@RequestBody OAuth2AuthenticationRequest request) {
         var result = authService.oauthAuthentication(request);
         return ResponseEntity.ok(
