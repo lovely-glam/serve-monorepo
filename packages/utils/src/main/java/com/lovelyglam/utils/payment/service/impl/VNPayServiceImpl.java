@@ -1,6 +1,7 @@
 package com.lovelyglam.utils.payment.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class VNPayServiceImpl implements VNPayService {
     private final VNPayConfig vnPayConfig;
     private final VNPayUtils utils;
+    
     public String createOrder(int totalAmount, String orderInfo, String returnUrl, HttpServletRequest request) {
         String vnpTxnRef = utils.getRandomNumber(8);
         String vnpIpAddr = utils.getIpAddress(request); // Adjust based on actual usage
