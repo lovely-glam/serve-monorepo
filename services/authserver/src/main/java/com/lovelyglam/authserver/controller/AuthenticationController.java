@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.authserver.service.AuthService;
 import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
+import com.lovelyglam.database.model.dto.request.OAuth2AuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("oauth2")
-    public ResponseEntity<ResponseObject> oauth2CallBack() {
-        var result = authService.oauthAuthentication();
+    public ResponseEntity<ResponseObject> oauth2CallBack(@RequestBody OAuth2AuthenticationRequest request) {
+        var result = authService.oauthAuthentication(request);
         return ResponseEntity.ok(
             ResponseObject.builder()
             .code("OAUTH2_SUCCESS")

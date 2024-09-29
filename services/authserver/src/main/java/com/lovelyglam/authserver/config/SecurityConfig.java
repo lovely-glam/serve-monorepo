@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.lovelyglam.authserver.security.BusinessJwtAuthenticationFilter;
 import com.lovelyglam.authserver.security.CustomerJwtAuthenticationFilter;
 import com.lovelyglam.authserver.security.GlamAuthenticationEntryPoint;
-import com.lovelyglam.authserver.service.impl.OAuthUserDetailService;
 import com.lovelyglam.utils.config.CorsConfig;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,6 @@ public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final CustomerJwtAuthenticationFilter customerJwtAuthenticationFilter;
     private final BusinessJwtAuthenticationFilter businessJwtAuthenticationFilter;
-    private final OAuthUserDetailService oAuthUserDetailService;
     @Bean
     @Order(1)
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
@@ -42,15 +40,8 @@ public class SecurityConfig {
                 .exceptionHandling((exceptionHandling) -> {
                     exceptionHandling.authenticationEntryPoint(glamAuthenticationEntryPoint);
                 })
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
-        http.oauth2Login((oauth2) -> {
-            oauth2.defaultSuccessUrl("/auth/oauth2", true);
-            oauth2.failureUrl("/auth/oauth2/failed");
-            oauth2.userInfoEndpoint((oauth2Info) -> {
-                oauth2Info.userService(oAuthUserDetailService);
-            });
-        });
         http.addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> {
