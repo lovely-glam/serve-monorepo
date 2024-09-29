@@ -94,4 +94,12 @@ public class VNPayUtils {
         }
         return sb.toString();
     }
+
+    public String generateCallbackUrl(HttpServletRequest request, String uri) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        return serverPort == 80 || serverPort == 443 
+        ? scheme + "://" + serverName + uri : scheme + "://" + serverName + ":" + serverPort + uri;
+    }
 }
