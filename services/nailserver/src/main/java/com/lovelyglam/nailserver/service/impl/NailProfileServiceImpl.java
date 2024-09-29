@@ -3,6 +3,7 @@ package com.lovelyglam.nailserver.service.impl;
 import java.util.Collections;
 import java.util.List;
 
+import com.lovelyglam.utils.general.TextUtils;
 import org.springframework.stereotype.Service;
 
 import com.lovelyglam.database.model.dto.request.ShopDetailRequest;
@@ -33,7 +34,7 @@ public class NailProfileServiceImpl implements NailProfileService {
         .name(shopProfile.getName())
         .avatarUrl(shopProfile.getAvatarUrl())
         .address(shopProfile.getAddress())
-        .thumbnails(UrlUtils.convertUrlStringToList(shopProfile.getThumbnails(), ",").stream().toList())
+        .thumbnails(TextUtils.extractValidUrls(shopProfile.getThumbnails()))
         .phone(shopProfile.getPhone())
         .nailServices(convertShopServiceToNailServiceResponse(shopProfile.getShopServices()))
         .build();
