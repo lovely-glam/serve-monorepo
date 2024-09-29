@@ -1,6 +1,8 @@
 package com.lovelyglam.utils.general;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TextUtils {
@@ -67,4 +69,21 @@ public class TextUtils {
         }
         return camelCaseParameters;
     }
+    public static boolean isValidUrl(String url) {
+        return url != null && (url.startsWith("http://") || url.startsWith("https://"));
+    }
+
+    public static List<String> extractValidUrls(String urlString) {
+        String[] urlsArray = urlString.split(",");
+        List<String> validUrls = new ArrayList<>();
+
+        for (String url : urlsArray) {
+            String trimmedUrl = url.trim();
+            if (isValidUrl(trimmedUrl)) {
+                validUrls.add(trimmedUrl);
+            }
+        }
+        return validUrls;
+    }
+
 }
