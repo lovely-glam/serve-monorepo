@@ -1,13 +1,17 @@
 package com.lovelyglam.utils.payment.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.springframework.stereotype.Service;
 import com.lovelyglam.utils.payment.config.VNPayConfig;
+import com.lovelyglam.utils.payment.model.VNPayApiCallback;
 import com.lovelyglam.utils.payment.service.VNPayService;
 import com.lovelyglam.utils.payment.util.VNPayUtils;
 
@@ -20,12 +24,11 @@ public class VNPayServiceImpl implements VNPayService {
     private final VNPayConfig vnPayConfig;
     private final VNPayUtils utils;
     
-    public String createOrder(int totalAmount, String orderInfo, String returnUrl, HttpServletRequest request) {
+    public String createOrder(int totalAmount, String orderInfo, String returnUri, HttpServletRequest request) {
         String vnpTxnRef = utils.getRandomNumber(8);
-        String vnpIpAddr = utils.getIpAddress(request); // Adjust based on actual usage
+        String vnpIpAddr = utils.getIpAddress(request);
         String vnpTmnCode = vnPayConfig.getVnpTmnCode();
         String orderType = "order-type";
-
         Map<String, String> vnpParams = new HashMap<>();
         vnpParams.put("vnp_Version", "2.1.0");
         vnpParams.put("vnp_Command", "pay");
@@ -36,7 +39,7 @@ public class VNPayServiceImpl implements VNPayService {
         vnpParams.put("vnp_OrderInfo", orderInfo);
         vnpParams.put("vnp_OrderType", orderType);
         vnpParams.put("vnp_Locale", "vn");
-        vnpParams.put("vnp_ReturnUrl", returnUrl + vnPayConfig.getVnpReturnUrl());
+        vnpParams.put("vnp_ReturnUrl", utils.generateCallbackUrl(request, returnUri));
         vnpParams.put("vnp_IpAddr", vnpIpAddr);
         addTimestamp(vnpParams);
 
@@ -94,5 +97,23 @@ public class VNPayServiceImpl implements VNPayService {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public VNPayApiCallback convertVNPayCallbackInfo(HttpServletRequest request) {
+        int paymentStatus = orderReturn(request);
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        String paymentTime = request.getParameter("vnp_PayDate");
+        String transactionId = request.getParameter("vnp_TransactionNo");
+        String totalPrice = request.getParameter("vnp_Amount");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime dateTime = LocalDateTime.parse(paymentTime, formatter);
+        return VNPayApiCallback.builder()
+        .paymentStatus(paymentStatus == 1)
+        .paymentTime(dateTime)
+        .totalPrice(new BigDecimal(totalPrice))
+        .orderId(orderInfo)
+        .transactionId(transactionId)
+        .build();
     }
 }
