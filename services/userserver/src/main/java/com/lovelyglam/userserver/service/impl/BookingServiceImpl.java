@@ -44,7 +44,7 @@ public class BookingServiceImpl implements BookingService {
                 .userAccount(authUtils.getUserAccountFromAuthentication())
                 .startTime(bookingRequest.getStartTime())
                 .makingDay(bookingRequest.getMakingDay())
-                .appointmentStatus(AppointmentStatus.ACCEPTED)
+                .appointmentStatus(AppointmentStatus.BOOKED)
                 .build();
         try {
             var item = bookingRepository.save(booking);
