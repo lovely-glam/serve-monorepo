@@ -7,9 +7,11 @@ import com.lovelyglam.database.model.entity.ShopService;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.NailServiceRepository;
+import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.userserver.service.ShopNailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ShopNailServiceImpl implements ShopNailService {
     private final NailServiceRepository nailShopRepository;
-
+    private final ShopRepository shopRepository;
     @Override
     public PaginationResponse<NailServiceResponse> getShopNailServices(SearchRequestParamsDto request) {
         try {
@@ -55,7 +57,7 @@ public class ShopNailServiceImpl implements ShopNailService {
     @Override
     public NailServiceResponse getShopNailServiceById(BigDecimal id) {
         ShopService shopService = nailShopRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Not found category with id: %s", id.toString())));
+                .orElseThrow(() -> new NotFoundException(String.format("Not found nail service with id: %s", id.toString())));
         try{
             var item = nailShopRepository.save(shopService);
             return NailServiceResponse.builder()
@@ -74,10 +76,10 @@ public class ShopNailServiceImpl implements ShopNailService {
     @Override
     public PaginationResponse<NailServiceResponse> getShopNailServicesByShopId(BigDecimal shopId, SearchRequestParamsDto request) {
         try {
+            var shop = shopRepository.findById(shopId)
+                    .orElseThrow(() -> new NotFoundException(String.format("Not found Shop with id: %s", shopId.toString())));
 
-            Map<String, String> params = new HashMap<>();
-            params.put("shopId", String.valueOf(shopId));
-            Page<NailServiceResponse> orderPage = nailShopRepository.searchAnyByParameter(request.search(), request.pagination())
+            Page<NailServiceResponse> orderPage = nailShopRepository.searchByParameterAndShopId(request.search(), request.pagination(), shopId)
                     .map(item -> NailServiceResponse.builder()
                             .id(item.getId())
                             .name(item.getName())
@@ -92,4 +94,10 @@ public class ShopNailServiceImpl implements ShopNailService {
                     String.format("Get shop services failed with reason: %s", ex.getMessage()));
         }
     }
+
+
+
+
+
+
 }

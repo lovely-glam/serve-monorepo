@@ -13,6 +13,6 @@ public class NailServiceRequest {
     String name;
     String description;
     BigDecimal basePrice;
-    Timestamp duration;
+    Long duration;
     int maxSlot;
 }

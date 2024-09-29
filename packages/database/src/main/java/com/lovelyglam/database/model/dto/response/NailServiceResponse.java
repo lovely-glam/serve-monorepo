@@ -13,5 +13,5 @@ public class NailServiceResponse {
     String name;
     String description;
     BigDecimal basePrice;
-    Timestamp duration;
+    Long duration;
 }
