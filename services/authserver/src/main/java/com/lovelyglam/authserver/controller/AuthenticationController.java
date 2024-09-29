@@ -60,19 +60,6 @@ public class AuthenticationController {
             .build()
         );
     }
-
-    @GetMapping("oauth2/failed")
-    public ResponseEntity<ResponseObject> oauth2CallbackFailedHandler() {
-        return ResponseEntity.ok(
-            ResponseObject.builder()
-            .code("OAUTH2_FAILED")
-            .content(null)
-            .message("OAuth2 Login Failed")
-            .isSuccess(false)
-            .requestTime(LocalDateTime.now())
-            .build()
-        );
-    }
     
     
 }
