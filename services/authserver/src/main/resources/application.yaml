@@ -77,3 +77,6 @@ mail:
 otp:
     timeout: ${OTP_TIMEOUT:10}
     max-size: ${OTP_MAXSIZE:99999}
+
+google:
+    clientId: ${GOOGLE_CLIENT_ID}

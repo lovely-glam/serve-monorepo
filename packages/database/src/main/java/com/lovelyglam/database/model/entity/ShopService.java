@@ -1,7 +1,7 @@
 package com.lovelyglam.database.model.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 
 @Getter
@@ -29,4 +30,6 @@ public class ShopService extends BaseEntity{
     private BigDecimal basePrice;
     @Column(name = "duration")
     private Long duration;
+    @OneToMany(targetEntity = Booking.class, fetch = FetchType.LAZY, mappedBy = "shopService")
+    private List<Booking> bookings;
 }
