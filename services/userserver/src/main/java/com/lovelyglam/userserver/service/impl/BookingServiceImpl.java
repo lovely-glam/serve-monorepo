@@ -4,28 +4,27 @@ import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.dto.request.BookingRequest;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.BookingResponse;
-import com.lovelyglam.database.model.dto.response.NailServiceResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.entity.Booking;
-import com.lovelyglam.database.model.entity.ShopService;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.database.repository.NailServiceRepository;
-import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.userserver.service.BookingService;
 import com.lovelyglam.userserver.util.AuthUtils;
+
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +36,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponse createBooking(BookingRequest bookingRequest) {
+        var nailService = nailServiceRepository.findById(bookingRequest.getNailServiceId())
+                .orElseThrow(() -> new NotFoundException("Not found nail service"));
         Booking booking = Booking.builder()
-                .shopService(nailServiceRepository.getById(bookingRequest.getNailServiceId()))
+                .shopService(nailService)
                 .startTime(bookingRequest.getStartTime())
                 .appointmentStatus(bookingRequest.getStatus())
                 .userAccount(authUtils.getUserAccountFromAuthentication())
@@ -65,7 +66,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public PaginationResponse<BookingResponse> getBookings(SearchRequestParamsDto request) {
         try {
-            Page<BookingResponse> orderPage = bookingRepository.searchAnyByParameter(request.search(), request.pagination())
+            Page<BookingResponse> orderPage = bookingRepository
+                    .searchAnyByParameter(request.search(), request.pagination())
                     .map(item -> BookingResponse.builder()
                             .id(item.getId())
                             .userAccountName(item.getUserAccount().getFullname())
@@ -75,7 +77,7 @@ public class BookingServiceImpl implements BookingService {
                             .status(item.getAppointmentStatus())
                             .build());
             return convert(orderPage);
-        } catch (Exception  ex) {
+        } catch (Exception ex) {
             throw new ActionFailedException(
                     String.format("Get NailServices failed with with reason: %s", ex.getMessage()));
         }
@@ -89,15 +91,15 @@ public class BookingServiceImpl implements BookingService {
                 (int) page.getTotalElements(),
                 page.getTotalPages(),
                 page.isFirst(),
-                page.isLast()
-        );
+                page.isLast());
     }
 
     @Override
     public BookingResponse getBooking(BigDecimal bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundException(String.format("Not found booking with id: %s", bookingId.toString())));
-        try{
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Not found booking with id: %s", bookingId.toString())));
+        try {
             var item = bookingRepository.save(booking);
             return BookingResponse.builder()
                     .id(item.getId())
@@ -107,7 +109,7 @@ public class BookingServiceImpl implements BookingService {
                     .makingDay(item.getMakingDay())
                     .status(item.getAppointmentStatus())
                     .build();
-        } catch (Exception  ex) {
+        } catch (Exception ex) {
             throw new ActionFailedException(
                     String.format("Get Booking failed with with reason: %s", ex.getMessage()));
         }
@@ -163,8 +165,22 @@ public class BookingServiceImpl implements BookingService {
         }
 
         try {
-            Page<BookingResponse> orderPage = bookingRepository.searchByParameterAndUserAccountId(request.search(), request.pagination(),account.getId())
-                    .map(item -> BookingResponse.builder()
+            Page<BookingResponse> orderPage = bookingRepository
+                    .searchByParameter(request.search(), request.pagination(), (param) -> {
+                        return (root, query, criteriaBuilder) -> {
+                            List<Predicate> predicates = new ArrayList<>();
+                            if (param != null && !param.isEmpty()) {
+                                for (Map.Entry<String, String> item : param.entrySet()) {
+                                    predicates.add(criteriaBuilder.like(
+                                            criteriaBuilder.lower(root.get(item.getKey()).as(String.class)),
+                                            "%" + item.getValue().toLowerCase() + "%"));
+                                }
+                            }
+                            predicates.add(criteriaBuilder.equal(root.get("userAccount").get("id"), account.getId()));
+
+                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                        };
+                    }).map(item -> BookingResponse.builder()
                             .id(item.getId())
                             .userAccountName(item.getUserAccount().getFullname())
                             .shopServiceName(item.getShopService().getName())
