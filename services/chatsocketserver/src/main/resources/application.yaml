@@ -43,3 +43,15 @@ springdoc:
         path: /swagger-ui
 
 swagger-url: ${SWAGGER_URL:null}
+
+base-urls:
+    api: ${BASE_URL_API:null}
+    front-end: ${ORIGIN_ALLOWED:null}
+    
+access-token:
+    max-age: ${ACCESS_TOKEN_EXT:86400000}
+    secret-key: ${ACCESS_TOKEN_KEY}
+
+refresh-token:
+    max-age: ${REFRESH_TOKEN_EXT:315360000}
+    secret-key: ${REFRESH_TOKEN_KEY}
