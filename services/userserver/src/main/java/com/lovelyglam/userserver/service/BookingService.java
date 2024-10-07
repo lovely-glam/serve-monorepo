@@ -14,4 +14,6 @@ public interface BookingService {
     BookingResponse updateBooking(BigDecimal bookingId, BookingRequest bookingRequest);
     BookingResponse disableBooking(BigDecimal bookingId);
     public PaginationResponse<BookingResponse> getBookingsByUserId(SearchRequestParamsDto request);
+    BookingResponse acceptBooking(BigDecimal bookingId);
+
 }
