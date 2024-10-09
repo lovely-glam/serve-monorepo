@@ -4,7 +4,6 @@ import com.lovelyglam.database.model.dto.request.BookingRequest;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 import com.lovelyglam.userserver.service.BookingService;
-import com.lovelyglam.userserver.service.ShopNailService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
