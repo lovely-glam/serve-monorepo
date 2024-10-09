@@ -1,5 +1,8 @@
 package com.lovelyglam.authserver.controller;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +36,14 @@ public class RegisterController {
             .code("CUSTOMER_REGISTER_SUCCESS")
             .content(result)
             .isSuccess(true)
+            .status(HttpStatus.OK)
+            .requestTime(LocalDateTime.now())
             .message("Customer Register Successfully")
         .build());
     }
 
     @PostMapping(path = "business")
+    @Transactional(rollbackFor = {MailAuthenticationException.class})
     public ResponseEntity<ResponseObject> businessRegister(@RequestBody BusinessRegisterRequest registerRequest) {
         var result = businessService.registerCustomerAccount(registerRequest);
         otpService.generateOTPCode(result.email(), result.username());
@@ -46,6 +52,8 @@ public class RegisterController {
             .code("BUSINESS_REGISTER_SUCCESS")
             .content(result)
             .isSuccess(true)
+            .status(HttpStatus.OK)
+            .requestTime(LocalDateTime.now())
             .message("Business Register Successfully")
             .build()
         );

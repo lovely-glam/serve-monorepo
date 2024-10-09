@@ -36,6 +36,10 @@ public class BusinessServiceImpl implements BusinessService {
             .address(request.getAddress())
             .avatarUrl(request.getAvatarUrl())
             .description(request.getDescription())
+            .ownerFirstName(request.getOwnerFirstName())
+            .ownerLastName(request.getOwnerLastName())
+            .ownerPersonalIdentity(request.getOwnerPersonalIdentity())
+            .businessCode(request.getBusinessCode())
             .thumbnails(UrlUtils.convertUrlListToString(request.getThumpNails(), ","))
             .account(user)
             .build();

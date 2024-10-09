@@ -12,9 +12,9 @@ public class ShopServiceFeedbackId implements Serializable {
     @ManyToOne(targetEntity = ShopService.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_service_id", nullable = false)
     private ShopService shopService;
-    @ManyToOne(targetEntity = ServiceBooking.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Booking.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "service_booking_id", nullable = false)
-    private ServiceBooking serviceBooking;
+    private Booking serviceBooking;
     @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;

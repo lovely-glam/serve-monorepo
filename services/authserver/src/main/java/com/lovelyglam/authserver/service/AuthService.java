@@ -8,4 +8,5 @@ public interface AuthService {
     AuthenticationResponse localAuthentication (LocalAuthenticationRequest request);
     AuthenticationResponse oauthAuthentication (OAuth2AuthenticationRequest request);
     AuthenticationResponse businessAuthentication (LocalAuthenticationRequest request);
+    AuthenticationResponse systemAuthenticationResponse (LocalAuthenticationRequest request);
 }
