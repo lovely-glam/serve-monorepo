@@ -12,6 +12,7 @@ public class VNPayApiCallback {
     private String orderId;
     private BigDecimal totalPrice;
     private LocalDateTime paymentTime;
+    private String orderInfo;
     private String transactionId;
     private Boolean paymentStatus;
 }

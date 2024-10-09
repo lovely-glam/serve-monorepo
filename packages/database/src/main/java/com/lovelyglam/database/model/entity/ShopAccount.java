@@ -5,7 +5,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -26,4 +30,6 @@ public class ShopAccount extends BaseEntity {
     private boolean isVerified;
     @OneToOne(targetEntity = ShopProfile.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private ShopProfile shopProfile;
+    @OneToOne(targetEntity = SubscriptionPlan.class, fetch = FetchType.EAGER, mappedBy = "shopAccount")
+    private SubscriptionPlan subscriptionPlans;
 }

@@ -1,5 +1,11 @@
 package com.lovelyglam.userserver.service.impl;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.dto.response.ShopProfileResponse;
@@ -9,12 +15,8 @@ import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.userserver.service.ShopProfileService;
 import com.lovelyglam.utils.general.TextUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
