@@ -1,5 +1,14 @@
 package com.lovelyglam.userserver.service.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.dto.request.BookingRequest;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
@@ -17,14 +26,6 @@ import com.lovelyglam.userserver.util.AuthUtils;
 
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

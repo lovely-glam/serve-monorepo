@@ -2,15 +2,24 @@ package com.lovelyglam.utils.payment.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
 import org.springframework.stereotype.Service;
+
 import com.lovelyglam.utils.payment.config.VNPayConfig;
+import com.lovelyglam.utils.payment.model.PaymentAPIRequest;
 import com.lovelyglam.utils.payment.model.VNPayApiCallback;
 import com.lovelyglam.utils.payment.service.VNPayService;
 import com.lovelyglam.utils.payment.util.VNPayUtils;
@@ -46,6 +55,10 @@ public class VNPayServiceImpl implements VNPayService {
         String queryUrl = buildQueryUrl(vnpParams);
         String vnpSecureHash = utils.hmacSHA512(vnPayConfig.getVnpHashSecret(), queryUrl);
         return vnPayConfig.getVnpPayUrl() + "?" + queryUrl + "&vnp_SecureHash=" + vnpSecureHash;
+    }
+
+    public String createOrder(PaymentAPIRequest paymentRequest, HttpServletRequest request) {
+        return createOrder(paymentRequest.getTotalAmount(), paymentRequest.getOrderInfo(), paymentRequest.getMerchantCallBackUrl(), request);
     }
 
     private void addTimestamp(Map<String, String> params) {
@@ -106,13 +119,15 @@ public class VNPayServiceImpl implements VNPayService {
         String paymentTime = request.getParameter("vnp_PayDate");
         String transactionId = request.getParameter("vnp_TransactionNo");
         String totalPrice = request.getParameter("vnp_Amount");
+        String orderId = request.getParameter("vnp_TxnRef");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime dateTime = LocalDateTime.parse(paymentTime, formatter);
         return VNPayApiCallback.builder()
         .paymentStatus(paymentStatus == 1)
         .paymentTime(dateTime)
         .totalPrice(new BigDecimal(totalPrice))
-        .orderId(orderInfo)
+        .orderId(orderId)
+        .orderInfo(orderInfo)
         .transactionId(transactionId)
         .build();
     }
