@@ -32,7 +32,6 @@ public class SubscriptionPlan extends BaseEntity {
     @Column(name = "role")
     private SubscriptionRole role;
     @OneToMany(targetEntity = SubscriptionPayment.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, mappedBy = "subscriptionPlan")
-    @JoinColumn(name = "payment_id")
     private List<SubscriptionPayment> payments;
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

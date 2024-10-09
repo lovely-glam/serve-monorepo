@@ -1,20 +1,25 @@
 package com.lovelyglam.nailserver.controller;
 
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.database.model.dto.request.SubscriptionOrderRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 import com.lovelyglam.nailserver.service.SubscriptionPlanService;
 import com.lovelyglam.utils.payment.service.VNPayService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-
-import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +30,7 @@ public class SubscriptionController {
 
     @PostMapping("/subscription")
     public ResponseEntity<ResponseObject> submitOrder(
-        SubscriptionOrderRequest subscriptionOrderRequest,
+        @RequestBody SubscriptionOrderRequest subscriptionOrderRequest,
         HttpServletRequest request
         ) {
         String url = subscriptionPlanService.signSubscriptionPlan((paymentRequest) -> {
