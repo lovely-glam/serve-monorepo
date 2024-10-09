@@ -2,7 +2,6 @@ package com.lovelyglam.userserver.controller;
 
 import java.time.LocalDateTime;
 
-import com.lovelyglam.database.model.dto.request.BookingRequest;
 import com.lovelyglam.database.model.dto.request.UserAccountRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

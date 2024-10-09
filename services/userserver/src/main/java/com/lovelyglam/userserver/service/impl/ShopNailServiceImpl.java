@@ -11,13 +11,9 @@ import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.userserver.service.ShopNailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @Service
 @RequiredArgsConstructor

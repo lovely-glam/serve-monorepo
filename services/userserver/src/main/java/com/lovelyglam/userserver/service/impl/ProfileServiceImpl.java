@@ -1,10 +1,6 @@
 package com.lovelyglam.userserver.service.impl;
 
-import com.lovelyglam.database.model.dto.request.CustomerRegisterRequest;
 import com.lovelyglam.database.model.dto.request.UserAccountRequest;
-import com.lovelyglam.database.model.dto.response.BookingResponse;
-import com.lovelyglam.database.model.entity.Booking;
-import com.lovelyglam.database.model.entity.SystemAccount;
 import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;

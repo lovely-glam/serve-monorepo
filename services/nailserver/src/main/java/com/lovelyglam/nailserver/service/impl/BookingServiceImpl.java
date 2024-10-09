@@ -10,9 +10,14 @@ import com.lovelyglam.database.repository.NailServiceRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.nailserver.service.BookingService;
 import com.lovelyglam.nailserver.utils.AuthUtils;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,16 +26,31 @@ public class BookingServiceImpl implements BookingService {
     private final NailServiceRepository nailServiceRepository;
     private final UserAccountRepository userAccountRepository;
     private final AuthUtils authUtils;
+
     @Override
-    public PaginationResponse<BookingResponse> getBookingsByShop(SearchRequestParamsDto request) {
+    public PaginationResponse<BookingResponse> getBookingsByShopId(SearchRequestParamsDto request) {
         var account = authUtils.getUserAccountFromAuthentication();
         if (account == null) {
             throw new AuthFailedException("No Account Login");
         }
 
         try {
-            Page<BookingResponse> orderPage = bookingRepository.searchByParameterAndShopId(request.search(), request.pagination(),account.getId())
-                    .map(item -> BookingResponse.builder()
+            Page<BookingResponse> orderPage = bookingRepository
+                    .searchByParameter(request.search(), request.pagination(), (param) -> {
+                        return (root, query, criteriaBuilder) -> {
+                            List<Predicate> predicates = new ArrayList<>();
+                            if (param != null && !param.isEmpty()) {
+                                for (Map.Entry<String, String> item : param.entrySet()) {
+                                    predicates.add(criteriaBuilder.like(
+                                            criteriaBuilder.lower(root.get(item.getKey()).as(String.class)),
+                                            "%" + item.getValue().toLowerCase() + "%"));
+                                }
+                            }
+                            predicates.add(criteriaBuilder.equal(root.get("shopService").get("shop_profile_id").get("id"), account.getId()));
+
+                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                        };
+                    }).map(item -> BookingResponse.builder()
                             .id(item.getId())
                             .userAccountName(item.getUserAccount().getFullname())
                             .shopServiceName(item.getShopService().getName())
@@ -45,6 +65,7 @@ public class BookingServiceImpl implements BookingService {
                     String.format("Get shop services failed with reason: %s", ex.getMessage()));
         }
     }
+
 
     @Override
     public PaginationResponse<BookingResponse> getBookingsByTime(SearchRequestParamsDto request) {
