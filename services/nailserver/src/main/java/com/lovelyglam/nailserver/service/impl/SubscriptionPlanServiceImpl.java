@@ -39,18 +39,16 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
         var subscription = userProfile.getSubscriptionPlans();
         if (subscription == null) {
             subscription = SubscriptionPlan.builder()
-                .exTime(LocalDateTime.now().plusMonths(1))
                 .role(request.getSubscriptionRole())
                 .shopAccount(userProfile)
                 .status(SubscriptionPlanStatus.PENDING)
             .build();
         }
         var currentTime = LocalDateTime.now();
-            if (subscription.getExTime().getMonth() == currentTime.getMonth() && subscription.getExTime().getYear() == currentTime.getYear()) {
+            if (subscription.getExTime() != null && currentTime.isAfter(subscription.getExTime().minusWeeks(1))) {
                 throw new ValidationFailedException("This subscription has been signed, please try again next month");
             }
             subscription.setStatus(SubscriptionPlanStatus.PENDING);
-            subscription.setExTime(LocalDateTime.now().plusMonths(1));
             try {
                 var paymentEntity = createPayment(request);
                 var subscriptionResult = subscriptionPlanRepository.save(subscription);
@@ -81,6 +79,8 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
             paymentRepository.save(entity);
             var subPlan = entity.getSubscriptionPlan();
             subPlan.setStatus(SubscriptionPlanStatus.ACTIVE);
+            subPlan.setStartTime(LocalDateTime.now());
+            subPlan.setExTime(LocalDateTime.now().plusMonths(1));
             subscriptionPlanRepository.save(subPlan);
             response.setCallbackUrl(entity.getCallbackUrl());
             response.setStatus(true);

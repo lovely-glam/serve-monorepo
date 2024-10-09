@@ -35,7 +35,7 @@ public class SubscriptionController {
         ) {
         String url = subscriptionPlanService.signSubscriptionPlan((paymentRequest) -> {
 
-            paymentRequest.setMerchantCallBackUrl("/api/v1/payments/subscription");
+            paymentRequest.setMerchantCallBackUrl("/api/v1/payments/vnpay-payment");
             paymentRequest.setCallBackUrl(subscriptionOrderRequest.getCallbackUrl());
             
             return vnPayService.createOrder(paymentRequest, request);

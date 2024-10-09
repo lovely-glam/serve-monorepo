@@ -13,8 +13,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,9 +36,11 @@ public class SubscriptionPlan extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private SubscriptionPlanStatus status;
+    @Column(name = "start_datetime")
+    private LocalDateTime startTime;
     @Column(name = "ex_datetime")
     private LocalDateTime exTime;
-    @ManyToOne(targetEntity = ShopAccount.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_account_id")
+    @OneToOne(targetEntity = ShopAccount.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_account_id", referencedColumnName = "id")
     private ShopAccount shopAccount;
 }

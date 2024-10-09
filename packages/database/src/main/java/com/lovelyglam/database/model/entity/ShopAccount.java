@@ -30,6 +30,6 @@ public class ShopAccount extends BaseEntity {
     private boolean isVerified;
     @OneToOne(targetEntity = ShopProfile.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private ShopProfile shopProfile;
-    @OneToOne(targetEntity = SubscriptionPlan.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = SubscriptionPlan.class, fetch = FetchType.EAGER, mappedBy = "shopAccount")
     private SubscriptionPlan subscriptionPlans;
 }

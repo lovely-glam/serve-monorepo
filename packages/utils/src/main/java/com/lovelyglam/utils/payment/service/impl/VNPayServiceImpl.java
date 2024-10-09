@@ -32,9 +32,9 @@ import lombok.RequiredArgsConstructor;
 public class VNPayServiceImpl implements VNPayService {
     private final VNPayConfig vnPayConfig;
     private final VNPayUtils utils;
-    
-    public String createOrder(int totalAmount, String orderInfo, String returnUri, HttpServletRequest request) {
-        String vnpTxnRef = utils.getRandomNumber(8);
+
+    public String createOrder(int totalAmount, String orderInfo, String returnUri, String orderId, HttpServletRequest request) {
+        String vnpTxnRef = orderId;
         String vnpIpAddr = utils.getIpAddress(request);
         String vnpTmnCode = vnPayConfig.getVnpTmnCode();
         String orderType = "order-type";
@@ -57,8 +57,14 @@ public class VNPayServiceImpl implements VNPayService {
         return vnPayConfig.getVnpPayUrl() + "?" + queryUrl + "&vnp_SecureHash=" + vnpSecureHash;
     }
 
+    
+    public String createOrder(int totalAmount, String orderInfo, String returnUri, HttpServletRequest request) {
+        String vnpTxnRef = utils.getRandomNumber(8);
+        return createOrder(totalAmount, orderInfo, returnUri, vnpTxnRef, request);
+    }
+
     public String createOrder(PaymentAPIRequest paymentRequest, HttpServletRequest request) {
-        return createOrder(paymentRequest.getTotalAmount(), paymentRequest.getOrderInfo(), paymentRequest.getMerchantCallBackUrl(), request);
+        return createOrder(paymentRequest.getTotalAmount(), paymentRequest.getOrderInfo(), paymentRequest.getMerchantCallBackUrl(), String.valueOf(paymentRequest.getOrderId()), request);
     }
 
     private void addTimestamp(Map<String, String> params) {
