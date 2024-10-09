@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
                                             "%" + item.getValue().toLowerCase() + "%"));
                                 }
                             }
-                            predicates.add(criteriaBuilder.equal(root.get("shopService").get("shop_profile_id").get("id"), account.getId()));
+                            predicates.add(criteriaBuilder.equal(root.get("shopService").get("shopProfile").get("id"), account.getId()));
 
                             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                         };
