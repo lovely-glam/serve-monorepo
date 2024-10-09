@@ -19,4 +19,6 @@ public interface BookingRepository extends BaseRepository<Booking, BigDecimal> {
         @Param(value = "id")BigDecimal id, 
         @Param(value = "statuses") List<AppointmentStatus> statuses
     );
+    @Query(value = "SELECT SUM(ss.basePrice) FROM bookings b INNER JOIN b.shopService ss INNER JOIN ss.shopProfile sp WHERE sp.id = :shopId")
+    BigDecimal calculateTotalProfitOfShop(@Param(value = "shopId")BigDecimal shopId);
 }

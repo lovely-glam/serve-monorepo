@@ -18,6 +18,13 @@ public class BusinessRegisterRequest {
     private String email;
     @NotBlank(message = "Name Must Not Be Empty")
     private String name;
+    private String ownerFirstName;
+    @NotBlank(message = "Owner Last Name Must Not Be Empty")
+    private String ownerLastName;
+    @NotBlank(message = "Personal Identity Must Not Be Empty")
+    private String ownerPersonalIdentity;
+    @NotBlank(message = "Business Code Must Not Be Empty")
+    private String businessCode;
     @NotBlank(message = "Shop Avatar Must Have")
     private String avatarUrl;
     @NotNull(message = "Need To Add thumpNail")

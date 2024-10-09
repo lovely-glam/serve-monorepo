@@ -19,6 +19,8 @@ import lombok.*;
 public class ShopProfile extends BaseEntity {
     @Column(name = "name", columnDefinition = "VARCHAR(128)")
     private String name;
+    @Column(name = "business_code", nullable = false, columnDefinition = "VARCHAR(128)")
+    private String businessCode;
     @Column(name = "avatar", columnDefinition = "VARCHAR(256)")
     private String avatarUrl;
     @Column(name = "thumbnails", columnDefinition = "VARCHAR(1028)")
@@ -29,6 +31,12 @@ public class ShopProfile extends BaseEntity {
     private String address;
     @Column(name = "phone", columnDefinition = "VARCHAR(12)")
     private String phone;
+    @Column(name = "owner_first_name", columnDefinition = "VARCHAR(64)", nullable = true)
+    private String ownerFirstName;
+    @Column(name = "owner_last_name", columnDefinition = "VARCHAR(64)", nullable = false)
+    private String ownerLastName;
+    @Column(name = "owner_personal_identity", columnDefinition = "VARCHAR(64)", nullable = false)
+    private String ownerPersonalIdentity;
     @OneToOne(targetEntity = ShopAccount.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_account_id")
     private ShopAccount account;
