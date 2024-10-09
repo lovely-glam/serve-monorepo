@@ -153,7 +153,7 @@ public class BookingServiceImpl implements BookingService {
                     .status(item.getAppointmentStatus())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed update booking with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed disable booking with reason: %s", ex.getMessage()));
         }
     }
 
@@ -193,6 +193,26 @@ public class BookingServiceImpl implements BookingService {
         } catch (Exception ex) {
             throw new ActionFailedException(
                     String.format("Get shop services failed with reason: %s", ex.getMessage()));
+        }
+    }
+
+    @Override
+    public BookingResponse acceptBooking(BigDecimal bookingId) {
+        Booking bookingDb = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException("Not Found Booking"));
+        bookingDb.setAppointmentStatus(AppointmentStatus.ACCEPTED);
+        try {
+            var item = bookingRepository.save(bookingDb);
+            return BookingResponse.builder()
+                    .id(item.getId())
+                    .userAccountName(item.getUserAccount().getFullname())
+                    .shopServiceName(item.getShopService().getName())
+                    .startTime(item.getStartTime())
+                    .makingDay(item.getMakingDay())
+                    .status(item.getAppointmentStatus())
+                    .build();
+        } catch (Exception ex) {
+            throw new ActionFailedException(String.format("Failed accept booking with reason: %s", ex.getMessage()));
         }
     }
 }
