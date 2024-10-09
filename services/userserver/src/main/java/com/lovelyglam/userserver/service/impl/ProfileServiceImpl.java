@@ -9,6 +9,7 @@ import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lovelyglam.database.model.dto.response.ProfileResponse;
@@ -26,6 +27,8 @@ import java.time.LocalDateTime;
 public class ProfileServiceImpl implements ProfileService {
     private final UserAccountRepository userAccountRepository;
     private final AuthUtils authUtils;
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public ProfileResponse getMe() {
         var userAccount = authUtils.getUserAccountFromAuthentication();
@@ -46,10 +49,6 @@ public class ProfileServiceImpl implements ProfileService {
                 .orElseThrow(() -> new NotFoundException("Not Found User Account"));
         userAccountDb.setEmail(userAccountRequest.getEmail());
         userAccountDb.setAvatarUrl(userAccountRequest.getAvatarUrl());
-        userAccountDb.setHashPassword(userAccountRequest.getPassword());
-        if (!userAccountDb.getHashPassword().equals(userAccountRequest.getRePassword())) {
-            throw new ActionFailedException("Password and Repassword do not match");
-        }
         try {
             var item = userAccountRepository.save(userAccountDb);
             return ProfileResponse.builder()
@@ -59,6 +58,29 @@ public class ProfileServiceImpl implements ProfileService {
                     .build();
         } catch (Exception ex) {
             throw new ActionFailedException(String.format("Failed update account with reason: %s", ex.getMessage()));
+        }
+    }
+
+    @Override
+    public ProfileResponse changePassword(String password, String rePassword) {
+        var userAccount = authUtils.getUserAccountFromAuthentication();
+        if (userAccount == null) {
+            throw new AuthFailedException("Action Require Login");
+        }
+        UserAccount userAccountDb = userAccountRepository.findById(userAccount.getId())
+                .orElseThrow(() -> new NotFoundException("Not Found User Account"));
+        if (!password.equals(rePassword))
+            throw new AuthFailedException("Password and RePassword are not matched");
+        userAccountDb.setHashPassword(passwordEncoder.encode(password));
+        try {
+            var item = userAccountRepository.save(userAccountDb);
+            return ProfileResponse.builder()
+                    .fullName(item.getFullname())
+                    .email(item.getEmail())
+                    .avatarUrl(item.getAvatarUrl())
+                    .build();
+        } catch (Exception ex) {
+            throw new ActionFailedException(String.format("Failed change account password with reason: %s", ex.getMessage()));
         }
     }
 }

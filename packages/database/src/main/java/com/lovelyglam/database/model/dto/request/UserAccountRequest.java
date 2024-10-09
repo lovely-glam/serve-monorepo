@@ -14,8 +14,4 @@ public class UserAccountRequest {
     private String fullName;
     @NotBlank(message = "Name must not be empty")
     private String avatarUrl;
-    @NotBlank(message = "Password must not be empty")
-    private String password;
-    @NotBlank(message = "Repassword must not be empty")
-    private String rePassword;
 }
