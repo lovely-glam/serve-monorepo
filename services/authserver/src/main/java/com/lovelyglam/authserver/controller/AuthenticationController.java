@@ -2,6 +2,7 @@ package com.lovelyglam.authserver.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,7 @@ public class AuthenticationController {
         .content(result)
         .message("Login Success")
         .isSuccess(true)
+        .status(HttpStatus.OK)
         .requestTime(LocalDateTime.now())
         .build());
     }
@@ -45,8 +47,23 @@ public class AuthenticationController {
         .content(result)
         .message("Login Success")
         .isSuccess(true)
+        .status(HttpStatus.OK)
         .requestTime(LocalDateTime.now())
         .build());
+    }
+
+    @PostMapping("system")
+    public ResponseEntity<ResponseObject> systemAuthentication(@RequestBody LocalAuthenticationRequest localAuthenticationRequest) {
+        var result = authService.systemAuthenticationResponse(localAuthenticationRequest);
+        return ResponseEntity.ok(ResponseObject.builder()
+        .code("AUTH_SUCCESS")
+        .content(result)
+        .message("Login Success")
+        .isSuccess(true)
+        .requestTime(LocalDateTime.now())
+        .status(HttpStatus.OK)
+        .build()
+        );
     }
 
     @PostMapping("oauth2")
@@ -58,6 +75,7 @@ public class AuthenticationController {
             .content(result)
             .message("OAuth2 Login Success")
             .isSuccess(true)
+            .status(HttpStatus.OK)
             .requestTime(LocalDateTime.now())
             .build()
         );
@@ -71,6 +89,7 @@ public class AuthenticationController {
             ResponseObject.builder()
             .code("OAUTH2_SUCCESS")
             .content(result)
+            .status(HttpStatus.OK)
             .message("OAuth2 Login Success")
             .isSuccess(true)
             .requestTime(LocalDateTime.now())

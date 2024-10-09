@@ -14,7 +14,6 @@ import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.repository.LoginMethodRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.generateRefreshToken(authentication);
         return AuthenticationResponse.builder()
             .accessToken(accessToken)
+            .role("CUSTOMER")
             .refreshToken(refreshToken).build();
     }
 
@@ -52,8 +52,22 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.generateRefreshToken(authentication);
         return AuthenticationResponse.builder()
             .accessToken(accessToken)
+            .role("BUSINESS")
             .refreshToken(refreshToken).build();
     }
+
+    @Override
+    public AuthenticationResponse systemAuthenticationResponse (LocalAuthenticationRequest request) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(String.format("system_%s", request.getUsername()), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = jwtService.generateAccessToken(authentication);
+        String refreshToken = jwtService.generateRefreshToken(authentication);
+        return AuthenticationResponse.builder()
+            .accessToken(accessToken)
+            .role("SYSTEM_ADMIN")
+            .refreshToken(refreshToken)
+        .build();
+    } 
 
     @Override
     public AuthenticationResponse oauthAuthentication (OAuth2AuthenticationRequest request) {
@@ -90,6 +104,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.generateToken(userAccount.getUsername(), "ROLE_USER", TokenType.REFRESH_TOKEN);
         return AuthenticationResponse.builder()
             .accessToken(accessToken)
+            .role("CUSTOMER")
             .refreshToken(refreshToken).build();
     }
 }
