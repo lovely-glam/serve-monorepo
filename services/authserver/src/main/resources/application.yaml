@@ -32,6 +32,16 @@ spring:
         redis:
             port: ${REDIS_PORT:6379}
             host: ${REDIS_HOST:localhost}
+    
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: ${GOOGLE_CLIENT_ID}
+                        client-secret: ${GOOGLE_CLIENT_SECRET}
+                        redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:${PORT}/api/v1/login/oauth2/code/google}
+                        scope: ['profile','email']
   
                          
 
@@ -77,6 +87,3 @@ mail:
 otp:
     timeout: ${OTP_TIMEOUT:10}
     max-size: ${OTP_MAXSIZE:99999}
-
-google:
-    clientId: ${GOOGLE_CLIENT_ID}
