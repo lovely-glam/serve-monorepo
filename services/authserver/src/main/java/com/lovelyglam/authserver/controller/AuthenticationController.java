@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.authserver.service.AuthService;
+import com.lovelyglam.authserver.service.OAuth2TokenVerifierService;
 import com.lovelyglam.database.model.dto.request.LocalAuthenticationRequest;
+import com.lovelyglam.database.model.dto.request.OAuth2AuthenticationRequest;
+import com.lovelyglam.database.model.dto.request.OAuthAuthenticationRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthService authService;
+    private final OAuth2TokenVerifierService oAuth2TokenVerifierService;
     @PostMapping("customer/local")
     public ResponseEntity<ResponseObject> localAuthentication(@RequestBody LocalAuthenticationRequest localAuthenticationRequest) {
         var result = authService.localAuthentication(localAuthenticationRequest);
@@ -46,9 +49,9 @@ public class AuthenticationController {
         .build());
     }
 
-    @GetMapping("oauth2")
-    public ResponseEntity<ResponseObject> oauth2CallBack() {
-        var result = authService.oauthAuthentication();
+    @PostMapping("oauth2")
+    public ResponseEntity<ResponseObject> oauth2Login(@RequestBody OAuth2AuthenticationRequest request) {
+        var result = authService.oauthAuthentication(request);
         return ResponseEntity.ok(
             ResponseObject.builder()
             .code("OAUTH2_SUCCESS")
@@ -60,14 +63,16 @@ public class AuthenticationController {
         );
     }
 
-    @GetMapping("oauth2/failed")
-    public ResponseEntity<ResponseObject> oauth2CallbackFailedHandler() {
+    @PostMapping("oauth2/callback")
+    public ResponseEntity<ResponseObject> oauth2CallBack(@RequestBody OAuthAuthenticationRequest request) {
+        var oauthInfoResult = oAuth2TokenVerifierService.verifyToken(request);
+        var result = authService.oauthAuthentication(oauthInfoResult);
         return ResponseEntity.ok(
             ResponseObject.builder()
-            .code("OAUTH2_FAILED")
-            .content(null)
-            .message("OAuth2 Login Failed")
-            .isSuccess(false)
+            .code("OAUTH2_SUCCESS")
+            .content(result)
+            .message("OAuth2 Login Success")
+            .isSuccess(true)
             .requestTime(LocalDateTime.now())
             .build()
         );

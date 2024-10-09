@@ -1,6 +1,8 @@
 package com.lovelyglam.authserver.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ public class RegisterController {
     private final BusinessService businessService;
     private final OTPService otpService;
     @PostMapping(path = "customer")
+    @Transactional(rollbackFor = {MailAuthenticationException.class})
     public ResponseEntity<ResponseObject> customerRegister(@RequestBody CustomerRegisterRequest request) {
         var result = customerAccountService.registerCustomerAccount(request);
         otpService.generateOTPCode(result.email(), result.username());
