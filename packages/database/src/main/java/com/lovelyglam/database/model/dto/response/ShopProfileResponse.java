@@ -17,4 +17,5 @@ public class ShopProfileResponse {
     String address;
     String phone;
     List<NailServiceResponse> nailServices;
+    Double vote;
 }

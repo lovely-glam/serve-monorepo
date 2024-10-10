@@ -37,6 +37,7 @@ public class ShopProfileServiceImpl implements ShopProfileService {
                             .avatarUrl(item.getAvatarUrl())
                             .thumbnails(TextUtils.extractValidUrls(item.getThumbnails()))
                             .address(item.getAddress())
+                            .vote(item.getVote())
                             .nailServices(convertShopServiceToNailServiceResponse(item.getShopServices()))
                             .build());
             return convert(orderPage);
@@ -73,6 +74,7 @@ public class ShopProfileServiceImpl implements ShopProfileService {
                     .avatarUrl(item.getAvatarUrl())
                     .thumbnails(TextUtils.extractValidUrls(item.getThumbnails()))
                     .address(item.getAddress())
+                    .vote(item.getVote())
                     .nailServices(convertShopServiceToNailServiceResponse(item.getShopServices()))
                     .build();
         } catch (Exception ex) {
