@@ -1,6 +1,7 @@
 package com.lovelyglam.database.model.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,4 +39,6 @@ public class Booking extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private AppointmentStatus appointmentStatus;
+    @OneToMany(targetEntity = BookingPayment.class, fetch = FetchType.EAGER, mappedBy = "booking")
+    private List<BookingPayment> bookingPayments;
 }

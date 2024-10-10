@@ -1,22 +1,19 @@
 package com.lovelyglam.userserver.service.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.lovelyglam.database.model.dto.request.UserAccountRequest;
+import com.lovelyglam.database.model.dto.response.ProfileResponse;
 import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.lovelyglam.database.model.dto.response.ProfileResponse;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.userserver.service.ProfileService;
 import com.lovelyglam.userserver.util.AuthUtils;
 
 import lombok.RequiredArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor

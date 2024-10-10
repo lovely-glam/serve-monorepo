@@ -10,4 +10,5 @@ public interface VNPayService {
     int orderReturn(HttpServletRequest request);
     VNPayApiCallback convertVNPayCallbackInfo(HttpServletRequest request);
     String createOrder(PaymentAPIRequest paymentRequest, HttpServletRequest request);
+    String createOrder(int totalAmount, String orderInfo, String returnUri, String orderId, HttpServletRequest request);
 }
