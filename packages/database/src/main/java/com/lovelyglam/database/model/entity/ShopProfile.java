@@ -31,7 +31,7 @@ public class ShopProfile extends BaseEntity {
     private String address;
     @Column(name = "phone", columnDefinition = "VARCHAR(12)")
     private String phone;
-    @Column(name = "vote", columnDefinition = "DECIMAL(10,1) DEFAULT 0.0", nullable = false)
+    @Column(name = "vote", columnDefinition = "NUMERIC(10,1) DEFAULT 0.0", nullable = false)
     private Double vote;
     @Column(name = "owner_first_name", columnDefinition = "VARCHAR(64)", nullable = true)
     private String ownerFirstName;
