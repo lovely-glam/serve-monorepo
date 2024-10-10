@@ -1,5 +1,6 @@
 package com.lovelyglam.database.model.dto.response;
 
+import com.lovelyglam.database.model.entity.ShopService;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,4 +16,5 @@ public class ShopProfileResponse {
     List<String> thumbnails;
     String address;
     String phone;
+    List<NailServiceResponse> nailServices;
 }
