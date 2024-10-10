@@ -1,5 +1,10 @@
 package com.lovelyglam.userserver.service.impl;
 
+import java.math.BigDecimal;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.NailServiceResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
@@ -9,11 +14,8 @@ import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.NailServiceRepository;
 import com.lovelyglam.database.repository.ShopRepository;
 import com.lovelyglam.userserver.service.ShopNailService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -90,10 +92,5 @@ public class ShopNailServiceImpl implements ShopNailService {
                     String.format("Get shop services failed with reason: %s", ex.getMessage()));
         }
     }
-
-
-
-
-
 
 }
