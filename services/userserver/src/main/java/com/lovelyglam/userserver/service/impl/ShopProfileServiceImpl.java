@@ -66,7 +66,6 @@ public class ShopProfileServiceImpl implements ShopProfileService {
         try {
             var item = shopRepository.save(shopProfile);
             List<String> urls = TextUtils.extractValidUrls(item.getThumbnails());
-            var rs1 = urls.get(1);
             return ShopProfileResponse.builder()
                     .id(item.getId())
                     .name(item.getName())
@@ -87,7 +86,6 @@ public class ShopProfileServiceImpl implements ShopProfileService {
         if (shopServices == null) return Collections.emptyList();
         return shopServices.stream().map((item) -> {
             return NailServiceResponse.builder()
-
                     .id(item.getId())
                     .basePrice(item.getBasePrice())
                     .name(item.getName())

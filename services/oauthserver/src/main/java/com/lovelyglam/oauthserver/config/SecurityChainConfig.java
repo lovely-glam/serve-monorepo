@@ -46,8 +46,8 @@ public class SecurityChainConfig {
 			throws Exception {
 		http
 		.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests((authorize) -> authorize
-				
+			.authorizeHttpRequests((authorize) -> 
+			authorize.requestMatchers("/pings/**", "/api-docs/**", "/swagger-ui/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			// Form login handles the redirect to the login page from the

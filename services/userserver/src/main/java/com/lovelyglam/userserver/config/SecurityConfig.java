@@ -32,7 +32,7 @@ public class SecurityConfig {
                 exceptionHandling.authenticationEntryPoint(glamAuthenticationEntryPoint);
             })
             .authorizeHttpRequests((auth) -> 
-                auth.requestMatchers("/auth/**", "/api-docs/**", "/swagger-ui/**", "/profiles/**", "/nail-services/**").permitAll().anyRequest().authenticated())
+                auth.requestMatchers("/auth/**", "/pings/**", "/api-docs/**", "/swagger-ui/**", "/profiles/**", "/nail-services/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
         http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
