@@ -15,9 +15,6 @@ import com.lovelyglam.userserver.util.AuthUtils;
 
 import lombok.RequiredArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
