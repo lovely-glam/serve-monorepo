@@ -48,7 +48,7 @@ public class SubscriptionController {
             .code("PAYMENT_RETURN")
             .message("Payment Service Return")
             .isSuccess(true)
-            .status(HttpStatus.FOUND)
+            .status(HttpStatus.OK)
             .content(response)
             .requestTime(LocalDateTime.now())
         .build()
@@ -60,7 +60,7 @@ public class SubscriptionController {
         var result = vnPayService.convertVNPayCallbackInfo(request);
         var returnResult = subscriptionPlanService.activeSubscription(result);
         return ResponseEntity.status(HttpStatus.FOUND)
-        .location(URI.create(returnResult.getCallbackUrl() + "/payments"))
+        .location(URI.create(returnResult.getCallbackUrl()))
         .body(ResponseObject.builder()
             .code("PAYMENT_RETURN")
             .message("Payment Service Return")

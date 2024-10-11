@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,8 @@ public interface SubscriptionPaymentRepository extends BaseRepository<Subscripti
     Collection<SubscriptionPayment> findByOwnerPaymentIdAndPaymentOwnerType(
             @Param(value = "status") PaymentStatus status,
             @Param(value = "date") LocalDateTime date);
+
+    @Modifying
+    @Query("UPDATE subscription_payments sp SET sp.paymentStatus = :newStatus WHERE sp.exTime < :now AND sp.paymentStatus = :oldStatus")
+    int updateExpiredPayments(LocalDateTime now, PaymentStatus newStatus, PaymentStatus oldStatus);
 }
