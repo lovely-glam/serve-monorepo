@@ -1,11 +1,10 @@
 package com.lovelyglam.database.model.dto.response;
 
-import com.lovelyglam.database.model.entity.ShopService;
-import lombok.Builder;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.util.List;
+
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
