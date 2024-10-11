@@ -53,3 +53,5 @@ springdoc:
 base-urls:
     api: ${BASE_URL_API:null}
     front-end: ${ORIGIN_ALLOWED:null}
+
+swagger-url: ${SWAGGER_URL:null}
