@@ -20,11 +20,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LocalUserDetailService implements UserDetailsService {
     private final UserAccountRepository userAccountRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccount userAccount = userAccountRepository.findUserAccountByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found username"));
-        return new User(userAccount.getUsername(),userAccount.getHashPassword(),rolesToAuthority(userAccount));
+        UserAccount userAccount = userAccountRepository.findUserAccountByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
+        return new User(userAccount.getUsername(),
+                userAccount.getHashPassword(),
+                userAccount.isActive(),
+                true,
+                true,
+                true,
+                rolesToAuthority(userAccount));
     }
+
     private Collection<GrantedAuthority> rolesToAuthority(UserAccount user) {
         var roleList = new ArrayList<GrantedAuthority>();
         roleList.add(new SimpleGrantedAuthority("ROLE_USER"));

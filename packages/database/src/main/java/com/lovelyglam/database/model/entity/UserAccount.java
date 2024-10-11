@@ -30,6 +30,8 @@ public class UserAccount extends BaseEntity{
     private String username;
     @Column(name = "hash_password", nullable = true, columnDefinition = "VARCHAR(128)")
     private String hashPassword;
+    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean isActive;
     @OneToMany(targetEntity = LoginMethod.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, mappedBy = "user")
     private List<LoginMethod> loginMethod;
 }

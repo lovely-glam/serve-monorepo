@@ -87,7 +87,6 @@ public class ShopProfileServiceImpl implements ShopProfileService {
         if (shopServices == null) return Collections.emptyList();
         return shopServices.stream().map((item) -> {
             return NailServiceResponse.builder()
-
                     .id(item.getId())
                     .basePrice(item.getBasePrice())
                     .name(item.getName())

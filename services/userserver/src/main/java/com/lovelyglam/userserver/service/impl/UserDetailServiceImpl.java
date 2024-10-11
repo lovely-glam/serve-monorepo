@@ -24,7 +24,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAccount userAccount = userAccountRepository.findUserAccountByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User account not found"));
-        return new User(userAccount.getUsername(),userAccount.getHashPassword(),rolesToAuthority(userAccount));
+        return new User(userAccount.getUsername(),userAccount.getHashPassword(),
+        userAccount.isActive(),
+        true,
+        true,
+        true,
+        rolesToAuthority(userAccount));
     }
     private Collection<GrantedAuthority> rolesToAuthority(UserAccount user) {
         var roleList = new ArrayList<GrantedAuthority>();
