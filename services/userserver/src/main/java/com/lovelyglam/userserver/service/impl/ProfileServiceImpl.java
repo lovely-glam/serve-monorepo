@@ -26,6 +26,8 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileResponse getMe() {
         var userAccount = authUtils.getUserAccountFromAuthentication();
         return ProfileResponse.builder()
+        .id(userAccount.getId())
+        .username(userAccount.getUsername())
         .avatarUrl(userAccount.getAvatarUrl())
         .fullName(userAccount.getFullname())
         .email(userAccount.getAvatarUrl())
@@ -45,6 +47,8 @@ public class ProfileServiceImpl implements ProfileService {
         try {
             var item = userAccountRepository.save(userAccountDb);
             return ProfileResponse.builder()
+                    .id(item.getId())
+                    .username(item.getUsername())
                     .fullName(item.getFullname())
                     .email(item.getEmail())
                     .avatarUrl(item.getAvatarUrl())
@@ -68,6 +72,8 @@ public class ProfileServiceImpl implements ProfileService {
         try {
             var item = userAccountRepository.save(userAccountDb);
             return ProfileResponse.builder()
+                    .id(item.getId())
+                    .username(item.getUsername())
                     .fullName(item.getFullname())
                     .email(item.getEmail())
                     .avatarUrl(item.getAvatarUrl())

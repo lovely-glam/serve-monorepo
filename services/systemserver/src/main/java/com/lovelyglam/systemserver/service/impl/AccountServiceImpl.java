@@ -1,12 +1,17 @@
 package com.lovelyglam.systemserver.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
+import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.dto.response.ProfileResponse;
 import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 import com.lovelyglam.database.model.entity.ShopAccount;
@@ -20,6 +25,7 @@ import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.systemserver.service.AccountService;
 import com.lovelyglam.systemserver.util.AuthUtils;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -65,7 +71,9 @@ public class AccountServiceImpl implements AccountService {
             var item = userAccountRepository.save(userAccountDb.get());
 
             return ProfileResponse.builder()
+                    .id(item.getId())
                     .fullName(item.getFullname())
+                    .username(item.getUsername())
                     .email(item.getEmail())
                     .avatarUrl(item.getAvatarUrl())
                     .build();
@@ -108,6 +116,8 @@ public class AccountServiceImpl implements AccountService {
             var item = userAccountRepository.save(userAccountDb.get());
 
             return ProfileResponse.builder()
+                    .id(item.getId())
+                    .username(item.getUsername())
                     .fullName(item.getFullname())
                     .email(item.getEmail())
                     .avatarUrl(item.getAvatarUrl())
@@ -191,6 +201,8 @@ public class AccountServiceImpl implements AccountService {
         try {
             var item = userAccountRepository.save(userAccountDb);
             return ProfileResponse.builder()
+                    .id(item.getId())
+                    .username(item.getUsername())
                     .fullName(item.getFullname())
                     .email(item.getEmail())
                     .avatarUrl(item.getAvatarUrl())
@@ -239,5 +251,26 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
+    @Override
+    public PaginationResponse<ProfileResponse> getCustomerAccounts(SearchRequestParamsDto request) {
+        return userAccountRepository.searchByParameter(request.search(), request.pagination(),(entity) -> {
+            return ProfileResponse.builder()
+            .id(entity.getId())
+            .username(entity.getUsername())
+            .avatarUrl(entity.getAvatarUrl())
+            .email(entity.getEmail())
+            .fullName(entity.getFullname())
+            .build();
+        }, (param) -> {
+            return (root, query, criteriaBuilder) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                for (Map.Entry<String, String> item : param.entrySet()) {
+                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(item.getKey()).as(String.class)),
+                            "%" + item.getValue().toLowerCase() + "%"));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            };
+        });
+    }
 
 }
