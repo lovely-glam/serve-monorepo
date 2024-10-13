@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Disabled</title>
+    <title>Account Reactivation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,7 +36,7 @@
             text-align: center;
             color: #999;
         }
-        .support-link {
+        .link {
             display: block; /* Change to block for centering */
             margin: 20px auto; /* Centering with auto margins */
             padding: 10px 20px;
@@ -52,16 +52,16 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>Account Disabled</h1>
+        <h1>Account Reactivated</h1>
     </div>
     <div class="message">
         <p>Hello <span th:text="${name}">User</span>,</p>
         <p th:text="${message}"></p>
-        <p>If you believe this was a mistake, please contact support using the link below:</p>
-        <a class="support-link" th:href="${Support}">Contact Support</a>
+        <p>To log in to your account, please click the link below:</p>
+        <a class="link" th:href="${login}">Log In</a>
     </div>
     <div class="footer">
-        <p>Thank you for being a part of our community.</p>
+        <p>If you did not request this reactivation, please contact our support team.</p>
     </div>
 </div>
 </body>

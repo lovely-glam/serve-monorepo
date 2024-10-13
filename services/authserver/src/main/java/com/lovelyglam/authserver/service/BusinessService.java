@@ -5,6 +5,6 @@ import com.lovelyglam.database.model.dto.response.BusinessRegisterResponse;
 import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 
 public interface BusinessService {
-    BusinessRegisterResponse registerCustomerAccount(BusinessRegisterRequest request);
+    BusinessRegisterResponse registerBusinessAccount(BusinessRegisterRequest request);
     ShopAccountResponse verifyBusinessAccount(String businessEmail);
 }

@@ -24,6 +24,8 @@ spring:
         multipart: 
             max-file-size: 10MB
             max-request-size: 10MB
+    profiles:
+        active: ${PENV}
     flyway:
         baselineOnMigrate: true
 
@@ -37,3 +39,21 @@ security:
         id: ${CLIENT_DEFAULT_ID:glam-client}
         secret: ${SECRET_DEFAULT_ID:123456789}
         redirect-urls: http://localhost:3000,http://localhost:9000
+    
+springdoc:
+    api-docs:
+        enabled: true
+        path: /api-docs
+    swagger-ui:
+        enabled: true
+        try-it-out-enabled: true
+        operations-sorter: method
+        tags-sorter: alpha
+        filter: true
+        path: /swagger-ui
+
+base-urls:
+    api: ${BASE_URL_API:null}
+    front-end: ${ORIGIN_ALLOWED:null}
+
+swagger-url: ${SWAGGER_URL:null}

@@ -20,7 +20,6 @@ import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.database.repository.NailServiceRepository;
-import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.userserver.service.BookingService;
 import com.lovelyglam.userserver.util.AuthUtils;
 
@@ -32,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final NailServiceRepository nailServiceRepository;
-    private final UserAccountRepository userAccountRepository;
     private final AuthUtils authUtils;
 
     @Override

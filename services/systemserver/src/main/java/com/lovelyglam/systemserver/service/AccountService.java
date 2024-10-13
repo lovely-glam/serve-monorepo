@@ -11,5 +11,6 @@ public interface AccountService {
     ProfileResponse activeUserAccount(BigDecimal id);
     ShopAccountResponse disableShopAccount(BigDecimal id);
     ShopAccountResponse activeShopAccount(BigDecimal id);
-
+    ProfileResponse getUserAccount(BigDecimal id);
+    ShopAccountResponse getShopAccount(BigDecimal id);
 }
