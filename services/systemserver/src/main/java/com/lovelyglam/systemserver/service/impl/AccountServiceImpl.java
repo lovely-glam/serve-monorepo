@@ -1,10 +1,15 @@
 package com.lovelyglam.systemserver.service.impl;
 
+import java.math.BigDecimal;
+
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 import com.lovelyglam.database.model.dto.response.ProfileResponse;
 import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
-import com.lovelyglam.database.model.dto.response.ShopProfileResponse;
 import com.lovelyglam.database.model.entity.ShopAccount;
-import com.lovelyglam.database.model.entity.ShopProfile;
 import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
@@ -13,17 +18,9 @@ import com.lovelyglam.database.repository.ShopAccountRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.systemserver.service.AccountService;
-
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.lovelyglam.systemserver.util.AuthUtils;
-import com.lovelyglam.utils.general.TextUtils;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
                 context.setVariable("name", userAccountDb.get().getFullname());
                 context.setVariable("message", "Your account has been disabled. If this was a mistake, please contact support.");
                 context.setVariable("Support", "https://lovelyglam.life/contact");
-                String content = templateEngine.process("account-disabled-template", context); // Ensure you have this template
+                String content = templateEngine.process("account-disabled-template", context);
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
                 helper.setTo(userAccountDb.get().getEmail());
                 helper.setSubject("[Account Disabled - LOVELY GLAM]");
