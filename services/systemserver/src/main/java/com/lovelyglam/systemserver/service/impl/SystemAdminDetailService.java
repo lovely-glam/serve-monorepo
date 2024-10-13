@@ -23,7 +23,15 @@ public class SystemAdminDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SystemAccount account = systemAccountRepository.findSystemAccountByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found this system account"));
-        return new User(account.getUsername(),account.getHashPassword(), rolesToAuthority(account));
+        return new User(
+            account.getUsername(), 
+            account.getHashPassword(), 
+            account.isActive(),
+            true,
+            true,
+            true,
+            rolesToAuthority(account)
+        );
     }
     private Collection<GrantedAuthority> rolesToAuthority(SystemAccount user) {
         var roleList = new ArrayList<GrantedAuthority>();
