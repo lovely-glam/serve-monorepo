@@ -67,7 +67,7 @@ public class AccountController {
 
         return ResponseEntity.ok().body(responseObject);
     }
-    @PostMapping("get-shop/{id}")
+    @GetMapping("get-shop/{id}")
     public ResponseEntity<ResponseObject> getShopAccount(@PathVariable(value = "id") BigDecimal shopId) {
         var result = accountService.getShopAccount(shopId);
         var responseObject = ResponseObject.builder()
@@ -80,7 +80,7 @@ public class AccountController {
 
         return ResponseEntity.ok().body(responseObject);
     }
-    @PostMapping("get-user/{id}")
+    @GetMapping("get-user/{id}")
     public ResponseEntity<ResponseObject> getUserAccount(@PathVariable(value = "id") BigDecimal userId) {
         var result = accountService.getUserAccount(userId);
         var responseObject = ResponseObject.builder()
