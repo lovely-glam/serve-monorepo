@@ -21,7 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ComponentScan(basePackages = {
     "com.lovelyglam.utils.config",
     "com.lovelyglam.filecloud",
-    "com.lovelyglam.utils.payment"
+    "com.lovelyglam.utils.payment",
+
 })
 public class UserServiceConfig {
     @Bean

@@ -23,7 +23,9 @@ public class BusinessServiceImpl implements BusinessService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public BusinessRegisterResponse registerCustomerAccount(BusinessRegisterRequest request) {
+    public BusinessRegisterResponse registerBusinessAccount(BusinessRegisterRequest request) {
+        if (shopAccountRepository.findShopAccountByUsername(request.getUsername()).isPresent())
+            throw new ValidationFailedException("Username is already in use");
         if (request.getPassword().equals(request.getRePassword())) {
             var user = ShopAccount.builder()
             .username(request.getUsername())
@@ -33,6 +35,8 @@ public class BusinessServiceImpl implements BusinessService {
             .isVerified(false)
             .build();
             var shopProfile = ShopProfile.builder()
+            .vote(0.0)
+            .name(request.getName())
             .address(request.getAddress())
             .avatarUrl(request.getAvatarUrl())
             .description(request.getDescription())

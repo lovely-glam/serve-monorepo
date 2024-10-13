@@ -45,7 +45,7 @@ public class RegisterController {
     @PostMapping(path = "business")
     @Transactional(rollbackFor = {MailAuthenticationException.class})
     public ResponseEntity<ResponseObject> businessRegister(@RequestBody BusinessRegisterRequest registerRequest) {
-        var result = businessService.registerCustomerAccount(registerRequest);
+        var result = businessService.registerBusinessAccount(registerRequest);
         otpService.generateOTPCode(result.email(), result.username());
         return ResponseEntity.ok(
             ResponseObject.builder()

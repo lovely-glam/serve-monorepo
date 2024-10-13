@@ -21,6 +21,9 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
 
     @Override
     public CustomerRegisterResponse registerCustomerAccount(CustomerRegisterRequest request) {
+        var userAccount = userAccountRepository.findUserAccountByUsername(request.getUsername());
+        if (userAccount.isPresent())
+            throw new ValidationFailedException("Username is already in use");
         if (request.getPassword().equals(request.getRePassword())) {
             var user = UserAccount.builder()
             .avatarUrl("")

@@ -58,3 +58,10 @@ refresh-token:
     secret-key: ${REFRESH_TOKEN_KEY}
 
 swagger-url: ${SWAGGER_URL:null}
+
+mail:
+    server:
+        host: ${MAIL_HOST}
+        username: ${MAIL_USERNAME}
+        password: ${MAIL_PASSWORD}
+        port: ${MAIL_PORT}
