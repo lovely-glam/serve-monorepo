@@ -28,7 +28,7 @@ public class ShopUserDetailService implements UserDetailsService{
 
     private Collection<GrantedAuthority> rolesToAuthority(ShopAccount user) {
         var roleList = new ArrayList<GrantedAuthority>();
-        roleList.add(new SimpleGrantedAuthority("ROLE_NAILER"));
+        roleList.add(new SimpleGrantedAuthority("ROLE_SHOP"));
         return roleList;
     }
     

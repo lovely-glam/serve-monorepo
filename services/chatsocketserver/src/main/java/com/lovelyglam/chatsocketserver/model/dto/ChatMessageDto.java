@@ -1,6 +1,5 @@
 package com.lovelyglam.chatsocketserver.model.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.lovelyglam.chatsocketserver.model.constant.MessageStatus;
@@ -14,10 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
-    private String roomId;
-    private BigDecimal fromId;
+public class ChatMessageDto {
     private String from;
+    private String role;
     private String message;
     private LocalDateTime time;
     private MessageStatus status;
