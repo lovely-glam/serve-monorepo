@@ -4,7 +4,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.lovelyglam.chatsocketserver.model.dto.ChatUser;
+import com.lovelyglam.database.model.entity.ShopAccount;
+import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.AuthFailedException;
+import com.lovelyglam.database.model.exception.NotFoundException;
+import com.lovelyglam.database.model.exception.ValidationFailedException;
 import com.lovelyglam.database.repository.ShopAccountRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 
@@ -42,5 +46,19 @@ public class AuthUtils {
         } catch (Exception ex) {
             throw new AuthFailedException("This user is't authentication, please login again");
         }
+    }
+
+    public UserAccount getUserAccountById (ChatUser input) {
+        if ("ROLE_USER".equals(input.getRole())) {
+            return userAccountRepository.findById(input.getId()).orElseThrow(() -> new NotFoundException("Not found user with this id"));
+        } 
+        else throw new ValidationFailedException("");
+    }
+
+    public ShopAccount getBusinessAccountById (ChatUser input) {
+        if ("ROLE_SHOP".equals(input.getRole())) {
+            return shopAccountRepository.findById(input.getId()).orElseThrow(() -> new NotFoundException("Not found user with this id"));
+        } 
+        else throw new ValidationFailedException("");
     }
 }

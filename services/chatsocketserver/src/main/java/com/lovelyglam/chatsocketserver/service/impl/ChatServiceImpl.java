@@ -1,14 +1,18 @@
 package com.lovelyglam.chatsocketserver.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
+import com.lovelyglam.chatsocketserver.model.dto.ChatMessageDto;
 import com.lovelyglam.chatsocketserver.model.dto.ChatRoom;
 import com.lovelyglam.chatsocketserver.service.ChatService;
 import com.lovelyglam.chatsocketserver.utils.AuthUtils;
 import com.lovelyglam.database.model.entity.ChatBox;
+import com.lovelyglam.database.model.entity.ChatMessage;
 import com.lovelyglam.database.model.entity.ShopAccount;
+import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.model.exception.ValidationFailedException;
 import com.lovelyglam.database.repository.ChatBoxRepository;
@@ -52,6 +56,42 @@ public class ChatServiceImpl implements ChatService {
             return chatRoom;
         }else {
             throw new ValidationFailedException("Shop Can't Create Chat Room");
+        }
+    }
+
+    public ChatMessageDto storeMessage (ChatMessageDto chatIncome, BigDecimal roomId) {
+        try {
+            var roomEntity = chatBoxRepository.findById(roomId).orElseThrow();
+            var chatUser = authUtils.getUserAccountFromAuthentication();
+            var chatMessageEntity = ChatMessage.builder()
+                            .chatBox(roomEntity)
+                            .from(chatUser.getUsername())
+                            .role(chatUser.getRole())
+                            .content(chatIncome.getMessage())
+                            .build();
+            chatMessageRepository.save(chatMessageEntity);
+            chatIncome.setFrom(chatUser.getUsername());
+            return chatIncome;
+        } catch (Exception ex) {
+            throw new ActionFailedException("Fail to save message");
+        }
+    }
+
+    @Override
+    public Collection<ChatMessageDto> getAllMessageFromRoomId(BigDecimal roomId) {
+        var room = chatBoxRepository.findById(roomId).orElseThrow(() -> new NotFoundException("Not found room with this Id"));
+        var user = authUtils.getUserAccountFromAuthentication();
+        if (room.getShopProfile().getAccount().getId() == user.getId() || room.getUserAccount().getId() == user.getId()) {
+            return chatMessageRepository.findByRoomId(roomId).stream().map(entity -> {
+                return ChatMessageDto.builder()
+                .message(entity.getContent())
+                .from(entity.getFrom())
+                .role(entity.getRole())
+                .time(entity.getCreatedDate())
+                .build();
+            }).toList();
+        } else {
+            throw new ValidationFailedException("This room is not your own");
         }
     }
 }

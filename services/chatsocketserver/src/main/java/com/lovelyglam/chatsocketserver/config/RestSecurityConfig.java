@@ -8,6 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.lovelyglam.chatsocketserver.security.BusinessJwtAuthenticationFilter;
+import com.lovelyglam.chatsocketserver.security.CustomerJwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,13 +21,19 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class RestSecurityConfig {
     private final CorsConfig corsConfig;
+    private final BusinessJwtAuthenticationFilter businessJwtAuthenticationFilter;
+    private final CustomerJwtAuthenticationFilter customerJwtAuthenticationFilter;
     @Bean
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
-            .authorizeHttpRequests((auth) -> 
-                auth.anyRequest().permitAll())
+            .authorizeHttpRequests((auth) -> {
+                auth.requestMatchers("/auth/**", "/pings/**", "/api-docs/**", "/swagger-ui/**", "/ws/**").permitAll();
+                auth.anyRequest().authenticated();
+            })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

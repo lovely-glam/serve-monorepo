@@ -30,13 +30,10 @@ public class ChatMessage {
     private ChatBox chatBox;
     @Column(name = "content")
     private String content;
-    @ManyToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_account_id")
-    private UserAccount userAccount;
-    @ManyToOne(targetEntity = ShopAccount.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "shop_account_id")
-    private ShopAccount shopAccount;
-
+    @Column(name = "from_username", nullable = false, columnDefinition = "VARCHAR(128)")
+    private String from;
+    @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(12)")
+    private String role;
     @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate;
     @Column(name = "updated_date", nullable = false)
