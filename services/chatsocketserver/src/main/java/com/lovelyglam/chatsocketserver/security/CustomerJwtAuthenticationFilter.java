@@ -26,22 +26,27 @@ import lombok.RequiredArgsConstructor;
 public class CustomerJwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomerUserDetailService userDetailsService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-                 String jwt = jwtService.getJwtFromRequest(request);
-        if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt, TokenType.ACCESS_TOKEN)) {
-            UserClaims username = jwtService.getUserClaimsFromJwt(jwt, TokenType.ACCESS_TOKEN);
-            UserDetails userDetails = null;
-            try {
-                userDetails = userDetailsService.loadUserByUsername(username.getUsername());
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            String jwt = jwtService.getJwtFromRequest(request);
+            if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt, TokenType.ACCESS_TOKEN)) {
+                UserClaims username = jwtService.getUserClaimsFromJwt(jwt, TokenType.ACCESS_TOKEN);
+                UserDetails userDetails = null;
+                try {
+                    userDetails = userDetailsService.loadUserByUsername(username.getUsername());
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

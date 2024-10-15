@@ -41,10 +41,11 @@ public class ChatServiceImpl implements ChatService {
                 chatRoom.setShopId(shopId);
                 chatRoom.setUserId(chatBox.getId());
             }, () -> {
+                var user = authUtils.getUserAccountById(chatBox);
                 var room = ChatBox.builder()
                 .name("Room")
                 .shopProfile(shopAccount.getShopProfile())
-                .userAccount(null)
+                .userAccount(user)
                 .build();
                 var result = chatBoxRepository.save(room);
                 chatRoom.setId(result.getId());
