@@ -82,7 +82,7 @@ public class ChatServiceImpl implements ChatService {
     public Collection<ChatMessageDto> getAllMessageFromRoomId(BigDecimal roomId) {
         var room = chatBoxRepository.findById(roomId).orElseThrow(() -> new NotFoundException("Not found room with this Id"));
         var user = authUtils.getUserAccountFromAuthentication();
-        if (room.getShopProfile().getAccount().getId() == user.getId() || room.getUserAccount().getId() == user.getId()) {
+        if (room.getShopProfile().getAccount().getId().equals(user.getId())  || room.getUserAccount().getId().equals(user.getId())) {
             return chatMessageRepository.findByRoomId(roomId).stream().map(entity -> {
                 return ChatMessageDto.builder()
                 .message(entity.getContent())

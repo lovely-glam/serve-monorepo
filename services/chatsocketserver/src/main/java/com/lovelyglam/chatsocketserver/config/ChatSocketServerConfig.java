@@ -1,5 +1,6 @@
 package com.lovelyglam.chatsocketserver.config;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -51,6 +52,11 @@ public class ChatSocketServerConfig implements WebSocketMessageBrokerConfigurer 
     private final CustomerUserDetailService customerUserDetailService;
     private final ShopUserDetailService shopUserDetailService;
     private final ApplicationContext applicationContext;
+    private final CorsConfig corsConfig;
+    private final EnumSet<StompCommand> VALID_COMMANDS = EnumSet.of(
+            StompCommand.CONNECT,
+            StompCommand.SEND,
+            StompCommand.SUBSCRIBE);
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -61,12 +67,12 @@ public class ChatSocketServerConfig implements WebSocketMessageBrokerConfigurer 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());
-	}
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/sws").setAllowedOrigins(corsConfig.getCorsAllowed()).withSockJS();
         registry.addEndpoint("/ws").setAllowedOrigins("*");
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
@@ -80,30 +86,35 @@ public class ChatSocketServerConfig implements WebSocketMessageBrokerConfigurer 
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
                 log.info("Headers: {}", accessor);
-
+                log.warn("Security Context: {}", SecurityContextHolder.getContext().getAuthentication());
                 assert accessor != null;
-                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+                var cmd = accessor.getCommand();
+                if (VALID_COMMANDS.contains(cmd)) {
+                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                        String authorizationHeader = accessor.getFirstNativeHeader("Authorization");
+                        assert authorizationHeader != null;
+                        String token = authorizationHeader.substring(7);
 
-                    String authorizationHeader = accessor.getFirstNativeHeader("Authorization");
-                    assert authorizationHeader != null;
-                    String token = authorizationHeader.substring(7);
+                        UserClaims claims = jwtService.getUserClaimsFromJwt(token, TokenType.ACCESS_TOKEN);
+                        UserDetails userDetails = null;
+                        if (claims.getRole().equals("ROLE_USER")) {
+                            userDetails = customerUserDetailService.loadUserByUsername(claims.getUsername());
+                        } else {
+                            userDetails = shopUserDetailService.loadUserByUsername(claims.getUsername());
+                        }
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-                    UserClaims claims = jwtService.getUserClaimsFromJwt(token, TokenType.ACCESS_TOKEN);
-                    UserDetails userDetails = null;
-                    if (claims.getRole().equals("ROLE_USER")) {
-                        userDetails = customerUserDetailService.loadUserByUsername(claims.getUsername());
+                        accessor.setUser(usernamePasswordAuthenticationToken);
                     } else {
-                        userDetails = shopUserDetailService.loadUserByUsername(claims.getUsername());
+                        var secContext = SecurityContextHolder.getContext().getAuthentication();
+                        accessor.setUser(secContext);
                     }
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-                    accessor.setUser(usernamePasswordAuthenticationToken);
                 }
 
                 return message;
             }
-        },authz);
+        }, authz);
     }
 }
