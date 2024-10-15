@@ -11,7 +11,7 @@ import org.springframework.security.messaging.access.intercept.MessageMatcherDel
 @EnableWebSocketSecurity
 public class SocketSecurityConfig {
     @Bean
-     AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+    AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
          messages.simpDestMatchers("/ws/**").permitAll()
                  .anyMessage().authenticated();
         return messages.build();
