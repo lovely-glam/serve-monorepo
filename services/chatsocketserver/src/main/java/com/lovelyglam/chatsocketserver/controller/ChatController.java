@@ -31,7 +31,7 @@ public class ChatController {
     public void getMessageHistory(@DestinationVariable(value = "roomId") BigDecimal roomId) {
         Collection<ChatMessageDto> message = chatService.getAllMessageFromRoomId(roomId);
         message.forEach(entity -> {
-            simpMessagingTemplate.convertAndSend("/topic/messages" + roomId, message);
+            simpMessagingTemplate.convertAndSend(String.format("/topic/messages/%d", roomId.intValue()), message);
         });
     }
 }
