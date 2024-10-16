@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.lovelyglam.authserver.security.BusinessJwtAuthenticationFilter;
 import com.lovelyglam.authserver.security.CustomerJwtAuthenticationFilter;
 import com.lovelyglam.authserver.security.GlamAuthenticationEntryPoint;
+import com.lovelyglam.authserver.security.SystemJwtAuthenticationFilter;
 import com.lovelyglam.utils.config.CorsConfig;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final CustomerJwtAuthenticationFilter customerJwtAuthenticationFilter;
     private final BusinessJwtAuthenticationFilter businessJwtAuthenticationFilter;
+    private final SystemJwtAuthenticationFilter systemJwtAuthenticationFilter;
     @Bean
     @Order(1)
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
@@ -44,6 +46,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
         http.addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(this.systemJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> {
             logout.logoutUrl("/auth/logout");
             logout.logoutSuccessHandler((request, response, authorization) -> SecurityContextHolder.clearContext());
