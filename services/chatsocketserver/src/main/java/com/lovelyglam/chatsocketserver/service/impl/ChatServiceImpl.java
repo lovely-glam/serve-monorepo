@@ -5,7 +5,9 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import com.lovelyglam.chatsocketserver.model.dto.ChatMessageDto;
+import com.lovelyglam.chatsocketserver.model.constant.MessageStatus;
+import com.lovelyglam.chatsocketserver.model.dto.ChatMessageRequest;
+import com.lovelyglam.chatsocketserver.model.dto.ChatMessageResponse;
 import com.lovelyglam.chatsocketserver.model.dto.ChatRoom;
 import com.lovelyglam.chatsocketserver.service.ChatService;
 import com.lovelyglam.chatsocketserver.utils.AuthUtils;
@@ -60,7 +62,7 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
-    public ChatMessageDto storeMessage (ChatMessageDto chatIncome, BigDecimal roomId) {
+    public ChatMessageResponse storeMessage (ChatMessageRequest chatIncome, BigDecimal roomId) {
         try {
             var roomEntity = chatBoxRepository.findById(roomId).orElseThrow();
             var chatUser = authUtils.getUserAccountFromAuthentication();
@@ -70,21 +72,29 @@ public class ChatServiceImpl implements ChatService {
                             .role(chatUser.getRole())
                             .content(chatIncome.getMessage())
                             .build();
-            chatMessageRepository.save(chatMessageEntity);
-            chatIncome.setFrom(chatUser.getUsername());
-            return chatIncome;
+            var result = chatMessageRepository.save(chatMessageEntity);
+            return ChatMessageResponse.builder()
+            .from(result.getFrom())
+            .status(MessageStatus.CHATTING)
+            .message(result.getContent())
+            .role(result.getRole())
+            .id(result.getId())
+            .time(result.getCreatedDate())
+            .build();
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new ActionFailedException("Fail to save message");
         }
     }
 
     @Override
-    public Collection<ChatMessageDto> getAllMessageFromRoomId(BigDecimal roomId) {
+    public Collection<ChatMessageResponse> getAllMessageFromRoomId(BigDecimal roomId) {
         var room = chatBoxRepository.findById(roomId).orElseThrow(() -> new NotFoundException("Not found room with this Id"));
         var user = authUtils.getUserAccountFromAuthentication();
         if (room.getShopProfile().getAccount().getId().equals(user.getId())  || room.getUserAccount().getId().equals(user.getId())) {
             return chatMessageRepository.findByRoomId(roomId).stream().map(entity -> {
-                return ChatMessageDto.builder()
+                return ChatMessageResponse.builder()
+                .id(entity.getId())
                 .message(entity.getContent())
                 .from(entity.getFrom())
                 .role(entity.getRole())
