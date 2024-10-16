@@ -52,4 +52,17 @@ public class ShopProfileController {
                         .build()
         );
     }
+    @GetMapping(path = "/outstanding")
+    public ResponseEntity<ResponseObject> getShopProfileOutstanding() {
+        var result = shopService.getShopProfileOutstanding();
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .code("GET_SHOP_OUTSTANDING_SUCCESS")
+                        .content(result)
+                        .isSuccess(true)
+                        .status(HttpStatus.OK)
+                        .message("Query Success")
+                        .build()
+        );
+    }
 }

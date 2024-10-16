@@ -4,6 +4,8 @@ import com.lovelyglam.database.model.entity.ShopProfile;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,6 @@ public interface ShopRepository extends BaseRepository<ShopProfile, BigDecimal> 
             "JOIN ssf.id.shopService s ON s.shopProfile.id = sp.id) " +
             "WHERE sp.id = sp.id")
     void updateAllAverageVotes();
+    @Query(value = "SELECT sp FROM shop_profiles sp ORDER BY sp.vote DESC")
+    Page<ShopProfile> getTopProfileHaveHighestVote(Pageable pageable);
 }

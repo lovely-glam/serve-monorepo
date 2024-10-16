@@ -6,8 +6,12 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
+import lombok.Data;
 
 @Embeddable
+@Data
+@Builder
 public class ShopServiceFeedbackId implements Serializable {
     @ManyToOne(targetEntity = ShopService.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_service_id", nullable = false)
