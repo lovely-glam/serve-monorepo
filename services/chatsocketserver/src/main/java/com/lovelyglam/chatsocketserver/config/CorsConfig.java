@@ -67,7 +67,7 @@ public class CorsConfig {
         return source;
     }
 
-    private String[] getCorsAllowed() {
+    public String[] getCorsAllowed() {
         List<String> corsAllowOrigins = new ArrayList<>();
         corsAllowOrigins.add("http://localhost:3000");
         if (!allowOrigin.equals("null"))

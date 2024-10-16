@@ -58,3 +58,10 @@ refresh-token:
     max-age: ${REFRESH_TOKEN_EXT:315360000}
     secret-key: ${REFRESH_TOKEN_KEY}
 
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.socket: DEBUG
+

@@ -1,11 +1,9 @@
 package com.lovelyglam.userserver.service.impl;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.function.Function;
 
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import com.lovelyglam.database.model.constant.AppointmentStatus;
