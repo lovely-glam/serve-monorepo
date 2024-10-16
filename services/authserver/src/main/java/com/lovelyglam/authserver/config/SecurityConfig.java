@@ -43,11 +43,10 @@ public class SecurityConfig {
                     exceptionHandling.authenticationEntryPoint(glamAuthenticationEntryPoint);
                 })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
-        http.addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(this.systemJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .logout(logout -> {
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource())).addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(this.systemJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.logout(logout -> {
             logout.logoutUrl("/auth/logout");
             logout.logoutSuccessHandler((request, response, authorization) -> SecurityContextHolder.clearContext());
         });
