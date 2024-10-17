@@ -1,12 +1,16 @@
 package com.lovelyglam.userserver.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.dto.request.FeedbackRequest;
 import com.lovelyglam.database.model.dto.response.FeedbackResponse;
+import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.entity.ShopServiceFeedback;
 import com.lovelyglam.database.model.entity.ShopServiceFeedbackId;
 import com.lovelyglam.database.model.exception.ActionFailedException;
@@ -80,5 +84,37 @@ public class FeedbackServiceImpl implements FeedbackService {
         } catch (Exception ex) {
             throw new ActionFailedException(String.format("Can't Create Feedback With Reason: %s", ex.getMessage()));
         }
+    }
+
+    @Override
+    public PaginationResponse<FeedbackResponse> getFeedbackByShopId(BigDecimal shopProfileId, Pageable pageable) {
+        var result = nailServiceFeedbackRepository.findShopServiceFeedbackByShopProfileId(shopProfileId, pageable).map((entity) -> {
+            var shopProfile = entity.getId().getShopService().getShopProfile();
+            var userAccount = entity.getId().getUserAccount();
+            var reviewNumber = nailServiceFeedbackRepository.calculateTotalVoteOfShop(shopProfile.getId());
+            return FeedbackResponse.builder()
+                    .id(entity.getSubId())
+                    .shopId(shopProfile.getId())
+                    .shopName(shopProfile.getName())
+                    .rating(shopProfile.getVote())
+                    .reviewNumber(reviewNumber)
+                    .customerName(userAccount.getFullname())
+                    .joinDate(userAccount.getCreatedDate())
+                    .feedback(entity.getComment())
+                    .build();
+        });
+
+        return convert(result);
+    }
+
+    public static <T> PaginationResponse<T> convert(Page<T> page) {
+        return new PaginationResponse<>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                (int) page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast());
     }
 }
