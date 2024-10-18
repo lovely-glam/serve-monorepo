@@ -1,8 +1,11 @@
 package com.lovelyglam.nailserver.service.impl;
 
+import com.lovelyglam.database.model.constant.AppointmentStatus;
+import com.lovelyglam.database.model.constant.PaymentStatus;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.BookingResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
+import com.lovelyglam.database.model.entity.Booking;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.repository.BookingRepository;
@@ -15,9 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,14 +67,56 @@ public class BookingServiceImpl implements BookingService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get shop services failed with reason: %s", ex.getMessage()));
+                    String.format("Get bookings failed with reason: %s", ex.getMessage()));
         }
     }
 
+    @Override
+    public Collection<BookingResponse> getBookingsByDayAndShopId(Date makingDate) {
+        var account = authUtils.getUserAccountFromAuthentication();
+        if (account == null) {
+            throw new AuthFailedException("No Account Login");
+        }
+        try {
+            Collection<Booking> bookings = bookingRepository.getBookingsByPaymentStatusAndMakingDay(account.getShopProfile().getId(), AppointmentStatus.ACCEPTED, makingDate);
+
+            return convertToBookingResponse(bookings);
+
+        } catch (Exception e) {
+            throw new ActionFailedException(
+                    String.format("Get bookings failed with reason: %s", e.getMessage()));
+        }
+    }
 
     @Override
-    public PaginationResponse<BookingResponse> getBookingsByTime(SearchRequestParamsDto request) {
-        return null;
+    public Collection<BookingResponse> getBookingsByStartTimeAndShopId(Timestamp startTime) {
+        var account = authUtils.getUserAccountFromAuthentication();
+        if (account == null) {
+            throw new AuthFailedException("No Account Login");
+        }
+
+        try {
+            Collection<Booking> bookings = bookingRepository.getBookingsByPaymentStatusAndMakingTime(account.getShopProfile().getId(), AppointmentStatus.ACCEPTED, startTime);
+
+            return convertToBookingResponse(bookings);
+
+        } catch (Exception e) {
+            throw new ActionFailedException(
+                    String.format("Get bookings failed with reason: %s", e.getMessage()));
+        }
+    }
+
+    public Collection<BookingResponse> convertToBookingResponse(Collection<Booking> bookings) {
+        return bookings.stream()
+                .map(booking -> BookingResponse.builder()
+                        .id(booking.getId()) // Assuming id is BigDecimal, or cast appropriately
+                        .shopServiceName(booking.getShopService().getName()) // Assuming ShopService has a getName() method
+                        .userAccountName(booking.getUserAccount().getUsername()) // Assuming UserAccount has a getUsername() method
+                        .makingDay(booking.getMakingDay())
+                        .startTime(booking.getStartTime())
+                        .status(booking.getAppointmentStatus())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override

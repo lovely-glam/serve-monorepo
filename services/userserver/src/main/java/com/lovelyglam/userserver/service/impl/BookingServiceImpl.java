@@ -37,6 +37,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse createBooking(BookingRequest bookingRequest) {
         var nailService = nailServiceRepository.findById(bookingRequest.getNailServiceId())
                 .orElseThrow(() -> new NotFoundException("Not found nail service"));
+
         Booking booking = Booking.builder()
                 .shopService(nailService)
                 .startTime(bookingRequest.getStartTime())

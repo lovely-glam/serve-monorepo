@@ -19,7 +19,7 @@ public class AuthUtils {
             String username = auth.getName();
             return shopAccountRepository.findShopAccountByUsername(username).orElseThrow();
         } catch (Exception ex) {
-            throw new AuthFailedException("This user is't authentication, please login again");
+            throw new AuthFailedException("This user isn't authentication, please login again");
         }
     }
 }

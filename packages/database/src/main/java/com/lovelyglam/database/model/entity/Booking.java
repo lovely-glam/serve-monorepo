@@ -1,5 +1,6 @@
 package com.lovelyglam.database.model.entity;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserAccount userAccount;
     @Column(name = "making_day")
-    private Timestamp makingDay;
+    private Date makingDay;
     @Column(name = "start_time")
     private Timestamp startTime;
     @Enumerated(EnumType.STRING)
