@@ -2,16 +2,21 @@ package com.lovelyglam.userserver.controller;
 
 import java.time.LocalDateTime;
 
-import com.lovelyglam.database.model.dto.request.UserAccountRequest;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.lovelyglam.database.model.dto.request.UserAccountRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 import com.lovelyglam.userserver.service.ProfileService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,7 +36,7 @@ public class ProfileController {
         .build());
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<ResponseObject> updateProfile(@RequestBody @Valid UserAccountRequest request, BindingResult bindingResult) {
         var result = profileService.updateProfile(request);
         var responseObject = ResponseObject.builder()
@@ -44,7 +49,7 @@ public class ProfileController {
         return ResponseEntity.ok().body(responseObject);
     }
 
-    @PostMapping("change-pass")
+    @PutMapping("change-pass")
     public ResponseEntity<ResponseObject> changePassword(@RequestParam String password,
                                                          @RequestParam String rePassword) {
         var result = profileService.changePassword(password, rePassword);
