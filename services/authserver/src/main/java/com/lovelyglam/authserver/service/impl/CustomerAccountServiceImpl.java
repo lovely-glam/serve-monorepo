@@ -26,22 +26,25 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
             throw new ValidationFailedException("Username is already in use");
         if (request.getPassword().equals(request.getRePassword())) {
             var user = UserAccount.builder()
-            .avatarUrl("")
-            .email(request.getEmail())
-            .username(request.getUsername())
-            .fullname(request.getFullName())
-            .hashPassword(passwordEncoder.encode(request.getPassword()))
-            .build();
+                    .avatarUrl("")
+                    .email(request.getEmail())
+                    .username(request.getUsername())
+                    .fullname(request.getFullName())
+                    .hashPassword(passwordEncoder.encode(request.getPassword()))
+                    .build();
             try {
                 var queryResult = userAccountRepository.save(user);
                 return CustomerRegisterResponse.builder()
-                    .email(queryResult.getEmail())
-                    .createdDate(queryResult.getCreatedDate())
-                    .username(queryResult.getUsername())
-                    .fullName(queryResult.getFullname())
-                .build();
+                        .username(queryResult.getUsername())
+                        .id(queryResult.getId())
+                        .email(queryResult.getEmail())
+                        .isActive(queryResult.isActive())
+                        .createdDate(queryResult.getCreatedDate())
+                        .fullName(queryResult.getFullname())
+                        .build();
             } catch (Exception ex) {
-                throw new ActionFailedException(String.format("Failed to adding register customer account with reason %s", ex.getMessage()));
+                throw new ActionFailedException(
+                        String.format("Failed to adding register customer account with reason %s", ex.getMessage()));
             }
         } else {
             throw new ValidationFailedException("Password And Repassword Is Not Match, Please Check Again");

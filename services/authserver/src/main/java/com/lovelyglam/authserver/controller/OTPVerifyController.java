@@ -6,13 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.authserver.service.BusinessService;
+import com.lovelyglam.authserver.service.CustomerAccountService;
 import com.lovelyglam.authserver.service.OTPService;
+import com.lovelyglam.database.model.dto.request.OTPRequest;
 import com.lovelyglam.database.model.dto.request.OTPVerifyRequest;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
+import com.lovelyglam.database.model.exception.ValidationFailedException;
+import com.lovelyglam.database.model.other.OTPKey;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,30 +25,47 @@ import lombok.RequiredArgsConstructor;
 public class OTPVerifyController {
     private final OTPService otpService;
     private final BusinessService businessService;
-    @PatchMapping(path = "verify")
-    public ResponseEntity<ResponseObject> verifyOTP (@RequestBody OTPVerifyRequest request) {
+    private final CustomerAccountService customerAccountService;
+
+    @PatchMapping(path = "verify-active")
+    public ResponseEntity<ResponseObject> verifyBusinessAccount(@RequestBody OTPVerifyRequest request) {
         otpService.verifyOTP(request);
-        return ResponseEntity.ok(ResponseObject.builder()
-        .code("VERIFY_SUCCESS")
-        .content(request)
-        .message("Verify OTP Success")
-        .isSuccess(true)
-        .requestTime(LocalDateTime.now())
-        .build());
+        switch (request.getType()) {
+            case ACTIVE_BUSINESS_ACCOUNT:
+                var resultBusiness = businessService.verifyBusinessAccount(request.getIdentity());
+                return ResponseEntity.ok(
+                        ResponseObject.builder()
+                                .code("VERIFY_SUCCESS")
+                                .content(resultBusiness)
+                                .message("Verify OTP Success")
+                                .isSuccess(true)
+                                .requestTime(LocalDateTime.now())
+                                .build());
+            default:
+                throw new ValidationFailedException("Not Support Method");
+        }
+
     }
 
-    @PatchMapping(path = "verify/business")
-    public ResponseEntity<ResponseObject> verifyBusinessAccount(@RequestParam(name = "otp") String otp) {
-        var identity = otpService.verifyOTP(otp);
-        var result = businessService.verifyBusinessAccount(identity);
-        return ResponseEntity.ok(
-            ResponseObject.builder()
-            .code("VERIFY_SUCCESS")
-            .content(result)
-            .message("Verify OTP Success")
-            .isSuccess(true)
-            .requestTime(LocalDateTime.now())
-            .build()
-        );
+    @PatchMapping(path = "reverify-otp")
+    public ResponseEntity<ResponseObject> resendOTPAccount(@RequestBody OTPRequest request) {
+        switch (request.getType()) {
+            case ACTIVE_BUSINESS_ACCOUNT:
+                var verify = businessService.isIdentityExisted(request.getIdentity());
+                otpService.generateOTPCode(OTPKey.builder()
+                        .identity(request.getIdentity())
+                        .otpType(request.getType())
+                        .build(), verify.getUsername(), "");
+                return ResponseEntity.ok(
+                        ResponseObject.builder()
+                                .code("VERIFY_SUCCESS")
+                                .content("Check email for OTP")
+                                .message("Verify OTP Success")
+                                .isSuccess(true)
+                                .requestTime(LocalDateTime.now())
+                                .build());
+            default:
+                throw new ValidationFailedException("Not Support Method");
+        }
     }
 }

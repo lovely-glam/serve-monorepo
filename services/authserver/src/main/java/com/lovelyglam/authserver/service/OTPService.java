@@ -1,9 +1,9 @@
 package com.lovelyglam.authserver.service;
 
 import com.lovelyglam.database.model.dto.request.OTPVerifyRequest;
+import com.lovelyglam.database.model.other.OTPKey;
 
 public interface OTPService {
     void verifyOTP (OTPVerifyRequest request);
-    void generateOTPCode(String identity, String username);
-    String verifyOTP (String otp);
+    void generateOTPCode(OTPKey key, String username, String other);
 }
