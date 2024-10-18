@@ -8,8 +8,11 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -22,7 +25,9 @@ public class ShopServiceFeedback {
     private ShopServiceFeedbackId id;
     @Column(name = "id", nullable = false, unique = true)
     private String subId;
-    private int vote;
+    @Column(name = "vote", columnDefinition = "NUMERIC(20,1)", nullable = false)
+    private Double vote;
+    @Column(name = "comment", columnDefinition = "TEXT", nullable = false)
     private String comment;
     @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate;
