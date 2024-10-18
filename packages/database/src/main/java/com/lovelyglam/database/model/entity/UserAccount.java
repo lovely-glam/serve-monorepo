@@ -32,8 +32,6 @@ public class UserAccount extends BaseEntity{
     private String hashPassword;
     @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean isActive;
-    @Column(name = "is_verify", columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean isVerified;
     @OneToMany(targetEntity = LoginMethod.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, mappedBy = "user")
     private List<LoginMethod> loginMethod;
 }

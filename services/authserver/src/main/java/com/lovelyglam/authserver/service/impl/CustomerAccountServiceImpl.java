@@ -38,7 +38,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                         .username(queryResult.getUsername())
                         .id(queryResult.getId())
                         .email(queryResult.getEmail())
-                        .isVerify(queryResult.isVerified())
+                        .isActive(queryResult.isActive())
                         .createdDate(queryResult.getCreatedDate())
                         .fullName(queryResult.getFullname())
                         .build();

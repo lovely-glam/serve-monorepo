@@ -6,6 +6,6 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 
 @Builder
-public record CustomerRegisterResponse (BigDecimal id, String username, String email, String fullName, boolean isVerify, LocalDateTime createdDate) {
+public record CustomerRegisterResponse (BigDecimal id, String username, String email, String fullName, boolean isActive, LocalDateTime createdDate) {
     
 }
