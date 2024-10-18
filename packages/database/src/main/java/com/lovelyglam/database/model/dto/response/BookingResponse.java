@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Builder
@@ -13,7 +14,7 @@ public class BookingResponse {
     BigDecimal id;
     String shopServiceName;
     String userAccountName;
-    Timestamp makingDay;
+    Date makingDay;
     Timestamp startTime;
     AppointmentStatus status;
 }
