@@ -1,6 +1,8 @@
 package com.lovelyglam.database.repository;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,4 +23,17 @@ public interface BookingRepository extends BaseRepository<Booking, BigDecimal> {
     );
     @Query(value = "SELECT SUM(ss.basePrice) FROM bookings b INNER JOIN b.shopService ss INNER JOIN ss.shopProfile sp WHERE sp.id = :shopId")
     BigDecimal calculateTotalProfitOfShop(@Param(value = "shopId")BigDecimal shopId);
+
+    @Query(value = "SELECT b FROM bookings b " +
+            "WHERE b.appointmentStatus = :appointmentStatus " +
+            "AND b.makingDay = :makingDay " +
+            "AND b.shopService.shopProfile.id = :shopId")
+    Collection<Booking> getBookingsByPaymentStatusAndMakingDay(
+            BigDecimal shopId, AppointmentStatus appointmentStatus, Date makingDay);
+
+    @Query("SELECT b FROM bookings b WHERE b.shopService.shopProfile.id = :shopId AND b.appointmentStatus = :appointmentStatus AND b.startTime = :startTime")
+    Collection<Booking> getBookingsByPaymentStatusAndMakingTime(
+            @Param("shopId") BigDecimal shopId,
+            @Param("appointmentStatus") AppointmentStatus appointmentStatus,
+            @Param("startTime") Timestamp startTime);
 }

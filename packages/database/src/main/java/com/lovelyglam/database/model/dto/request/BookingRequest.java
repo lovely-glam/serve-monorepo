@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Builder
 @Data
 public class BookingRequest {
     BigDecimal nailServiceId;
-    Timestamp makingDay;
+    Date makingDay;
     Timestamp startTime;
     AppointmentStatus status;
 }
