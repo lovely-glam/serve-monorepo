@@ -1,5 +1,8 @@
 package com.lovelyglam.workerservice.controller;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +32,9 @@ public class FileController {
         .code("UPLOAD SUCCESS")
         .content(result.getUrl())
         .message("UPLOAD SUCCESS")
+        .isSuccess(true)
+        .status(HttpStatus.OK)
+        .requestTime(LocalDateTime.now())
         .build());
     }
 }
