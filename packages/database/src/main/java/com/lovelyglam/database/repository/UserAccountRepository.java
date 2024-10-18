@@ -13,4 +13,6 @@ import com.lovelyglam.database.model.entity.UserAccount;
 public interface UserAccountRepository extends BaseRepository<UserAccount, BigDecimal> {
     @Query(value = "SELECT ua FROM user_accounts ua WHERE ua.username = :username")
     Optional<UserAccount> findUserAccountByUsername(@Param(value = "username") String username);
+    @Query(value = "SELECT ua FROM user_accounts ua WHERE ua.email = :email")
+    Optional<UserAccount> findUserAccountByEmail(@Param(value = "email") String email);
 }

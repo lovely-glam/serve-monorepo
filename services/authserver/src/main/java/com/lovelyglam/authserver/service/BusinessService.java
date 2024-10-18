@@ -7,4 +7,5 @@ import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 public interface BusinessService {
     BusinessRegisterResponse registerBusinessAccount(BusinessRegisterRequest request);
     ShopAccountResponse verifyBusinessAccount(String businessEmail);
+    ShopAccountResponse isIdentityExisted(String identity);
 }

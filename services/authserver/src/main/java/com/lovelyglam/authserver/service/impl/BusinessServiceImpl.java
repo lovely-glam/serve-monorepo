@@ -10,6 +10,7 @@ import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 import com.lovelyglam.database.model.entity.ShopAccount;
 import com.lovelyglam.database.model.entity.ShopProfile;
 import com.lovelyglam.database.model.exception.ActionFailedException;
+import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.model.exception.ValidationFailedException;
 import com.lovelyglam.database.repository.ShopAccountRepository;
 import com.lovelyglam.utils.general.UrlUtils;
@@ -86,5 +87,17 @@ public class BusinessServiceImpl implements BusinessService {
         } catch (Exception ex) {
             throw new ActionFailedException("Failed to active account");
         }
+    }
+
+    @Override
+    public ShopAccountResponse isIdentityExisted(String identity) {
+        var queryResult = shopAccountRepository.findShopAccountByBusinessEmail(identity).orElseThrow(() -> new NotFoundException("Not found account"));
+        return ShopAccountResponse.builder()
+            .username(queryResult.getUsername())
+            .id(queryResult.getId())
+            .email(queryResult.getEmail())
+            .isActive(queryResult.isActive())
+            .isVerified(true)
+            .build();
     }
 }
