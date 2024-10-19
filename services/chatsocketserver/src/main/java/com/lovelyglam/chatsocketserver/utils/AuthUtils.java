@@ -28,20 +28,26 @@ public class AuthUtils {
             var chatUser = ChatUser.builder()
             .username(username)
             .build();
-            auth.getAuthorities().stream().forEach(role -> {
-                if (role.getAuthority().equals("ROLE_USER")) {
+            auth.getAuthorities().stream()
+            .map(role -> role.getAuthority())
+            .filter(authority -> authority.equals("ROLE_USER") || authority.equals("ROLE_SHOP"))
+            .findFirst()
+            .ifPresentOrElse(authority -> {
+                if (authority.equals("ROLE_USER")) {
                     chatUser.setRole("ROLE_USER");
-                    var user = userAccountRepository.findUserAccountByUsername(username).orElseThrow();
+                    var user = userAccountRepository.findUserAccountByUsername(username)
+                            .orElseThrow(() -> new AuthFailedException("User account not found"));
                     chatUser.setId(user.getId());
-                    return;
-                }
-                if (role.getAuthority().equals("ROLE_SHOP")) {
+                } else if (authority.equals("ROLE_SHOP")) {
                     chatUser.setRole("ROLE_SHOP");
-                    var user = shopAccountRepository.findShopAccountByBusinessEmail(username).orElseThrow();
+                    var user = shopAccountRepository.findShopAccountByUsername(username)
+                            .orElseThrow(() -> new AuthFailedException("Shop account not found"));
                     chatUser.setId(user.getId());
-                    return;
                 }
+            }, () -> {
+                throw new AuthFailedException("User has no valid roles assigned");
             });
+
             return chatUser;
         } catch (Exception ex) {
             throw new AuthFailedException("This user is't authentication, please login again");

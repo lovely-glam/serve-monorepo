@@ -31,7 +31,7 @@ public class RestSecurityConfig {
                 auth.requestMatchers("/auth/**", "/pings/**", "/api-docs/**", "/swagger-ui/**", "/ws/**").permitAll();
                 auth.anyRequest().authenticated();
             })
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(this.customerJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(this.businessJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
