@@ -2,6 +2,7 @@ package com.lovelyglam.authserver.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +40,7 @@ public class OTPVerifyController {
                                 .content(resultBusiness)
                                 .message("Verify OTP Success")
                                 .isSuccess(true)
+                                .status(HttpStatus.OK)
                                 .requestTime(LocalDateTime.now())
                                 .build());
             default:
@@ -62,6 +64,7 @@ public class OTPVerifyController {
                                 .content("Check email for OTP")
                                 .message("Verify OTP Success")
                                 .isSuccess(true)
+                                .status(HttpStatus.OK)
                                 .requestTime(LocalDateTime.now())
                                 .build());
             default:

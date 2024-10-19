@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class ShopProfileController {
                         .content(result)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
+                        .requestTime(LocalDateTime.now())
                         .message("Query Success")
                         .build()
         );
@@ -48,6 +50,7 @@ public class ShopProfileController {
                         .content(result)
                         .isSuccess(true)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .message("Query Success")
                         .build()
         );
@@ -59,6 +62,7 @@ public class ShopProfileController {
                 ResponseObject.builder()
                         .code("GET_SHOP_OUTSTANDING_SUCCESS")
                         .content(result)
+                        .requestTime(LocalDateTime.now())
                         .isSuccess(true)
                         .status(HttpStatus.OK)
                         .message("Query Success")

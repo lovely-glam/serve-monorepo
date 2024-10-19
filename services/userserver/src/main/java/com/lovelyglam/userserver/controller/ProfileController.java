@@ -45,6 +45,7 @@ public class ProfileController {
                 .isSuccess(true)
                 .status(HttpStatus.OK)
                 .message("Query Success")
+                .requestTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.ok().body(responseObject);
     }
@@ -59,6 +60,7 @@ public class ProfileController {
                 .isSuccess(true)
                 .status(HttpStatus.OK)
                 .message("Password changed successfully")
+                .requestTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.ok().body(responseObject);
     }

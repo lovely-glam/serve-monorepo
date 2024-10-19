@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class BookingController {
                         .content(result)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
+                        .requestTime(LocalDateTime.now())
                         .message("Query Success")
                         .build()
         );
@@ -57,6 +59,7 @@ public class BookingController {
                         .content(result)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
+                        .requestTime(LocalDateTime.now())
                         .message("Query Success")
                         .build()
         );
@@ -71,6 +74,7 @@ public class BookingController {
                         .code("GET_BOOKING_DETAIL_SUCCESS")
                         .content(result)
                         .isSuccess(true)
+                        .requestTime(LocalDateTime.now())
                         .status(HttpStatus.OK)
                         .message("Query Success")
                         .build()
@@ -85,6 +89,7 @@ public class BookingController {
                 .code("GET_BOOKING_DETAIL_SUCCESS")
                 .content(result)
                 .isSuccess(true)
+                .requestTime(LocalDateTime.now())
                 .status(HttpStatus.OK)
                 .message("Query Success")
                 .build();

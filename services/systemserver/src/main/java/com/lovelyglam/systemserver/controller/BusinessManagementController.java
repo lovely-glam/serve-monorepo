@@ -4,18 +4,21 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import com.lovelyglam.database.model.constant.PaymentStatus;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
 import com.lovelyglam.systemserver.service.BusinessManagerService;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -58,6 +61,7 @@ public class BusinessManagementController {
                         .code("GET_BOOKING_PAYMENT_SUCCESS")
                         .content(result)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .isSuccess(true)
                         .message("Query Success")
                         .build()
@@ -80,6 +84,7 @@ public class BusinessManagementController {
                         .code("GET_BOOKING_PAYMENT_SUCCESS")
                         .content(result)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .isSuccess(true)
                         .message("Query Success")
                         .build()

@@ -1,13 +1,12 @@
 package com.lovelyglam.nailserver.service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Collection;
+
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.BookingResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
-
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.sql.Date;
 
 public interface BookingService {
     PaginationResponse<BookingResponse> getBookingsByShopId(SearchRequestParamsDto request);

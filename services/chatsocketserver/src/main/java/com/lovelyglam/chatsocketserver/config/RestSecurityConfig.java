@@ -1,5 +1,6 @@
 package com.lovelyglam.chatsocketserver.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.lovelyglam.chatsocketserver.security.BusinessJwtAuthenticationFilter;
 import com.lovelyglam.chatsocketserver.security.CustomerJwtAuthenticationFilter;
+import com.lovelyglam.chatsocketserver.security.GlamAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +25,12 @@ public class RestSecurityConfig {
     private final CorsConfig corsConfig;
     private final BusinessJwtAuthenticationFilter businessJwtAuthenticationFilter;
     private final CustomerJwtAuthenticationFilter customerJwtAuthenticationFilter;
+    @Qualifier("glamAuthenticationEntryPoint")
+    private final GlamAuthenticationEntryPoint glamAuthenticationEntryPoint;
     @Bean
     SecurityFilterChain authenticationFitterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+        .exceptionHandling(exception -> exception.authenticationEntryPoint(glamAuthenticationEntryPoint))
         .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
             .authorizeHttpRequests((auth) -> {
                 auth.requestMatchers("/auth/**", "/pings/**", "/api-docs/**", "/swagger-ui/**", "/ws/**").permitAll();

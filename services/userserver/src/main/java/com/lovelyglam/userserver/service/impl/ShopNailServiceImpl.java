@@ -74,7 +74,7 @@ public class ShopNailServiceImpl implements ShopNailService {
     @Override
     public PaginationResponse<NailServiceResponse> getShopNailServicesByShopId(BigDecimal shopId, SearchRequestParamsDto request) {
         try {
-            var shop = shopRepository.findById(shopId)
+            shopRepository.findById(shopId)
                     .orElseThrow(() -> new NotFoundException(String.format("Not found Shop with id: %s", shopId.toString())));
 
             Page<NailServiceResponse> orderPage = nailShopRepository.searchByParameterAndShopId(request.search(), request.pagination(), shopId)
