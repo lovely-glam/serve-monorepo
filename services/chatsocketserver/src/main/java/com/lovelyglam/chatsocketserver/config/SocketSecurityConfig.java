@@ -14,8 +14,9 @@ import org.springframework.security.messaging.access.intercept.MessageMatcherDel
 public class SocketSecurityConfig {
     @Bean
     AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-         messages.simpDestMatchers("/ws/**").fullyAuthenticated()
+         messages.simpDestMatchers("/ws/**").authenticated()
          .nullDestMatcher().authenticated()
+         .simpTypeMatchers(SimpMessageType.CONNECT, SimpMessageType.DISCONNECT, SimpMessageType.OTHER).permitAll()
          .simpTypeMatchers(SimpMessageType.MESSAGE, SimpMessageType.SUBSCRIBE).authenticated()
                  .anyMessage().authenticated();
         return messages.build();

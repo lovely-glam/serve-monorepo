@@ -9,6 +9,7 @@ import com.lovelyglam.chatsocketserver.model.constant.MessageStatus;
 import com.lovelyglam.chatsocketserver.model.dto.ChatMessageRequest;
 import com.lovelyglam.chatsocketserver.model.dto.ChatMessageResponse;
 import com.lovelyglam.chatsocketserver.model.dto.ChatRoom;
+import com.lovelyglam.chatsocketserver.model.dto.ChatRoomResponse;
 import com.lovelyglam.chatsocketserver.service.ChatService;
 import com.lovelyglam.chatsocketserver.utils.AuthUtils;
 import com.lovelyglam.database.model.entity.ChatBox;
@@ -103,6 +104,20 @@ public class ChatServiceImpl implements ChatService {
             }).toList();
         } else {
             throw new ValidationFailedException("This room is not your own");
+        }
+    }
+
+    @Override
+    public Collection<ChatRoomResponse> getAllRoomOfShop() {
+        var userAuth = authUtils.getUserAccountFromAuthentication();
+        if (userAuth.getRole().equals("ROLE_SHOP")) {
+            return chatBoxRepository.findChatBoxByShopId(userAuth.getId()).stream().map(entity -> ChatRoomResponse.builder()
+            .id(entity.getId())
+            .userAvatar(entity.getUserAccount().getAvatarUrl())
+            .username(entity.getUserAccount().getFullname())
+            .build()).toList();
+        } else {
+            throw new ValidationFailedException("This method is only made for shop");
         }
     }
 }

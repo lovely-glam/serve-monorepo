@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class ShopNailController {
                         .code("GET_NAIL_SERVICES_SUCCESS")
                         .content(result)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .isSuccess(true)
                         .message("Query Success")
                         .build()
@@ -48,6 +50,7 @@ public class ShopNailController {
                         .content(result)
                         .isSuccess(true)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .message("Query Success")
                         .build()
         );
@@ -71,6 +74,7 @@ public class ShopNailController {
                         .code("GET_NAIL_SERVICES_SUCCESS")
                         .content(result)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .isSuccess(true)
                         .message("Query Success")
                         .build()

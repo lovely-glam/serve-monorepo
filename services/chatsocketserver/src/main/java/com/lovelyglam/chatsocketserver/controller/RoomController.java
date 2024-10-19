@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,20 @@ public class RoomController {
             .content(result)
             .isSuccess(true)
             .message("Create Room Success")
+            .status(HttpStatus.OK)
+            .requestTime(LocalDateTime.now())
+            .build()
+        );
+    }
+    @GetMapping
+    public ResponseEntity<ResponseObject> getMyChatBoxList () {
+        var result = chatService.getAllRoomOfShop();
+        return ResponseEntity.ok(
+            ResponseObject.builder()
+            .code("Get Room Success")
+            .content(result)
+            .isSuccess(true)
+            .message("Query Success")
             .status(HttpStatus.OK)
             .requestTime(LocalDateTime.now())
             .build()

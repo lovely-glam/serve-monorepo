@@ -90,27 +90,22 @@ public class ChatSocketServerConfig implements WebSocketMessageBrokerConfigurer 
                 assert accessor != null;
                 var cmd = accessor.getCommand();
                 if (VALID_COMMANDS.contains(cmd)) {
-                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                        String authorizationHeader = accessor.getFirstNativeHeader("Authorization");
-                        assert authorizationHeader != null;
-                        String token = authorizationHeader.substring(7);
+                    String authorizationHeader = accessor.getFirstNativeHeader("Authorization");
+                    assert authorizationHeader != null;
+                    String token = authorizationHeader.substring(7);
 
-                        UserClaims claims = jwtService.getUserClaimsFromJwt(token, TokenType.ACCESS_TOKEN);
-                        UserDetails userDetails = null;
-                        if (claims.getRole().equals("ROLE_USER")) {
-                            userDetails = customerUserDetailService.loadUserByUsername(claims.getUsername());
-                        } else {
-                            userDetails = shopUserDetailService.loadUserByUsername(claims.getUsername());
-                        }
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-                        accessor.setUser(usernamePasswordAuthenticationToken);
+                    UserClaims claims = jwtService.getUserClaimsFromJwt(token, TokenType.ACCESS_TOKEN);
+                    UserDetails userDetails = null;
+                    if (claims.getRole().equals("ROLE_USER")) {
+                        userDetails = customerUserDetailService.loadUserByUsername(claims.getUsername());
                     } else {
-                        var secContext = SecurityContextHolder.getContext().getAuthentication();
-                        accessor.setUser(secContext);
+                        userDetails = shopUserDetailService.loadUserByUsername(claims.getUsername());
                     }
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+                    accessor.setUser(usernamePasswordAuthenticationToken);
                 }
 
                 return message;

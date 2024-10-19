@@ -1,6 +1,7 @@
 package com.lovelyglam.database.repository;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,7 @@ public interface ChatBoxRepository extends BaseRepository<ChatBox, BigDecimal> {
         @Param(value = "shopId") BigDecimal shopId,
         @Param(value = "userId") BigDecimal userId
     );
+
+    @Query(value = "SELECT cb FROM chat_boxes cb WHERE cb.shopProfile.id = :shopId")
+    Collection<ChatBox> findChatBoxByShopId (@Param(value = "shopId") BigDecimal shopId);
 }
