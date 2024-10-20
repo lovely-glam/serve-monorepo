@@ -30,7 +30,7 @@ public class ProfileServiceImpl implements ProfileService {
         .username(userAccount.getUsername())
         .avatarUrl(userAccount.getAvatarUrl())
         .fullName(userAccount.getFullname())
-        .email(userAccount.getAvatarUrl())
+        .email(userAccount.getEmail())
         .build();
     }
 

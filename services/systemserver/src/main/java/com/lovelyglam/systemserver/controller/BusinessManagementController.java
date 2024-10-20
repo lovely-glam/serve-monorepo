@@ -90,11 +90,55 @@ public class BusinessManagementController {
                         .build()
         );
     }
+    @GetMapping("get-all-accepted-booking-payments/{shopId}")
+    public ResponseEntity<ResponseObject> getAcceptedBookingPaymentsByShop(
+            @PathVariable BigDecimal shopId,
+            @Schema
+            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            @RequestParam(name = "q", required = false) String query){
+        var searchQuery = SearchRequestParamsDto.builder()
+                .search(query)
+                .pageable(pageable)
+                .build();
+        var result = businessManagerService.getAcceptedBookingPaymentsByShopId(searchQuery, shopId);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .code("GET_BOOKING_PAYMENT_SUCCESS")
+                        .content(result)
+                        .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
+                        .isSuccess(true)
+                        .message("Query Success")
+                        .build()
+        );
+    }
+
+    @GetMapping("get-accepted-booking-payments")
+    public ResponseEntity<ResponseObject> getAcceptedBookingPayments(
+            @Schema
+            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            @RequestParam(name = "q", required = false) String query){
+        var searchQuery = SearchRequestParamsDto.builder()
+                .search(query)
+                .pageable(pageable)
+                .build();
+        var result = businessManagerService.getAcceptedBookingPayments(searchQuery);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .code("GET_ACCEPTED_BOOKING_PAYMENT_SUCCESS")
+                        .content(result)
+                        .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
+                        .isSuccess(true)
+                        .message("Query Success")
+                        .build()
+        );
+    }
 
     @GetMapping("get-completed-payment")
     public ResponseEntity<ResponseObject> getPaymentSummary() {
 
-            Map<String, Object> summary = businessManagerService.getCompletedPayment();
+            Map<String, Object> summary = businessManagerService.getCompletedOutComePayment();
             return ResponseEntity.ok(ResponseObject.builder()
                     .code("GET_PAYMENT_SUMMARY_SUCCESS")
                     .content(summary)
