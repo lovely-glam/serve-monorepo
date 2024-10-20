@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.constant.PaymentStatus;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.BookingPaymentResponse;
@@ -105,7 +106,83 @@ public class BusinessManagementServiceImpl implements BusinessManagerService {
                                             "%" + item.getValue().toLowerCase() + "%"));
                                 }
                             }
-                            predicates.add(criteriaBuilder.equal(root.get("booking").get("shopService").get("shopProfile").get("id"), account.getId()));
+                            predicates.add(criteriaBuilder.equal(root.get("booking").get("shopService").get("shopProfile").get("id"), shopId));
+
+                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                        };
+                    }).map(item -> BookingPaymentResponse.builder()
+                            .id(item.getId())
+                            .nailService(item.getBooking().getShopService().getName())
+                            .paymentStatus(item.getPaymentStatus())
+                            .totalPayment(item.getTotalPayment())
+                            .user(item.getBooking().getUserAccount().getUsername())
+                            .shopName(item.getBooking().getShopService().getName())
+                            .build());
+            return convert(orderPage);
+
+        } catch (Exception ex) {
+            throw new ActionFailedException(
+                    String.format("Get booking payments failed with reason: %s", ex.getMessage()));
+        }
+    }
+
+    @Override
+    public PaginationResponse<BookingPaymentResponse> getAcceptedBookingPaymentsByShopId(SearchRequestParamsDto request, BigDecimal shopId) {
+        var account = authUtils.getSystemAccountFromAuthentication();
+        if (account == null) {
+            throw new AuthFailedException("Require system account!!!");
+        }
+        try {
+            Page<BookingPaymentResponse> orderPage = bookingPaymentRepository
+                    .searchByParameter(request.search(), request.pagination(), (param) -> {
+                        return (root, query, criteriaBuilder) -> {
+                            List<Predicate> predicates = new ArrayList<>();
+                            if (param != null && !param.isEmpty()) {
+                                for (Map.Entry<String, String> item : param.entrySet()) {
+                                    predicates.add(criteriaBuilder.like(
+                                            criteriaBuilder.lower(root.get(item.getKey()).as(String.class)),
+                                            "%" + item.getValue().toLowerCase() + "%"));
+                                }
+                            }
+                            predicates.add(criteriaBuilder.equal(root.get("booking").get("shopService").get("shopProfile").get("id"), shopId));
+                            predicates.add(criteriaBuilder.equal(root.get("booking").get("appointmentStatus"), AppointmentStatus.ACCEPTED));
+                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                        };
+                    }).map(item -> BookingPaymentResponse.builder()
+                            .id(item.getId())
+                            .nailService(item.getBooking().getShopService().getName())
+                            .paymentStatus(item.getPaymentStatus())
+                            .totalPayment(item.getTotalPayment())
+                            .user(item.getBooking().getUserAccount().getUsername())
+                            .shopName(item.getBooking().getShopService().getName())
+                            .build());
+            return convert(orderPage);
+
+        } catch (Exception ex) {
+            throw new ActionFailedException(
+                    String.format("Get booking payments failed with reason: %s", ex.getMessage()));
+        }
+    }
+
+    @Override
+    public PaginationResponse<BookingPaymentResponse> getAcceptedBookingPayments(SearchRequestParamsDto request) {
+        var account = authUtils.getSystemAccountFromAuthentication();
+        if (account == null) {
+            throw new AuthFailedException("Require system account!!!");
+        }
+        try {
+            Page<BookingPaymentResponse> orderPage = bookingPaymentRepository
+                    .searchByParameter(request.search(), request.pagination(), (param) -> {
+                        return (root, query, criteriaBuilder) -> {
+                            List<Predicate> predicates = new ArrayList<>();
+                            if (param != null && !param.isEmpty()) {
+                                for (Map.Entry<String, String> item : param.entrySet()) {
+                                    predicates.add(criteriaBuilder.like(
+                                            criteriaBuilder.lower(root.get(item.getKey()).as(String.class)),
+                                            "%" + item.getValue().toLowerCase() + "%"));
+                                }
+                            }
+                            predicates.add(criteriaBuilder.equal(root.get("booking").get("appointmentStatus"), AppointmentStatus.ACCEPTED));
 
                             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                         };
@@ -126,7 +203,7 @@ public class BusinessManagementServiceImpl implements BusinessManagerService {
     }
 
     @Override
-    public Map<String, Object> getCompletedPayment() {
+    public Map<String, Object> getCompletedOutComePayment() {
         var account = authUtils.getSystemAccountFromAuthentication();
         if (account == null) {
             throw new AuthFailedException("Require system account!!!");

@@ -6,14 +6,10 @@ import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.CustomerAccountManagementResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.dto.response.ProfileResponse;
-import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 
-public interface AccountService {
+public interface CustomerAccountService {
     ProfileResponse disableUserAccount(BigDecimal id);
     ProfileResponse activeUserAccount(BigDecimal id);
-    ShopAccountResponse disableShopAccount(BigDecimal id);
-    ShopAccountResponse activeShopAccount(BigDecimal id);
     ProfileResponse getUserAccount(BigDecimal id);
-    ShopAccountResponse getShopAccount(BigDecimal id);
     PaginationResponse<CustomerAccountManagementResponse> getCustomerAccounts (SearchRequestParamsDto request);
 }
