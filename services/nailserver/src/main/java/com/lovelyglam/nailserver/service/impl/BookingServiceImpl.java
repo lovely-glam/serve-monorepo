@@ -3,11 +3,13 @@ package com.lovelyglam.nailserver.service.impl;
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.constant.PaymentStatus;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
+import com.lovelyglam.database.model.dto.response.BookingPaymentResponse;
 import com.lovelyglam.database.model.dto.response.BookingResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.entity.Booking;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
+import com.lovelyglam.database.repository.BookingPaymentRepository;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.database.repository.NailServiceRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
@@ -30,6 +32,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final NailServiceRepository nailServiceRepository;
     private final UserAccountRepository userAccountRepository;
+    private final BookingPaymentRepository bookingPaymentRepository;
     private final AuthUtils authUtils;
 
     @Override
@@ -123,6 +126,9 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse getBookingById(Long id) {
         return null;
     }
+
+
+
     public static <T> PaginationResponse<T> convert(Page<T> page) {
         return new PaginationResponse<>(
                 page.getContent(),
