@@ -2,7 +2,7 @@ package com.lovelyglam.systemserver.controller;
 
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.ResponseObject;
-import com.lovelyglam.systemserver.service.AccountService;
+import com.lovelyglam.systemserver.service.CustomerAccountService;
 import com.lovelyglam.systemserver.service.NailAccountService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @RequestMapping(path = "account-management")
 public class AccountController {
-    private final AccountService accountService;
+    private final CustomerAccountService accountService;
     private final NailAccountService nailAccountService;
 
     @PatchMapping("users/disable/{id}")
@@ -112,7 +112,7 @@ public class AccountController {
         return ResponseEntity.ok().body(responseObject);
     }
 
-    @GetMapping("user-accounts")
+    @GetMapping("users")
     public ResponseEntity<ResponseObject> getUserAccounts(
             @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable,
             @RequestParam(name = "q", required = false) String query) {
@@ -120,7 +120,7 @@ public class AccountController {
                 .search(query)
                 .wrapSort(pageable)
                 .build();
-        var result = accountService.getUserAccounts(queryDto);
+        var result = accountService.getCustomerAccounts(queryDto);
         return ResponseEntity.ok(ResponseObject.builder()
                 .code("GET_USER_ACCOUNT_LIST_SUCCESS")
                 .content(result)
@@ -131,7 +131,7 @@ public class AccountController {
                 .build());
     }
 
-    @GetMapping("nail-accounts")
+    @GetMapping("shops")
     public ResponseEntity<ResponseObject> getShopAccounts(
             @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable,
             @RequestParam(name = "q", required = false) String query) {

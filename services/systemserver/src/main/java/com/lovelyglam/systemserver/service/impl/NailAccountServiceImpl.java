@@ -1,29 +1,29 @@
 package com.lovelyglam.systemserver.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
-import com.lovelyglam.database.model.dto.response.ProfileResponse;
 import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 import com.lovelyglam.database.model.entity.ShopAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.ShopAccountRepository;
-import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.systemserver.service.NailAccountService;
 import com.lovelyglam.systemserver.util.AuthUtils;
+
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 @Service

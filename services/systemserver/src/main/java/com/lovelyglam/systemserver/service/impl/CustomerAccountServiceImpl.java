@@ -11,18 +11,16 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
+import com.lovelyglam.database.model.dto.response.CustomerAccountManagementResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.dto.response.ProfileResponse;
-import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
-import com.lovelyglam.database.model.entity.ShopAccount;
 import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
-import com.lovelyglam.database.repository.ShopAccountRepository;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.email.service.MailSenderService;
-import com.lovelyglam.systemserver.service.AccountService;
+import com.lovelyglam.systemserver.service.CustomerAccountService;
 import com.lovelyglam.systemserver.util.AuthUtils;
 
 import jakarta.persistence.criteria.Predicate;
@@ -30,9 +28,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AccountServiceImpl implements AccountService {
+public class CustomerAccountServiceImpl implements CustomerAccountService {
     private final UserAccountRepository userAccountRepository;
-    private final ShopAccountRepository shopAccountRepository;
     private final AuthUtils authUtils;
     private final MailSenderService mailSenderService;
     private final TemplateEngine templateEngine;
@@ -151,18 +148,15 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-
-
-
-
     @Override
-    public PaginationResponse<ProfileResponse> getUserAccounts(SearchRequestParamsDto request) {
+    public PaginationResponse<CustomerAccountManagementResponse> getCustomerAccounts(SearchRequestParamsDto request) {
         return userAccountRepository.searchByParameter(request.search(), request.pagination(),(entity) -> {
-            return ProfileResponse.builder()
+            return CustomerAccountManagementResponse.builder()
             .id(entity.getId())
             .username(entity.getUsername())
-            .avatarUrl(entity.getAvatarUrl())
             .email(entity.getEmail())
+            .status(entity.isActive())
+            .createdDate(entity.getCreatedDate())
             .fullName(entity.getFullname())
             .build();
         }, (param) -> {
@@ -176,5 +170,4 @@ public class AccountServiceImpl implements AccountService {
             };
         });
     }
-
 }
