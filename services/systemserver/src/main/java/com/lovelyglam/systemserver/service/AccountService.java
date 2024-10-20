@@ -10,9 +10,6 @@ import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
 public interface AccountService {
     ProfileResponse disableUserAccount(BigDecimal id);
     ProfileResponse activeUserAccount(BigDecimal id);
-    ShopAccountResponse disableShopAccount(BigDecimal id);
-    ShopAccountResponse activeShopAccount(BigDecimal id);
     ProfileResponse getUserAccount(BigDecimal id);
-    ShopAccountResponse getShopAccount(BigDecimal id);
-    PaginationResponse<ProfileResponse> getCustomerAccounts (SearchRequestParamsDto request);
+    PaginationResponse<ProfileResponse> getUserAccounts (SearchRequestParamsDto request);
 }
