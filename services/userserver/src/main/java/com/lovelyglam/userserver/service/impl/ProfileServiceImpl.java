@@ -44,7 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .orElseThrow(() -> new NotFoundException("Not Found User Account"));
         userAccountDb.setEmail(userAccountRequest.getEmail());
         userAccountDb.setAvatarUrl(userAccountRequest.getAvatarUrl());
-        userAccountDb.setAvatarUrl(userAccountRequest.getFullName());
+        userAccountDb.setFullname(userAccountRequest.getFullName());
         try {
             var item = userAccountRepository.save(userAccountDb);
             return ProfileResponse.builder()
