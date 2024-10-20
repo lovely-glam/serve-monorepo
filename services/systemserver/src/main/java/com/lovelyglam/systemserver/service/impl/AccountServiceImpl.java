@@ -11,6 +11,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
+import com.lovelyglam.database.model.dto.response.CustomerAccountManagementResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.dto.response.ProfileResponse;
 import com.lovelyglam.database.model.dto.response.ShopAccountResponse;
@@ -252,13 +253,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public PaginationResponse<ProfileResponse> getCustomerAccounts(SearchRequestParamsDto request) {
+    public PaginationResponse<CustomerAccountManagementResponse> getCustomerAccounts(SearchRequestParamsDto request) {
         return userAccountRepository.searchByParameter(request.search(), request.pagination(),(entity) -> {
-            return ProfileResponse.builder()
+            return CustomerAccountManagementResponse.builder()
             .id(entity.getId())
             .username(entity.getUsername())
-            .avatarUrl(entity.getAvatarUrl())
             .email(entity.getEmail())
+            .status(entity.isActive())
+            .createdDate(entity.getCreatedDate())
             .fullName(entity.getFullname())
             .build();
         }, (param) -> {
