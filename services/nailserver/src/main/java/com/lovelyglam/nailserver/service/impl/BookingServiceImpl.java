@@ -1,38 +1,36 @@
 package com.lovelyglam.nailserver.service.impl;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.lovelyglam.database.model.constant.AppointmentStatus;
-import com.lovelyglam.database.model.constant.PaymentStatus;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
-import com.lovelyglam.database.model.dto.response.BookingPaymentResponse;
 import com.lovelyglam.database.model.dto.response.BookingResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.entity.Booking;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
-import com.lovelyglam.database.repository.BookingPaymentRepository;
+import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.BookingRepository;
-import com.lovelyglam.database.repository.NailServiceRepository;
-import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.nailserver.service.BookingService;
 import com.lovelyglam.nailserver.utils.AuthUtils;
+
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
-    private final NailServiceRepository nailServiceRepository;
-    private final UserAccountRepository userAccountRepository;
-    private final BookingPaymentRepository bookingPaymentRepository;
     private final AuthUtils authUtils;
 
     @Override
@@ -114,7 +112,7 @@ public class BookingServiceImpl implements BookingService {
                 .map(booking -> BookingResponse.builder()
                         .id(booking.getId()) // Assuming id is BigDecimal, or cast appropriately
                         .shopServiceName(booking.getShopService().getName()) // Assuming ShopService has a getName() method
-                        .userAccountName(booking.getUserAccount().getUsername()) // Assuming UserAccount has a getUsername() method
+                        .userAccountName(booking.getUserAccount().getFullname()) // Assuming UserAccount has a getUsername() method
                         .makingDay(booking.getMakingDay())
                         .startTime(booking.getStartTime())
                         .status(booking.getAppointmentStatus())
@@ -123,8 +121,16 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingResponse getBookingById(Long id) {
-        return null;
+    public BookingResponse getBookingById(BigDecimal id) {
+        var response = bookingRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found booking with this id"));
+        return BookingResponse.builder()
+            .id(response.getId())
+            .shopServiceName(response.getShopService().getName())
+            .userAccountName(response.getUserAccount().getFullname())
+            .makingDay(response.getMakingDay())
+            .startTime(response.getStartTime())
+            .status(response.getAppointmentStatus())
+        .build();
     }
 
 
