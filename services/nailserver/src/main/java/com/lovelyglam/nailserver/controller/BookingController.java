@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @RestController
@@ -38,6 +40,7 @@ public class BookingController {
                 ResponseObject.builder()
                         .code("GET_BOOKINGS_SUCCESS")
                         .content(result)
+                        .requestTime(LocalDateTime.now())
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .message("Query Success")
@@ -54,6 +57,7 @@ public class BookingController {
                         .content(bookings)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
+                        .requestTime(LocalDateTime.now())
                         .message("Query Success")
                         .build()
         );
@@ -67,9 +71,23 @@ public class BookingController {
                         .code("GET_BOOKINGS_SUCCESS")
                         .content(bookings)
                         .status(HttpStatus.OK)
+                        .requestTime(LocalDateTime.now())
                         .isSuccess(true)
                         .message("Query Success")
                         .build()
+        );
+    }
+    public ResponseEntity<ResponseObject> getBookingById (BigDecimal id) {
+        var response = bookingService.getBookingById(id);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                .code("GET_BOOKING_SUCCESS")
+                .content(response)
+                .status(HttpStatus.OK)
+                .requestTime(LocalDateTime.now())
+                .isSuccess(true)
+                .message("Query Success")
+                .build()
         );
     }
 }

@@ -16,7 +16,6 @@ import com.lovelyglam.database.model.dto.response.BookingResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.entity.Booking;
 import com.lovelyglam.database.model.exception.ActionFailedException;
-import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.database.repository.NailServiceRepository;
@@ -160,10 +159,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public PaginationResponse<BookingResponse> getBookingsByUserId(SearchRequestParamsDto request) {
         var account = authUtils.getUserAccountFromAuthentication();
-        if (account == null) {
-            throw new AuthFailedException("No Account Login");
-        }
-
         try {
             Page<BookingResponse> orderPage = bookingRepository
                     .searchByParameter(request.search(), request.pagination(), (param) -> {

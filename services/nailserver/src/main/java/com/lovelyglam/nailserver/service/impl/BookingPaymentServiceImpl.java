@@ -1,5 +1,12 @@
 package com.lovelyglam.nailserver.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.BookingPaymentResponse;
@@ -7,35 +14,21 @@ import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.repository.BookingPaymentRepository;
-import com.lovelyglam.database.repository.BookingRepository;
-import com.lovelyglam.database.repository.NailServiceRepository;
-import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.nailserver.service.BookingPaymentService;
 import com.lovelyglam.nailserver.utils.AuthUtils;
+
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class BookingPaymentServiceImpl implements BookingPaymentService {
-    private final BookingRepository bookingRepository;
-    private final NailServiceRepository nailServiceRepository;
-    private final UserAccountRepository userAccountRepository;
     private final BookingPaymentRepository bookingPaymentRepository;
     private final AuthUtils authUtils;
     @Override
     public PaginationResponse<BookingPaymentResponse> getBookingPaymentsByShopId(SearchRequestParamsDto request) {
 
         var account = authUtils.getUserAccountFromAuthentication();
-        if (account == null) {
-            throw new AuthFailedException("Require system account!!!");
-        }
         try {
             Page<BookingPaymentResponse> orderPage = bookingPaymentRepository
                     .searchByParameter(request.search(), request.pagination(), (param) -> {
