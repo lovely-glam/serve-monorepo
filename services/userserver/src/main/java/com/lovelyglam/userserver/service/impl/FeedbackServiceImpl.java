@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.dto.request.FeedbackRequest;
@@ -30,6 +31,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final NailServiceFeedbackRepository nailServiceFeedbackRepository;
     private final AuthUtils authUtils;
 
+    @Override
+    @Transactional
     public List<FeedbackResponse> getFeedbacks() {
         return nailServiceFeedbackRepository.findRandomFeedback(9).stream().map((entity) -> {
             var shopProfile = entity.getId().getShopService().getShopProfile();
@@ -38,6 +41,10 @@ public class FeedbackServiceImpl implements FeedbackService {
             return FeedbackResponse.builder()
                     .id(entity.getSubId())
                     .shopId(shopProfile.getId())
+                    .shopAvatar(shopProfile.getAvatarUrl())
+                    .location(shopProfile.getAddress())
+                    .userAvatar(userAccount.getAvatarUrl())
+                    .service(entity.getId().getShopService().getName())
                     .shopName(shopProfile.getName())
                     .rating(shopProfile.getVote())
                     .reviewNumber(reviewNumber)
