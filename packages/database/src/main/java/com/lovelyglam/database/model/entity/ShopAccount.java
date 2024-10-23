@@ -20,7 +20,7 @@ import lombok.Setter;
 public class ShopAccount extends BaseEntity {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column(name = "email", columnDefinition = "VARCHAR(128)")
+    @Column(name = "email", columnDefinition = "VARCHAR(128)", unique = true)
     private String email;
     @Column(name = "hash_password", columnDefinition = "VARCHAR(64)")
     private String hashPassword;
