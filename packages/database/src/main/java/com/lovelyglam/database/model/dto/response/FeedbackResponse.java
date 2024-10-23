@@ -11,10 +11,14 @@ import lombok.Data;
 public class FeedbackResponse {
     private String id;
     private BigDecimal shopId;
+    private String shopAvatar;
     private String shopName;
+    private String location;
     private Double rating;
     private Integer reviewNumber;
     private String customerName;
+    private String userAvatar;
+    private String service;
     private LocalDateTime joinDate;
     private String feedback;
 }
