@@ -102,14 +102,21 @@ public class VNPayServiceImpl implements VNPayService {
     public int orderReturn(HttpServletRequest request) {
         Map<String, String> fields = new HashMap<>();
         for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements();) {
-            String fieldName = params.nextElement();
-            String fieldValue = request.getParameter(fieldName);
-            if (fieldValue != null && !fieldValue.isEmpty()) {
+            String fieldName = null;
+            String fieldValue = null;
+            try {
+                fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
+                fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
                 fields.put(fieldName, fieldValue);
             }
         }
 
         String vnpSecureHash = fields.remove("vnp_SecureHash");
+        fields.remove("vnp_SecureHashType");
         String signValue = utils.hashAllFields(fields);
         if (signValue.equals(vnpSecureHash)) {
             return "00".equals(request.getParameter("vnp_TransactionStatus")) ? 1 : 0;

@@ -102,10 +102,11 @@ public class PaymentServiceImpl implements PaymentService {
                     .totalPayment(item.getTotalPayment())
                     .nailService(entity.getShopService().getName())
                     .user(entity.getUserAccount().getFullname())
+                    .shopName(entity.getShopService().getShopProfile().getName())
                     .build();
                 }).toList();
             }
-            String status = paymentResponseDto.stream().anyMatch(item -> item.getPaymentStatus() == PaymentStatus.COMPLETED)? "PAID" : "PENDING";
+            String status = entity.getAppointmentStatus() == AppointmentStatus.PENDING? "PENDING" : "PAID";
             return BookingPaymentDetailResponse.builder()
                     .bookId(entity.getId())
                     .nailService(entity.getShopService().getName())

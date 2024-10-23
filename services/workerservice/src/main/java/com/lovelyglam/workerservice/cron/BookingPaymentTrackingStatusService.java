@@ -21,7 +21,6 @@ public class BookingPaymentTrackingStatusService {
     public void updatePaymentStatus() {
         LocalDateTime now = LocalDateTime.now();
         bookingPaymentRepository.updatePaymentStatusToTimeout(PaymentStatus.CANCELED, PaymentStatus.PENDING, now);
-        
         System.out.println("Updated all expired payment statuses to TIMEOUT.");
     }
 }
