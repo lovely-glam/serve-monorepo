@@ -83,7 +83,7 @@ public class NailPostServiceImpl implements NailPostService {
             .images(UrlUtils.convertUrlStringToList(queryResult.getImages(), ",").stream().toList())
         .build();
         } catch (Exception ex) {
-            throw new ActionFailedException("Can't add nail post");
+            throw new ActionFailedException("Can't add nail post",ex);
         }
     }
 
@@ -106,7 +106,7 @@ public class NailPostServiceImpl implements NailPostService {
             .images(UrlUtils.convertUrlStringToList(queryResult.getImages(), ",").stream().toList())
             .build();
         } catch (Exception ex) {
-            throw new ActionFailedException("Can't Update nail post");
+            throw new ActionFailedException("Can't Update nail post",ex);
         }
     }
 }

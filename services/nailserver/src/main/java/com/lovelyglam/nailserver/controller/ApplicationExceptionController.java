@@ -85,6 +85,7 @@ public class ApplicationExceptionController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseObject> somethingWrongException(Exception ex) {
+        ex.printStackTrace();
         var responseError = ResponseObject.builder()
         .isSuccess(false)
         .message(ex.getMessage())

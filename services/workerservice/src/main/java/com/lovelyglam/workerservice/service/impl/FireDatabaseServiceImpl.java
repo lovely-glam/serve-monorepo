@@ -41,7 +41,7 @@ public class FireDatabaseServiceImpl implements FileDatabaseService {
             fileObject.setFileName(nameUpdate);
             return fileService.uploadFile(fileObject);
         } catch (Exception ex ) {
-            throw new ActionFailedException("Failed to upload file");
+            throw new ActionFailedException("Failed to upload file",ex);
         }
     }
 }

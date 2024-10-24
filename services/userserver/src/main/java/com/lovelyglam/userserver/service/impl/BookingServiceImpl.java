@@ -58,7 +58,7 @@ public class BookingServiceImpl implements BookingService {
                     .build();
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Create booking failed with with reason: %s", ex.getMessage()));
+                    String.format("Create booking failed with with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -78,7 +78,7 @@ public class BookingServiceImpl implements BookingService {
             return convert(orderPage);
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get NailServices failed with with reason: %s", ex.getMessage()));
+                    String.format("Get NailServices failed with with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -110,7 +110,7 @@ public class BookingServiceImpl implements BookingService {
                     .build();
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get Booking failed with with reason: %s", ex.getMessage()));
+                    String.format("Get Booking failed with with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -132,7 +132,7 @@ public class BookingServiceImpl implements BookingService {
                     .status(item.getAppointmentStatus())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed update booking with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed update booking with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -152,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
                     .status(item.getAppointmentStatus())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed disable booking with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed disable booking with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -187,7 +187,7 @@ public class BookingServiceImpl implements BookingService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get shop services failed with reason: %s", ex.getMessage()));
+                    String.format("Get shop services failed with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -207,7 +207,7 @@ public class BookingServiceImpl implements BookingService {
                     .status(item.getAppointmentStatus())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed accept booking with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed accept booking with reason: %s", ex.getMessage()),ex);
         }
     }
 }

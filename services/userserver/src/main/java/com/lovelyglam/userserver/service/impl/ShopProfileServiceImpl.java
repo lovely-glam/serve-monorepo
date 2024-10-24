@@ -47,7 +47,7 @@ public class ShopProfileServiceImpl implements ShopProfileService {
             return convert(orderPage);
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get ShopProfiles failed with with reason: %s", ex.getMessage()));
+                    String.format("Get ShopProfiles failed with with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -81,7 +81,7 @@ public class ShopProfileServiceImpl implements ShopProfileService {
                     .build();
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get ShopProfile failed with with reason: %s", ex.getMessage()));
+                    String.format("Get ShopProfile failed with with reason: %s", ex.getMessage()),ex);
         }
 
     }

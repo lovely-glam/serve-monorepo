@@ -17,6 +17,7 @@ import com.lovelyglam.database.model.entity.ShopAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
+import com.lovelyglam.database.model.exception.ValidationFailedException;
 import com.lovelyglam.database.repository.ShopAccountRepository;
 import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.systemserver.service.NailAccountService;
@@ -44,7 +45,7 @@ public class NailAccountServiceImpl implements NailAccountService {
             throw new NotFoundException("Shop account not found");
         }
         if (!shopAccountDb.get().isActive())
-            throw new ActionFailedException("Shop account is not active");
+            throw new ValidationFailedException("Shop account is not active");
         shopAccountDb.get().setActive(false);
         mailSenderService.sendCustomMessage((message) -> {
             try {
@@ -58,7 +59,7 @@ public class NailAccountServiceImpl implements NailAccountService {
                 helper.setSubject("[Account Disabled - LOVELY GLAM]");
                 helper.setText(content, true); // Set as HTML
             } catch (Exception ex) {
-                throw new ActionFailedException("Failed to send account disabled email: " + ex.getMessage());
+                throw new ActionFailedException("Failed to send account disabled email: " + ex.getMessage(), ex);
             }
         });
         return getShopAccountResponse(shopAccountDb.get());
@@ -75,7 +76,7 @@ public class NailAccountServiceImpl implements NailAccountService {
             throw new NotFoundException("Shop account not found");
         }
         if (shopAccountDb.get().isActive())
-            throw new ActionFailedException("Shop account is active");
+            throw new ValidationFailedException("Shop account is active");
         shopAccountDb.get().setActive(true);
 
         mailSenderService.sendCustomMessage((message) -> {
@@ -114,7 +115,7 @@ public class NailAccountServiceImpl implements NailAccountService {
                     .isVerified(item.isVerified())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed to get shop account with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed to get shop account with reason: %s", ex.getMessage()), ex);
         }
     }
 
@@ -152,7 +153,7 @@ public class NailAccountServiceImpl implements NailAccountService {
                     .isVerified(item.isVerified())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed with reason: %s", ex.getMessage()), ex);
         }
 
     }

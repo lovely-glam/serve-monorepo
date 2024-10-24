@@ -63,7 +63,7 @@ public class BusinessServiceImpl implements BusinessService {
                     .createdDate(queryResult.getCreatedDate())
                 .build();
             } catch (Exception ex) {
-                throw new ActionFailedException(String.format("Failed to adding register business account with reason %s", ex.getMessage()));
+                throw new ActionFailedException(String.format("Failed to adding register business account with reason %s", ex.getMessage()), ex);
             }
         } else {
             throw new ValidationFailedException("Password And RePassword Is Not Match, Please Check Again");
@@ -72,7 +72,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     public ShopAccountResponse verifyBusinessAccount(String businessEmail) {
         var queryResult = shopAccountRepository.findShopAccountByBusinessEmail(businessEmail).orElseThrow(
-            () -> new ActionFailedException("Failed to verify this account with reason")
+            () -> new NotFoundException("Failed to verify this account with reason")
         );
         queryResult.setVerified(true);
         try {
@@ -85,7 +85,7 @@ public class BusinessServiceImpl implements BusinessService {
             .isVerified(true)
             .build();
         } catch (Exception ex) {
-            throw new ActionFailedException("Failed to active account");
+            throw new ActionFailedException("Failed to active account", ex);
         }
     }
 

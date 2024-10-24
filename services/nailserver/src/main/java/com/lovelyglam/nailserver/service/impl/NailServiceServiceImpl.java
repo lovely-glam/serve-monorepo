@@ -83,7 +83,7 @@ public class NailServiceServiceImpl implements NailServiceService {
                     .id(result.getId())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException("Can't create nail service");
+            throw new ActionFailedException("Can't create nail service",ex);
         }
     }
 
@@ -110,7 +110,7 @@ public class NailServiceServiceImpl implements NailServiceService {
                     .id(result.getId())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException("Can't update nail service");
+            throw new ActionFailedException("Can't update nail service",ex);
         }
     }
 

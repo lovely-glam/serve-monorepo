@@ -44,7 +44,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                         .build();
             } catch (Exception ex) {
                 throw new ActionFailedException(
-                        String.format("Failed to adding register customer account with reason %s", ex.getMessage()));
+                        String.format("Failed to adding register customer account with reason %s", ex.getMessage()), ex);
             }
         } else {
             throw new ValidationFailedException("Password And Repassword Is Not Match, Please Check Again");

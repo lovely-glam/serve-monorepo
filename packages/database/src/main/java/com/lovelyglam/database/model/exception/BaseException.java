@@ -9,6 +9,13 @@ public class BaseException extends RuntimeException {
         super(message);
     }
 
+    protected BaseException(Throwable throwable) {
+        super(throwable);
+        if (throwable != null) {
+            throwable.printStackTrace();
+        }
+    }
+
     public ResponseObject getErrorResponse() {
         return errorResponse;
     }

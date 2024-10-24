@@ -89,7 +89,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             .feedback(feedbackResult.getComment())
             .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Can't Create Feedback With Reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Can't Create Feedback With Reason: %s", ex.getMessage()),ex);
         }
     }
 

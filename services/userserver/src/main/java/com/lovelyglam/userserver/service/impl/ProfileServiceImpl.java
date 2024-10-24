@@ -55,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .avatarUrl(item.getAvatarUrl())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed update account with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed update account with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -80,7 +80,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .avatarUrl(item.getAvatarUrl())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed change account password with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed change account password with reason: %s", ex.getMessage()),ex);
         }
     }
 }
