@@ -47,7 +47,6 @@ public class ActionFailedException extends BaseException {
 
     public ActionFailedException(String message, Throwable e, String code) {
         super(e);
-        e.printStackTrace();
         this.errorResponse = ResponseObject.builder()
         .code(code)
         .requestTime(LocalDateTime.now())
