@@ -59,7 +59,7 @@ public class PaymentServiceImpl implements PaymentService {
             var result = bookingPaymentRepository.save(bookingPaymentEntity);
             return cb.apply(result);
         } catch (Exception ex) {
-            throw new ActionFailedException("Failed To Create Payment");
+            throw new ActionFailedException("Failed To Create Payment",ex);
         }
     }
 

@@ -57,7 +57,7 @@ public class OTPServiceImpl implements OTPService {
                     help.setText(content, true);
                 } catch (Exception ex) {
                     redisTemplate.opsForValue().getAndExpire(username, (long)0, TimeUnit.MINUTES);
-                    throw new ActionFailedException("Send OTP Failed");
+                    throw new ActionFailedException("Send OTP Failed", ex);
                 }
             });
         }
@@ -100,7 +100,7 @@ public class OTPServiceImpl implements OTPService {
             return json.trim();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new ActionFailedException("Failed to generate OTP Key");
+            throw new ActionFailedException("Failed to generate OTP Key", e);
         }
     }
 }

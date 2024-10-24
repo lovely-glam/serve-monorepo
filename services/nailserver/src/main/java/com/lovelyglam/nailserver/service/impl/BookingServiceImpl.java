@@ -68,7 +68,7 @@ public class BookingServiceImpl implements BookingService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get bookings failed with reason: %s", ex.getMessage()));
+                    String.format("Get bookings failed with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -85,7 +85,7 @@ public class BookingServiceImpl implements BookingService {
 
         } catch (Exception e) {
             throw new ActionFailedException(
-                    String.format("Get bookings failed with reason: %s", e.getMessage()));
+                    String.format("Get bookings failed with reason: %s", e.getMessage()),e);
         }
     }
 
@@ -103,7 +103,7 @@ public class BookingServiceImpl implements BookingService {
 
         } catch (Exception e) {
             throw new ActionFailedException(
-                    String.format("Get bookings failed with reason: %s", e.getMessage()));
+                    String.format("Get bookings failed with reason: %s", e.getMessage()),e);
         }
     }
 

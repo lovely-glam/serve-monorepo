@@ -83,7 +83,7 @@ public class BusinessManagementServiceImpl implements BusinessManagerService {
             return convert(orderPage);
         } catch (Exception  ex) {
             throw new ActionFailedException(
-                    String.format("Get booking payment failed with with reason: %s", ex.getMessage()));
+                    String.format("Get booking payment failed with with reason: %s", ex.getMessage()), ex);
         }
     }
 
@@ -122,7 +122,7 @@ public class BusinessManagementServiceImpl implements BusinessManagerService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get booking payments failed with reason: %s", ex.getMessage()));
+                    String.format("Get booking payments failed with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -160,7 +160,7 @@ public class BusinessManagementServiceImpl implements BusinessManagerService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get booking payments failed with reason: %s", ex.getMessage()));
+                    String.format("Get booking payments failed with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -198,7 +198,7 @@ public class BusinessManagementServiceImpl implements BusinessManagerService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get shop services failed with reason: %s", ex.getMessage()));
+                    String.format("Get shop services failed with reason: %s", ex.getMessage()),ex);
         }
     }
 

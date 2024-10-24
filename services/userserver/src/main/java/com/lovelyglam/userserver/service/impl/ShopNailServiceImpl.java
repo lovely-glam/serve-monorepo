@@ -36,7 +36,7 @@ public class ShopNailServiceImpl implements ShopNailService {
             return convert(orderPage);
         } catch (Exception  ex) {
             throw new ActionFailedException(
-                    String.format("Get NailServices failed with with reason: %s", ex.getMessage()));
+                    String.format("Get NailServices failed with with reason: %s", ex.getMessage()),ex);
         }
     }
     public static <T> PaginationResponse<T> convert(Page<T> page) {
@@ -67,7 +67,7 @@ public class ShopNailServiceImpl implements ShopNailService {
                     .build();
         } catch (Exception  ex) {
             throw new ActionFailedException(
-                    String.format("Get NailService failed with with reason: %s", ex.getMessage()));
+                    String.format("Get NailService failed with with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -89,7 +89,7 @@ public class ShopNailServiceImpl implements ShopNailService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get shop services failed with reason: %s", ex.getMessage()));
+                    String.format("Get shop services failed with reason: %s", ex.getMessage()),ex);
         }
     }
 

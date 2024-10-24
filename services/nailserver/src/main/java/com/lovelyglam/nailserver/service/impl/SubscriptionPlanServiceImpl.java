@@ -63,7 +63,7 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
                 return cb.apply(paymentApiRequest);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                throw new ActionFailedException("Failed to add subscription");
+                throw new ActionFailedException("Failed to add subscription",ex);
             }
     }
 

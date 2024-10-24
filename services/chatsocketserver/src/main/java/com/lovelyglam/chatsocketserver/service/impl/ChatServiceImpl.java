@@ -84,7 +84,7 @@ public class ChatServiceImpl implements ChatService {
             .build();
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new ActionFailedException("Fail to save message");
+            throw new ActionFailedException("Fail to save message", ex);
         }
     }
 

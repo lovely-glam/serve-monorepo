@@ -57,7 +57,7 @@ public class BookingPaymentServiceImpl implements BookingPaymentService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get booking payments failed with reason: %s", ex.getMessage()));
+                    String.format("Get booking payments failed with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -95,7 +95,7 @@ public class BookingPaymentServiceImpl implements BookingPaymentService {
 
         } catch (Exception ex) {
             throw new ActionFailedException(
-                    String.format("Get booking payments failed with reason: %s", ex.getMessage()));
+                    String.format("Get booking payments failed with reason: %s", ex.getMessage()),ex);
         }
     }
 

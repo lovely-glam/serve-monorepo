@@ -58,7 +58,7 @@ public class NailProfileServiceImpl implements NailProfileService {
             .phone(shopEntity.getPhone())
             .build();
         }catch(Exception ex) {
-            throw new ActionFailedException(String.format("Failed to update shop profile with reason %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed to update shop profile with reason %s", ex.getMessage()),ex);
         }
         
     }

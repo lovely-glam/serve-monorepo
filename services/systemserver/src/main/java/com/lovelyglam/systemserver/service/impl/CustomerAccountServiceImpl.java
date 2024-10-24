@@ -18,6 +18,7 @@ import com.lovelyglam.database.model.entity.UserAccount;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
+import com.lovelyglam.database.model.exception.ValidationFailedException;
 import com.lovelyglam.database.repository.UserAccountRepository;
 import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.systemserver.service.CustomerAccountService;
@@ -45,7 +46,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
             throw new NotFoundException("User account not found");
         }
         if (!userAccountDb.get().isActive())
-            throw new ActionFailedException("User account is not active");
+            throw new ValidationFailedException("User account is not active");
         userAccountDb.get().setActive(false);
 
         mailSenderService.sendCustomMessage((message) -> {
@@ -60,7 +61,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                 helper.setSubject("[Account Disabled - LOVELY GLAM]");
                 helper.setText(content, true);
             } catch (Exception ex) {
-                throw new ActionFailedException("Failed to send account disabled email: " + ex.getMessage());
+                throw new ActionFailedException("Failed to send account disabled email: " + ex.getMessage(), ex);
             }
         });
 
@@ -75,7 +76,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                     .avatarUrl(item.getAvatarUrl())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed disable with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed disable with reason: %s", ex.getMessage()),ex);
         }
     }
 
@@ -90,7 +91,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
             throw new NotFoundException("User account not found");
         }
         if (userAccountDb.get().isActive())
-            throw new ActionFailedException("User account is active");
+            throw new ValidationFailedException("User account is active");
         userAccountDb.get().setActive(true);
 
         mailSenderService.sendCustomMessage((message) -> {
@@ -105,7 +106,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                 helper.setSubject("[Account ReActive - LOVELY GLAM]");
                 helper.setText(content, true);
             } catch (Exception ex) {
-                throw new ActionFailedException("Failed to send account disabled email: " + ex.getMessage());
+                throw new ActionFailedException("Failed to send account disabled email: " + ex.getMessage(), ex);
             }
         });
 
@@ -120,7 +121,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                     .avatarUrl(item.getAvatarUrl())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed disable with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed disable with reason: %s", ex.getMessage()), ex);
         }
     }
 
@@ -144,7 +145,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                     .avatarUrl(item.getAvatarUrl())
                     .build();
         } catch (Exception ex) {
-            throw new ActionFailedException(String.format("Failed to get user account with reason: %s", ex.getMessage()));
+            throw new ActionFailedException(String.format("Failed to get user account with reason: %s", ex.getMessage()), ex);
         }
     }
 
