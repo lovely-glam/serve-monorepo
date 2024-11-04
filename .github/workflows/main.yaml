@@ -7,25 +7,8 @@ on:
         - 'packages/**'
     workflow_dispatch: 
 jobs:
-  glam-infisical-login:
-    name: glam-infisical-login
-    runs-on: arisa-server
-    outputs:
-      infisical_token: ${{steps.infisical-login.outputs.infisical_arisa_token}}
-    steps:
-      - name: Infisical Login
-        id: infisical-login
-        run: |
-          INFISICAL_TOKEN=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain)
-          echo "Token output: $INFISICAL_TOKEN" # Debug output
-          if [ -z "$INFISICAL_TOKEN" ]; then
-            echo "Error: Received empty token." >&2
-            exit 1
-          fi
-          echo "infisical_arisa_token=${INFISICAL_TOKEN}" >> "$GITHUB_OUTPUT"
   glam-deploy-serve-cd:
     name: glam-deploy-serve-cd
-    needs: [glam-infisical-login]
     uses: ./.github/workflows/build.yaml
     strategy:
       matrix:
@@ -46,6 +29,7 @@ jobs:
       INFISICAL_URL: ${{secrets.INFISICAL_URL}}
       INFISICAL_PROJECT_ID: ${{secrets.INFISICAL_PROJECT_ID}}
       DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      INFISICAL_TOKEN: ${{needs.glam-infisical-login.outputs.infisical_token}}
+      INFISICAL_CLIENT_ID: ${{secrets.INFISICAL_CLIENT_ID}}
+      INFISICAL_CLIENT_SECRET: ${{secrets.INFISICAL_CLIENT_SECRET}}
     
       

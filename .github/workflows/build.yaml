@@ -10,7 +10,8 @@ on:
       INFISICAL_URL:
       INFISICAL_PROJECT_ID:
       DOCKER_PASSWORD:
-      INFISICAL_TOKEN:
+      INFISICAL_CLIENT_ID:
+      INFISICAL_CLIENT_SECRET:
 jobs:
   build-image:
     name: API Image Build
@@ -20,10 +21,6 @@ jobs:
     steps:
       - name: Checkout Develop
         uses: actions/checkout@v3
-      - name: Debug Output
-        run: |
-          echo "Infisical Token: ${{ secrets.INFISICAL_TOKEN }}"
-
       - name: DockerHub Login
         uses: docker/login-action@v3
         with:
@@ -43,5 +40,6 @@ jobs:
       INFISICAL_URL: ${{secrets.INFISICAL_URL}}
       INFISICAL_PROJECT_ID: ${{secrets.INFISICAL_PROJECT_ID}}
       DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      INFISICAL_TOKEN: ${{secrets.INFISICAL_TOKEN}}
+      INFISICAL_CLIENT_ID: ${{secrets.INFISICAL_CLIENT_ID}}
+      INFISICAL_CLIENT_SECRET: ${{secrets.INFISICAL_CLIENT_SECRET}}
     
