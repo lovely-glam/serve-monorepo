@@ -132,7 +132,7 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
                 .callbackUrl(request.getCallbackUrl())
                 .paymentStatus(PaymentStatus.PENDING)
                 .totalPayment(
-                        BigDecimal.valueOf(request.getSubscriptionRole() == SubscriptionRole.BASIC ? 10000 : 25000))
+                        BigDecimal.valueOf(request.getSubscriptionRole() == SubscriptionRole.BASIC ? 1000000 : 2500000))
                 .exTime(LocalDateTime.now().plusMinutes(15))
                 .transactionId(TransactionId.builder()
                         .merchantType(request.getType())
