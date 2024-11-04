@@ -12,12 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lovelyglam.database.model.constant.AppointmentStatus;
 import com.lovelyglam.database.model.constant.PaymentStatus;
+import com.lovelyglam.database.model.dto.request.BookingPaymentRequest;
 import com.lovelyglam.database.model.dto.request.SearchRequestParamsDto;
 import com.lovelyglam.database.model.dto.response.BookingPaymentDetailResponse;
 import com.lovelyglam.database.model.dto.response.BookingPaymentResponse;
 import com.lovelyglam.database.model.dto.response.PaginationResponse;
 import com.lovelyglam.database.model.dto.response.PaymentResponse;
 import com.lovelyglam.database.model.entity.BookingPayment;
+import com.lovelyglam.database.model.entity.TransactionId;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
 import com.lovelyglam.database.model.exception.ValidationFailedException;
@@ -25,6 +27,7 @@ import com.lovelyglam.database.repository.BookingPaymentRepository;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.userserver.service.PaymentService;
 import com.lovelyglam.userserver.util.AuthUtils;
+import com.lovelyglam.utils.payment.model.PayOSAPICallback;
 import com.lovelyglam.utils.payment.model.VNPayApiCallback;
 
 import jakarta.persistence.criteria.Predicate;
@@ -37,10 +40,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final BookingRepository bookingRepository;
     private final AuthUtils authUtils;
 
-    public String bookingPaymentTransactionInit(BigDecimal bookingId, String callbackUrl,
+    public String bookingPaymentTransactionInit(BookingPaymentRequest request,
             Function<BookingPayment, String> cb) {
         var owner = authUtils.getUserAccountFromAuthentication();
-        var bookingEntity = bookingRepository.findById(bookingId)
+        var bookingEntity = bookingRepository.findById(request.getBookingId())
                 .orElseThrow(() -> new NotFoundException("Not Found Booking With This ID"));
         if (bookingEntity.getAppointmentStatus() == AppointmentStatus.DONE) {
             throw new ValidationFailedException("This booking is already finished");
@@ -50,9 +53,12 @@ public class PaymentServiceImpl implements PaymentService {
         var bookingPaymentEntity = BookingPayment.builder()
                 .booking(bookingEntity)
                 .exTime(LocalDateTime.now().plusMinutes(15))
-                .callbackUrl(callbackUrl)
+                .callbackUrl(request.getCallbackUrl())
                 .startTime(LocalDateTime.now())
                 .paymentStatus(PaymentStatus.PENDING)
+                .transactionId(TransactionId.builder()
+                .merchantType(request.getType())
+                .build())
                 .totalPayment(BigDecimal.valueOf(15000))
                 .build();
         try {
@@ -66,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentResponse bookingPaymentTransactionCallbackConfirm(VNPayApiCallback callback) {
         BigDecimal transactionId = new BigDecimal(callback.getOrderId());
         PaymentResponse paymentResponse = new PaymentResponse();
-        bookingPaymentRepository.findById(transactionId).ifPresentOrElse((entity) -> {
+        bookingPaymentRepository.findBookingPaymentByTransactionId(transactionId).ifPresentOrElse((entity) -> {
             if (callback.getPaymentStatus() == true) {
                 entity.setPaymentStatus(PaymentStatus.COMPLETED);
             } else {
@@ -83,6 +89,31 @@ public class PaymentServiceImpl implements PaymentService {
 
         }, () -> {
             paymentResponse.setStatus(false);
+        });
+        return paymentResponse;
+    }
+
+    public PaymentResponse bookingPaymentTransactionCallbackConfirm(PayOSAPICallback callback) {
+        BigDecimal transactionId = new BigDecimal(callback.getOrderId());
+        PaymentResponse paymentResponse = new PaymentResponse();
+        bookingPaymentRepository.findBookingPaymentByTransactionId(transactionId).ifPresentOrElse((entity) -> {
+            if (callback.getPaymentStatus() == true) {
+                entity.setPaymentStatus(PaymentStatus.COMPLETED);
+                paymentResponse.setStatus(true);
+            } else {
+                entity.setPaymentStatus(PaymentStatus.FAILED);
+                paymentResponse.setStatus(false);
+            }
+            bookingPaymentRepository.save(entity);
+            var booking = entity.getBooking();
+            booking.setAppointmentStatus(AppointmentStatus.BOOKED);
+            bookingRepository.save(booking);
+            paymentResponse.setCallbackUrl(entity.getCallbackUrl());
+            paymentResponse.setOrderId(callback.getOrderId());
+            paymentResponse.setTransactionId(callback.getTransactionId());
+
+        }, () -> {
+            throw new ActionFailedException("Not found transaction with this id");
         });
         return paymentResponse;
     }

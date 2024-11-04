@@ -143,6 +143,9 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       REDIS_PORT: ${REDIS_PORT}
       REDIS_HOST: ${REDIS_HOST}
+      PAYOS_CLIENT_ID: ${PAYOS_CLIENT_ID}
+      PAYOS_API_KEY: ${PAYOS_API_KEY}
+      PAYOS_CHECKSUM_KEY: ${PAYOS_CHECKSUM_KEY}
       TZ: ${TZ}
     ports:
       - ${DEPLOY_PORT}:${PORT}
