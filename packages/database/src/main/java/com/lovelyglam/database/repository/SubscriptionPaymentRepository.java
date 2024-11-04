@@ -3,6 +3,7 @@ package com.lovelyglam.database.repository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,6 @@ public interface SubscriptionPaymentRepository extends BaseRepository<Subscripti
     @Modifying
     @Query("UPDATE subscription_payments sp SET sp.paymentStatus = :newStatus WHERE sp.exTime < :now AND sp.paymentStatus = :oldStatus")
     int updateExpiredPayments(LocalDateTime now, PaymentStatus newStatus, PaymentStatus oldStatus);
+    @Query(value = "SELECT s FROM subscription_payments s INNER JOIN s.transactionId t WHERE t.id = :id")
+    Optional<SubscriptionPayment> findByTransactionId (@Param("id") BigDecimal id);
 }
