@@ -75,7 +75,7 @@ public class PaymentController {
         public ResponseEntity<ResponseObject> paymentTransactionCallback(HttpServletRequest request) {
                 var callbackResult = vnPayService.convertVNPayCallbackInfo(request);
                 var result = paymentService.bookingPaymentTransactionCallbackConfirm(callbackResult);
-                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(result.getCallbackUrl()))
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(String.format("%s?status=%s",result.getCallbackUrl(), result.isStatus() ? "success":"failed")))
                                 .body(ResponseObject.builder()
                                                 .content(result)
                                                 .code("PAYMENT_RETURN")
@@ -91,7 +91,7 @@ public class PaymentController {
         public ResponseEntity<ResponseObject> paymentTransactionPayOSSuccessCallback(HttpServletRequest request) {
                 var callbackResult = payOsService.convertPayOSCallbackInfo(request);
                 var result = paymentService.bookingPaymentTransactionCallbackConfirm(callbackResult);
-                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(result.getCallbackUrl()))
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(String.format("%s?status=%s",result.getCallbackUrl(), result.isStatus() ? "success":"failed")))
                                 .body(ResponseObject.builder()
                                                 .content(result)
                                                 .code("PAYMENT_RETURN")
@@ -106,7 +106,7 @@ public class PaymentController {
         public ResponseEntity<ResponseObject> paymentTransactionPayOSFailedCallback(HttpServletRequest request) {
                 var callbackResult = payOsService.convertPayOSCallbackInfo(request);
                 var result = paymentService.bookingPaymentTransactionCallbackConfirm(callbackResult);
-                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(result.getCallbackUrl()))
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(String.format("%s?status=%s",result.getCallbackUrl(), result.isStatus() ? "success":"failed")))
                                 .body(ResponseObject.builder()
                                                 .content(result)
                                                 .code("PAYMENT_RETURN")
