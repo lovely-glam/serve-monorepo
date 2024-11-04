@@ -45,14 +45,14 @@ public class PaymentController {
                                 case VN_PAY:
                                         return vnPayService.createOrder(entity.getTotalPayment().intValue(),
                                                         "Order Booking",
-                                                        "/api/v1/payments/booking/callback", entity.getId().toString(),
+                                                        "/api/v1/payments/booking/callback", String.valueOf(entity.getTransactionId().getId().toBigInteger().intValue()),
                                                         request);
                                 case PAY_OS:
                                         return payOsService.createOrder(
                                                         entity.getTotalPayment().toBigInteger().intValue(),
                                                         "Order Booking",
-                                                        "/api/v1/payments/booking/payos/callback/success",
-                                                        "/api/v1/payments/booking/payos/callback/failed",
+                                                        "/api/v1/payments/booking/callback/payos/success",
+                                                        "/api/v1/payments/booking/callback/payos/failed",
                                                         entity.getTransactionId().getId().toBigInteger().intValue(), request);
                                 default:
                                         throw new ValidationFailedException(
@@ -86,7 +86,7 @@ public class PaymentController {
                                                 .build());
         }
 
-        @GetMapping("/booking/payos/callback/success")
+        @GetMapping("/booking/callback/payos/success")
         @Transactional(rollbackFor = { ActionFailedException.class })
         public ResponseEntity<ResponseObject> paymentTransactionPayOSSuccessCallback(HttpServletRequest request) {
                 var callbackResult = payOsService.convertPayOSCallbackInfo(request);
@@ -101,7 +101,7 @@ public class PaymentController {
                                                 .requestTime(LocalDateTime.now())
                                                 .build());
         }
-        @GetMapping("/booking/payos/callback/failed")
+        @GetMapping("/booking/callback/payos/failed")
         @Transactional(rollbackFor = { ActionFailedException.class })
         public ResponseEntity<ResponseObject> paymentTransactionPayOSFailedCallback(HttpServletRequest request) {
                 var callbackResult = payOsService.convertPayOSCallbackInfo(request);

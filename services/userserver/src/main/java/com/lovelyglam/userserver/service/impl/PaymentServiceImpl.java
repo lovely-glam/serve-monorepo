@@ -75,20 +75,22 @@ public class PaymentServiceImpl implements PaymentService {
         bookingPaymentRepository.findBookingPaymentByTransactionId(transactionId).ifPresentOrElse((entity) -> {
             if (callback.getPaymentStatus() == true) {
                 entity.setPaymentStatus(PaymentStatus.COMPLETED);
+                paymentResponse.setStatus(true);
             } else {
                 entity.setPaymentStatus(PaymentStatus.FAILED);
+                paymentResponse.setStatus(false);
             }
             bookingPaymentRepository.save(entity);
             var booking = entity.getBooking();
             booking.setAppointmentStatus(AppointmentStatus.BOOKED);
             bookingRepository.save(booking);
             paymentResponse.setCallbackUrl(entity.getCallbackUrl());
-            paymentResponse.setStatus(true);
+            
             paymentResponse.setOrderId(callback.getOrderId());
             paymentResponse.setTransactionId(callback.getTransactionId());
 
         }, () -> {
-            paymentResponse.setStatus(false);
+            throw new ActionFailedException("Not found transaction with this id");
         });
         return paymentResponse;
     }
