@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.lovelyglam.database.model.constant.PaymentStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,4 +41,9 @@ public class SubscriptionPayment extends BaseEntity {
     private BigDecimal totalPayment;
     @Column(name = "ex_time", nullable = false)
     private LocalDateTime exTime;
+    @OneToOne(targetEntity = TransactionId.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "transaction_id")
+    private TransactionId transactionId;
+    @Column(name = "payload", columnDefinition = "TEXT", nullable = false)
+    private String payload;
 }

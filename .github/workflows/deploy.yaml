@@ -15,7 +15,8 @@ on:
       INFISICAL_URL:
       INFISICAL_PROJECT_ID:
       DOCKER_PASSWORD:
-      INFISICAL_TOKEN:
+      INFISICAL_CLIENT_ID:
+      INFISICAL_CLIENT_SECRET:
 
 jobs:
   deploy-api:
@@ -30,13 +31,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Infisical Login
+        id: infisical_login
+        run: |
+            echo "INFISICAL_TOKEN=$(infisical login --domain=${{secrets.INFISICAL_URL}} --method=universal-auth --client-id=${{secrets.INFISICAL_CLIENT_ID}} --client-secret=${{secrets.INFISICAL_CLIENT_SECRET}} --silent --plain)" >> $GITHUB_ENV
 
       - name: Clean Container, Image And Prepare For Deploy
-        run: infisical run --env=prod --token=${{secrets.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{inputs.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service down ${{inputs.service}} --rmi all -v
+        run: infisical run --env=prod --token=${{env.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{inputs.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service down ${{inputs.service}} --rmi all -v
         continue-on-error: true
 
       - name: Docker Pull Image For Deploy
-        run: infisical run --env=prod --token=${{secrets.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{inputs.service}} --watch -- docker compose -f docker-compose.prod.yaml pull ${{inputs.service}}
+        run: infisical run --env=prod --token=${{env.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{inputs.service}} --watch -- docker compose -f docker-compose.prod.yaml pull ${{inputs.service}}
 
       - name: Infisical Login && Deploy Api
-        run: infisical run --env=prod --token=${{secrets.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{inputs.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service up ${{inputs.service}} -d
+        run: infisical run --env=prod --token=${{env.INFISICAL_TOKEN}} --domain=${{secrets.INFISICAL_URL}} --projectId=${{secrets.INFISICAL_PROJECT_ID}} --path=/glam-serve/${{inputs.service}} --watch -- docker compose -f docker-compose.prod.yaml -p glam-serve-service up ${{inputs.service}} -d
