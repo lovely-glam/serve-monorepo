@@ -1,5 +1,6 @@
 package com.lovelyglam.workerservice.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingAppointment {
+public class BookingAppointment implements Serializable {
     private String shopName;
     private String location;
     private Timestamp meetDate;
