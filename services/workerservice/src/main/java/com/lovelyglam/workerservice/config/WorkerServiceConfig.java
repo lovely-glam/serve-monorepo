@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.lovelyglam.database.repository")
 @ComponentScan(basePackages = {
     "com.lovelyglam.filecloud",
-    "com.lovelyglam.utils.config"
+    "com.lovelyglam.utils.config",
+    "com.lovelyglam.email"
 })
 public class WorkerServiceConfig {
     

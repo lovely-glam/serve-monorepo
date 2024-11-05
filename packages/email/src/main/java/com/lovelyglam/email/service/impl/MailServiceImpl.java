@@ -2,6 +2,7 @@ package com.lovelyglam.email.service.impl;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,6 +13,7 @@ import com.lovelyglam.email.service.MailSenderService;
 import com.lovelyglam.email.utils.MessageCompactUtils;
 
 import jakarta.mail.MessagingException;
+import jakarta.mail.Transport;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
@@ -77,6 +79,21 @@ public class MailServiceImpl implements MailSenderService {
             return;
         }
         emailSender.send(message);
+    }
+
+    public void sendBulkCustomMessage(Function<JavaMailSender,List<MimeMessage>> callback){
+        var result = callback.apply(emailSender);
+        if (result != null) {
+            result.forEach(item -> {
+                try {
+                    item.setFrom("noreply@lovelyglam.life");
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                    return;
+                }
+            });
+            emailSender.send(result.toArray(new MimeMessage[0]));
+        }
     }
     
     
