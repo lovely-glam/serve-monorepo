@@ -82,10 +82,13 @@ public class PaymentServiceImpl implements PaymentService {
             }
             bookingPaymentRepository.save(entity);
             var booking = entity.getBooking();
-            booking.setAppointmentStatus(AppointmentStatus.BOOKED);
+            if (callback.getPaymentStatus() == true) {
+                booking.setAppointmentStatus(AppointmentStatus.BOOKED);
+            }else {
+                booking.setAppointmentStatus(AppointmentStatus.DENIED);
+            }
             bookingRepository.save(booking);
             paymentResponse.setCallbackUrl(entity.getCallbackUrl());
-            
             paymentResponse.setOrderId(callback.getOrderId());
             paymentResponse.setTransactionId(callback.getTransactionId());
 
@@ -108,7 +111,11 @@ public class PaymentServiceImpl implements PaymentService {
             }
             bookingPaymentRepository.save(entity);
             var booking = entity.getBooking();
-            booking.setAppointmentStatus(AppointmentStatus.BOOKED);
+            if (callback.getPaymentStatus() == true) {
+                booking.setAppointmentStatus(AppointmentStatus.BOOKED);
+            }else {
+                booking.setAppointmentStatus(AppointmentStatus.DENIED);
+            }
             bookingRepository.save(booking);
             paymentResponse.setCallbackUrl(entity.getCallbackUrl());
             paymentResponse.setOrderId(callback.getOrderId());

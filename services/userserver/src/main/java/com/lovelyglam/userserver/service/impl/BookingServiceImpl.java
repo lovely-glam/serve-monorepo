@@ -40,7 +40,6 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = Booking.builder()
                 .shopService(nailService)
                 .startTime(bookingRequest.getStartTime())
-                .appointmentStatus(bookingRequest.getStatus())
                 .userAccount(authUtils.getUserAccountFromAuthentication())
                 .startTime(bookingRequest.getStartTime())
                 .makingDay(bookingRequest.getMakingDay())
@@ -120,7 +119,6 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new NotFoundException("Not Found Booking"));
         bookingDb.setStartTime(bookingRequest.getStartTime());
         bookingDb.setUpdatedDate(LocalDateTime.now());
-        bookingDb.setAppointmentStatus(bookingRequest.getStatus());
         try {
             var item = bookingRepository.save(bookingDb);
             return BookingResponse.builder()

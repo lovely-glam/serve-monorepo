@@ -1,6 +1,5 @@
 package com.lovelyglam.database.repository;
 
-import java.lang.StackWalker.Option;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -35,7 +34,4 @@ public interface BookingPaymentRepository extends BaseRepository<BookingPayment,
 
     @Query("SELECT SUM(b.totalPayment) FROM booking_payments b WHERE b.paymentStatus = :status")
     BigDecimal sumTotalPaymentByPaymentStatus(@Param("status") PaymentStatus status);
-
-
-
 }
