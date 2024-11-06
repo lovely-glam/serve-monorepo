@@ -20,6 +20,7 @@ import com.lovelyglam.database.model.entity.Booking;
 import com.lovelyglam.database.model.exception.ActionFailedException;
 import com.lovelyglam.database.model.exception.AuthFailedException;
 import com.lovelyglam.database.model.exception.NotFoundException;
+import com.lovelyglam.database.model.exception.ValidationFailedException;
 import com.lovelyglam.database.repository.BookingRepository;
 import com.lovelyglam.nailserver.service.BookingService;
 import com.lovelyglam.nailserver.utils.AuthUtils;
@@ -110,9 +111,9 @@ public class BookingServiceImpl implements BookingService {
     public Collection<BookingResponse> convertToBookingResponse(Collection<Booking> bookings) {
         return bookings.stream()
                 .map(booking -> BookingResponse.builder()
-                        .id(booking.getId()) // Assuming id is BigDecimal, or cast appropriately
-                        .shopServiceName(booking.getShopService().getName()) // Assuming ShopService has a getName() method
-                        .userAccountName(booking.getUserAccount().getFullname()) // Assuming UserAccount has a getUsername() method
+                        .id(booking.getId())
+                        .shopServiceName(booking.getShopService().getName())
+                        .userAccountName(booking.getUserAccount().getFullname())
                         .makingDay(booking.getMakingDay())
                         .startTime(booking.getStartTime())
                         .status(booking.getAppointmentStatus())
@@ -145,5 +146,44 @@ public class BookingServiceImpl implements BookingService {
                 page.isFirst(),
                 page.isLast()
         );
+    }
+
+    @Override
+    public BookingResponse updateBookingStatus(AppointmentStatus status, BigDecimal id) {
+        var bookingEntity = bookingRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found Booking With This Id"));
+        if(bookingEntity.getAppointmentStatus() == AppointmentStatus.BOOKED) {
+            // This is for update status when this booking is paid
+            if (AppointmentStatus.ACCEPTED == status || AppointmentStatus.DENIED == status){
+                bookingEntity.setAppointmentStatus(status);
+            } else {
+                throw new ValidationFailedException("You can only change the booking status from BOOKED to ACCEPTED or DENIED");
+            }
+            bookingRepository.save(bookingEntity);
+            return BookingResponse.builder()
+                .id(bookingEntity.getId())
+                .shopServiceName(bookingEntity.getShopService().getName())
+                .userAccountName(bookingEntity.getUserAccount().getFullname())
+                .makingDay(bookingEntity.getMakingDay())
+                .startTime(bookingEntity.getStartTime())
+                .status(bookingEntity.getAppointmentStatus())
+                .build();
+        }else if (bookingEntity.getAppointmentStatus() == AppointmentStatus.ACCEPTED) {
+            if (AppointmentStatus.DONE == status || AppointmentStatus.DENIED == status) {
+                bookingEntity.setAppointmentStatus(status);
+            } else {
+                throw new ValidationFailedException("You can only change the booking status from ACCEPTED to DONE or DENIED");
+            }
+            bookingRepository.save(bookingEntity);
+            return BookingResponse.builder()
+                .id(bookingEntity.getId())
+                .shopServiceName(bookingEntity.getShopService().getName())
+                .userAccountName(bookingEntity.getUserAccount().getFullname())
+                .makingDay(bookingEntity.getMakingDay())
+                .startTime(bookingEntity.getStartTime())
+                .status(bookingEntity.getAppointmentStatus())
+                .build();
+        } else {
+            throw new ValidationFailedException("The current status of booking is not allowed");
+        }
     }
 }
