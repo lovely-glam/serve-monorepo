@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Reminder</title>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            margin: 50px auto;
+            width: 70%;
+            padding: 20px 0;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            border-bottom: 2px solid #ff6f91;
+            padding: 20px;
+            text-align: center;
+        }
+        .header a {
+            font-size: 1.4em;
+            color: #ff6f91;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .event-details {
+            background: #ff6f91;
+            margin: 20px auto;
+            padding: 15px;
+            color: #fff;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .footer {
+            padding: 20px;
+            color: #aaa;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#">Lovely Glam</a>
+        </div>
+        <div class="content">
+            <p style="font-size: 1.1em;">Hello, <span th:text="${username}">User</span></p>
+            <p>We're excited to remind you of your upcoming booking nail with Lovely Glam! Here are the details:</p>
+            <div class="event-details">
+                <p><strong>Shop:</strong> <span th:text="${eventName}">Lovely Glam Makeover</span></p>
+                <p><strong>Date:</strong> <span th:text="${eventDate}">January 1, 2024</span></p>
+                <p><strong>Time:</strong> <span th:text="${eventTime}">10:00 AM</span></p>
+                <p><strong>Location:</strong> <span th:text="${eventLocation}">Thu Duc, Ho Chi Minh</span></p>
+            </div>
+            <p>We look forward to seeing you there! If you have any questions, feel free to contact us.</p>
+            <p style="font-size: 0.9em;">Best regards,<br />Lovely Glam Team</p>
+        </div>
+        <hr />
+        <div class="footer">
+            <p>Lovely Glam Inc</p>
+            <p>Thu Duc, Ho Chi Minh</p>
+            <p>Vietnam</p>
+        </div>
+    </div>
+</body>
+</html>
