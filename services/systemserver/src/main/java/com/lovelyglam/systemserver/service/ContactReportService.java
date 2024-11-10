@@ -6,4 +6,5 @@ import com.lovelyglam.database.model.dto.response.PaginationResponse;
 
 public interface ContactReportService {
     PaginationResponse<ContactReportResponse> getContacts(SearchRequestParamsDto request);
+    String setReadAll();
 }
