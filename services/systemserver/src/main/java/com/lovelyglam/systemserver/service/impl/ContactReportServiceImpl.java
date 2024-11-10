@@ -48,4 +48,10 @@ public class ContactReportServiceImpl implements ContactReportService {
                 });
         return result;
     }
+
+    @Override
+    public String setReadAll() {
+        int result = systemContactReportRepository.markAllAsRead();
+        return String.format("Has read of %d record", result);
+    }
 }
